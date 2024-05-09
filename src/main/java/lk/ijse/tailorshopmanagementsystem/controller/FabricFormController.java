@@ -79,10 +79,37 @@ public class FabricFormController {
         setCellValueFactory();
         loadAllFabric();
         showSelectedUserDetails();
+
+        initializeValidation();
     }
 
 
 
+    private void initializeValidation() {
+        addValidationListener(txtId, "F[0-9]+", true); // Upper 'F' followed by numbers (1-9) only
+        addValidationListener(txtColor, "[a-zA-Z]+", true); // Letters only
+        addValidationListener(txtName, "[a-zA-Z]+", true); // Letters only
+        addValidationListener(txtQtyOnHand,  "\\d+", true); // Numbers only
+    }
+
+    private void addValidationListener(TextField textField, String regex, boolean caseSensitive) {
+        textField.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue.matches(regex)) {
+                // If input matches the regex pattern
+                textField.setStyle("-fx-border-color: #3498db;");
+            } else {
+                // If input doesn't match the regex pattern
+                textField.setStyle("-fx-border-color: red;");
+            }
+        });
+
+        if (!caseSensitive) {
+            textField.setTextFormatter(new TextFormatter<>((change) -> {
+                change.setText(change.getText().replaceAll(regex, ""));
+                return change;
+            }));
+        }
+    }
 
 
 

@@ -9,34 +9,39 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.shape.Line?>
+<?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
 <AnchorPane prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lk.ijse.tailorshopmanagementsystem.controller.RegistrationFormController">
    <children>
-      <ImageView fitHeight="897.0" fitWidth="1373.0" layoutX="-21.0" layoutY="-175.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fitHeight="736.0" fitWidth="1359.0" layoutX="-1.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../icon/img.png" />
+            <Image url="@../icon/download.jpeg" />
          </image>
       </ImageView>
+      <Rectangle arcHeight="20.0" arcWidth="20.0" fill="#ffffff29" height="479.0" layoutX="484.0" layoutY="127.0" stroke="#ffffffab" strokeType="INSIDE" width="334.0" />
       <Text fill="WHITE" layoutX="547.0" layoutY="208.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Register">
          <font>
             <Font name="System Bold" size="62.0" />
          </font>
       </Text>
       <TextField fx:id="txtId" layoutX="533.0" layoutY="281.0" prefHeight="35.0" prefWidth="244.0" promptText="User ID" />
-      <Label layoutX="531.0" layoutY="262.0" text="User ID" textFill="#abadb2" />
-      <Label layoutX="531.0" layoutY="333.0" text="User Name" textFill="#abadb2" />
+      <Label layoutX="531.0" layoutY="262.0" text="User ID" textFill="WHITE" />
+      <Label layoutX="531.0" layoutY="333.0" text="User Name" textFill="WHITE" />
       <Line endX="106.4000244140625" layoutX="652.0" layoutY="230.0" startX="-100.0" stroke="WHITE">
          <effect>
             <MotionBlur />
          </effect>
       </Line>
-      <JFXButton layoutX="580.0" layoutY="548.0" onAction="#btnRegisterOnAction" prefHeight="26.0" prefWidth="150.0" style="-fx-background-color: #1e90ff;" text="Register" textFill="WHITE" />
+      <JFXButton layoutX="580.0" layoutY="548.0" onAction="#btnRegisterOnAction" prefHeight="34.0" prefWidth="150.0" style="-fx-background-color: white; -fx-background-radius: 18;" text="Register" textFill="#207bb0">
+         <font>
+            <Font name="System Bold Italic" size="13.0" />
+         </font></JFXButton>
       <TextField fx:id="txtName" layoutX="532.0" layoutY="351.0" prefHeight="35.0" prefWidth="244.0" promptText="User Name" />
       <TextField fx:id="txtEmail" layoutX="534.0" layoutY="415.0" prefHeight="35.0" prefWidth="244.0" promptText="Email" />
       <PasswordField fx:id="txtPassword" layoutX="535.0" layoutY="479.0" prefHeight="35.0" prefWidth="244.0" promptText="New Password" />
-      <Label layoutX="533.0" layoutY="396.0" text="Email" textFill="#abadb2" />
-      <Label layoutX="534.0" layoutY="461.0" text="New Password" textFill="#abadb2" />
+      <Label layoutX="533.0" layoutY="396.0" text="Email" textFill="WHITE" />
+      <Label layoutX="534.0" layoutY="461.0" text="New Password" textFill="WHITE" />
    </children>
 </AnchorPane>

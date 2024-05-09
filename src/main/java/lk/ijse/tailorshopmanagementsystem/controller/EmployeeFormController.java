@@ -89,7 +89,48 @@ public class EmployeeFormController {
         txtUserId.setText("U01");
         txtStatus.setText("Active");
         showSelectedEmployeeDetails();
+
+        initializeValidation();
     }
+
+    private void initializeValidation() {
+        addValidationListener(txtId, "E[1-9]+", true); // Upper 'E' followed by numbers (1-9) only
+        addValidationListener(txtNic, "[0-9V]+", true); // Numbers and 'V' (upper case)
+        addValidationListener(txtName, "[a-zA-Z]+", true); // Letters only
+        addValidationListener(txtSalary, "\\d+", true); // Numbers only
+        addValidationListener(txtAddress, "[a-zA-Z ]+", true); // Letters and space only
+        addValidationListener(txtTel, "\\d{10}", true); // Exactly 10 numbers
+        addValidationListener(txtStatus, "(Active|Inactive)", true); // 'Active' or 'Inactive' words only
+    }
+
+    private void addValidationListener(TextField textField, String regex, boolean caseSensitive) {
+        textField.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue.matches(regex)) {
+                // If input matches the regex pattern
+                textField.setStyle("-fx-border-color: #3498db;");
+            } else {
+                // If input doesn't match the regex pattern
+                textField.setStyle("-fx-border-color: red;");
+            }
+        });
+
+        if (!caseSensitive) {
+            textField.setTextFormatter(new TextFormatter<>((change) -> {
+                change.setText(change.getText().replaceAll(regex, ""));
+                return change;
+            }));
+        }
+    }
+
+
+
+
+
+
+
+
+
+
 
     private void showSelectedEmployeeDetails() {
         EmployeeTm selectedUser = tblEmployee.getSelectionModel().getSelectedItem();

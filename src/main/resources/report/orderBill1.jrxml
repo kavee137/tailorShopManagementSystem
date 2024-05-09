@@ -227,10 +227,24 @@ FROM
 		<band splitType="Stretch"/>
 	</background>
 	<title>
-		<band height="55" splitType="Stretch">
+		<band height="154" splitType="Stretch">
+			<image hAlign="Center" vAlign="Bottom">
+				<reportElement x="177" y="-8" width="207" height="85" uuid="08c7ec70-609a-41d5-8d89-2cbe268050a3"/>
+				<imageExpression><![CDATA["/Users/rukshan/Downloads/RUKZ clothing white BG original copy.png"]]></imageExpression>
+			</image>
 			<staticText>
-				<reportElement x="242" y="25" width="100" height="30" uuid="0d68121c-5d12-415b-90a8-9eb5317c90af"/>
-				<text><![CDATA[rukz clothing]]></text>
+				<reportElement x="214" y="79" width="136" height="18" uuid="910491dd-912a-45ca-9e53-372f847fc303"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Agalawatta Rd, Mathugama.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="250" y="92" width="79" height="20" uuid="6da7cb36-eb5a-4014-a72b-f6a2db3a3ab7"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[0765498907]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="26" y="104" width="574" height="30" uuid="43eb8bb5-275b-4d83-a188-613272d99d2a"/>
+				<text><![CDATA[____________________________________________________________________________________________________]]></text>
 			</staticText>
 		</band>
 	</title>
@@ -238,79 +252,113 @@ FROM
 		<band height="35" splitType="Stretch"/>
 	</pageHeader>
 	<columnHeader>
-		<band height="61" splitType="Stretch">
+		<band height="37" splitType="Stretch">
 			<staticText>
-				<reportElement x="110" y="0" width="100" height="30" uuid="7870d692-1f32-4ae4-a7ce-0605b6e0575d">
+				<reportElement x="77" y="0" width="100" height="30" uuid="7870d692-1f32-4ae4-a7ce-0605b6e0575d">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="36569f26-1df6-4b08-852f-1f6ffaa31b42"/>
 				</reportElement>
-				<text><![CDATA[fabric_description]]></text>
+				<textElement>
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Description]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="210" y="0" width="100" height="30" uuid="777cccfb-5faf-4983-a554-7b9ec0f5d791">
+				<reportElement x="177" y="0" width="100" height="30" uuid="777cccfb-5faf-4983-a554-7b9ec0f5d791">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="3cde5a9b-7193-4f8f-8f03-ff55a9a4a929"/>
 				</reportElement>
-				<text><![CDATA[fabricName]]></text>
+				<textElement>
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Fabric Name]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="300" y="0" width="100" height="30" uuid="78b67fef-bcdc-4506-95d2-b3d057c46a9a">
+				<reportElement x="280" y="0" width="100" height="30" uuid="78b67fef-bcdc-4506-95d2-b3d057c46a9a">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="90b08cfd-4bf5-42b2-a79d-e6f9aed1fde0"/>
 				</reportElement>
-				<text><![CDATA[fabric_measurements]]></text>
+				<textElement>
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Measurements]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="414" y="0" width="100" height="30" uuid="4e215364-6a3f-462b-961b-55fad244bbf6">
+				<reportElement x="454" y="0" width="100" height="30" uuid="4e215364-6a3f-462b-961b-55fad244bbf6">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="aa981c42-b9ea-4299-b215-4208c31967aa"/>
 				</reportElement>
-				<text><![CDATA[fabric_unit_price]]></text>
+				<textElement>
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Unit Price]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="43" y="0" width="100" height="30" uuid="73ee45e7-c4a0-4586-8c8b-3b6127af5548">
+				<reportElement x="3" y="0" width="100" height="30" uuid="73ee45e7-c4a0-4586-8c8b-3b6127af5548">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="c45e9c6f-3355-45fb-9ca1-2ee3e4666f7b"/>
 				</reportElement>
-				<text><![CDATA[orderID]]></text>
+				<textElement>
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Order ID]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="408" y="0" width="100" height="30" uuid="7209b141-8f01-4049-82f0-f9aaaad36100">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="e331e119-a472-49c1-afb2-abc3c27038d6"/>
+				</reportElement>
+				<textElement>
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Qty]]></text>
 			</staticText>
 		</band>
 	</columnHeader>
 	<detail>
-		<band height="125" splitType="Stretch">
+		<band height="24" splitType="Stretch">
 			<textField>
-				<reportElement x="110" y="10" width="100" height="30" uuid="37e5face-89b6-4296-b99a-5931c15665a0">
+				<reportElement x="86" y="0" width="100" height="20" uuid="37e5face-89b6-4296-b99a-5931c15665a0">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="36569f26-1df6-4b08-852f-1f6ffaa31b42"/>
 				</reportElement>
 				<textFieldExpression><![CDATA[$F{fabric_description}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="210" y="10" width="100" height="30" uuid="1a1d72b1-2548-4fd4-89ee-6bea86ee2803">
+				<reportElement x="177" y="2" width="100" height="18" uuid="1a1d72b1-2548-4fd4-89ee-6bea86ee2803">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="3cde5a9b-7193-4f8f-8f03-ff55a9a4a929"/>
 				</reportElement>
 				<textFieldExpression><![CDATA[$F{fabricName}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="300" y="20" width="100" height="30" uuid="f082b087-76e7-41ff-954d-36d9beef9eb4">
+				<reportElement x="280" y="0" width="100" height="20" uuid="f082b087-76e7-41ff-954d-36d9beef9eb4">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="90b08cfd-4bf5-42b2-a79d-e6f9aed1fde0"/>
 				</reportElement>
 				<textFieldExpression><![CDATA[$F{fabric_measurements}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="414" y="14" width="100" height="30" uuid="f39212d9-a181-411a-8f88-a1d6a58c9463">
+				<reportElement x="471" y="2" width="100" height="18" uuid="f39212d9-a181-411a-8f88-a1d6a58c9463">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="aa981c42-b9ea-4299-b215-4208c31967aa"/>
 				</reportElement>
 				<textFieldExpression><![CDATA[$F{fabric_unit_price}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="43" y="13" width="100" height="30" uuid="25715913-4889-4f08-87b6-6cc0961fafff">
+				<reportElement x="12" y="2" width="100" height="18" uuid="25715913-4889-4f08-87b6-6cc0961fafff">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="c45e9c6f-3355-45fb-9ca1-2ee3e4666f7b"/>
 				</reportElement>
 				<textFieldExpression><![CDATA[$F{orderID}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="414" y="2" width="100" height="18" uuid="ec52cef8-fee7-42da-a02c-f83f48ec12f3">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="e331e119-a472-49c1-afb2-abc3c27038d6"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{fabric_qty}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
 	<columnFooter>
 		<band height="45" splitType="Stretch">
 			<textField>
-				<reportElement x="380" y="10" width="100" height="30" uuid="587cfe52-6d80-4a84-adbb-f02ec2706d2a"/>
+				<reportElement x="460" y="-10" width="100" height="30" uuid="587cfe52-6d80-4a84-adbb-f02ec2706d2a"/>
 				<textFieldExpression><![CDATA[$F{price}]]></textFieldExpression>
 			</textField>
+			<staticText>
+				<reportElement x="425" y="-10" width="100" height="30" uuid="f8206f4d-d8e0-43e8-911e-e03bd84a4935"/>
+				<text><![CDATA[Total: ]]></text>
+			</staticText>
 		</band>
 	</columnFooter>
 	<pageFooter>

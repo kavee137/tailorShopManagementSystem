@@ -164,6 +164,22 @@ public class DashboardFormController {
                     e.printStackTrace();
                 }
                 break;
+
+            case "Payment":
+                try {
+                    // Load the reservation form
+                    FXMLLoader reservationLoader = new FXMLLoader(getClass().getResource("/view/payment_form.fxml"));
+                    Parent reservationRoot = reservationLoader.load();
+                    rootNode.getChildren().clear();
+                    rootNode.getChildren().add(reservationRoot);
+
+                    Stage stage = (Stage) rootNode.getScene().getWindow();
+                    stage.setTitle("Payment Manage");
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                break;
+
             case "Supplier":
                 try {
                     // Load the supplier form

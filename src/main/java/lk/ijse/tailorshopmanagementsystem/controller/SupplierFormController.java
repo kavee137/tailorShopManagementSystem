@@ -6,10 +6,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
@@ -67,10 +64,37 @@ public class SupplierFormController {
         setCellValueFactory();
         loadAllSuppliers();
         showSelectedSupplierDetails();
+
+        initializeValidation();
     }
 
+    private void initializeValidation() {
+        addValidationListener(txtId, "S[0-9]+", true); // Upper 'E' followed by numbers (1-9) only
+        addValidationListener(txtNic, "[0-9V]+", true); // Numbers and 'V' (upper case)
+        addValidationListener(txtName, "[a-zA-Z]+", true); // Letters only
+        addValidationListener(txtAddress, "[a-zA-Z ]+", true); // Letters and space only
+        addValidationListener(txtTel, "\\d{10}", true); // Exactly 10 numbers
+        addValidationListener(txtStatus, "(Active|Inactive)", true); // 'Active' or 'Inactive' words only
+    }
 
+    private void addValidationListener(TextField textField, String regex, boolean caseSensitive) {
+        textField.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue.matches(regex)) {
+                // If input matches the regex pattern
+                textField.setStyle("-fx-border-color: #3498db;");
+            } else {
+                // If input doesn't match the regex pattern
+                textField.setStyle("-fx-border-color: red;");
+            }
+        });
 
+        if (!caseSensitive) {
+            textField.setTextFormatter(new TextFormatter<>((change) -> {
+                change.setText(change.getText().replaceAll(regex, ""));
+                return change;
+            }));
+        }
+    }
 
     private void showSelectedSupplierDetails() {
         SupplierTm selectedUser = tblSupplier.getSelectionModel().getSelectedItem();
@@ -85,8 +109,6 @@ public class SupplierFormController {
 
         }
     }
-
-
 
     private void setCellValueFactory() {
         colId.setCellValueFactory(new PropertyValueFactory<>("supplierID"));

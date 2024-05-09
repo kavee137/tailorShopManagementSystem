@@ -1,14 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="$CONTROLLER_NAME$"
-            prefHeight="400.0" prefWidth="600.0" >
 
+<AnchorPane prefHeight="720.0" prefWidth="1080.0" style="-fx-background-color: edf2fb;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lk.ijse.tailorshopmanagementsystem.controller.PaymentFormController">
+   <children>
+      <TableView fx:id="tblPayment" layoutX="52.0" layoutY="38.0" prefHeight="655.0" prefWidth="973.0">
+        <columns>
+          <TableColumn fx:id="colReservationId" prefWidth="159.72878646850586" text="Reservation ID" />
+          <TableColumn fx:id="colOrderId" prefWidth="196.1396942138672" text="Order ID" />
+            <TableColumn fx:id="colPaymentId" prefWidth="211.8798828125" text="Payment ID" />
+            <TableColumn fx:id="colPaymentType" prefWidth="248.12017822265625" text="Payment Type" />
+            <TableColumn fx:id="colPrice" prefWidth="158.20053100585938" text="Price" />
+        </columns>
+      </TableView>
+   </children>
 </AnchorPane>

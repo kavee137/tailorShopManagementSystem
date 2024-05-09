@@ -45,7 +45,7 @@
             <Font name="System Bold Italic" size="39.0" />
          </font>
       </Label>
-      <Rectangle arcHeight="30.0" arcWidth="30.0" fill="WHITE" height="419.0" layoutX="17.0" layoutY="284.0" strokeType="INSIDE" width="1046.0" />
+      <Rectangle arcHeight="30.0" arcWidth="30.0" fill="WHITE" height="419.0" layoutX="54.0" layoutY="284.0" strokeType="INSIDE" width="1003.0" />
       <Rectangle arcHeight="30.0" arcWidth="30.0" fill="WHITE" height="116.0" layoutX="543.0" layoutY="13.0" strokeType="INSIDE" width="254.0" />
       <Label layoutX="628.0" layoutY="25.0" prefHeight="33.0" prefWidth="81.0" text="Orders" textFill="#00000083">
          <font>
@@ -154,9 +154,14 @@
             <Image url="@../icon/user.png" />
          </image>
       </ImageView>
-      <ImageView fitHeight="441.0" fitWidth="1023.0" layoutX="22.0" layoutY="317.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fitHeight="33.0" fitWidth="50.0" layoutX="26.0" layoutY="294.0" pickOnBounds="true" preserveRatio="true" visible="false">
          <image>
             <Image url="@../icon/chart.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="440.0" fitWidth="947.0" layoutX="92.0" layoutY="286.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../icon/chartgif.gif" />
          </image>
       </ImageView>
    </children>

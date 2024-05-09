@@ -22,14 +22,17 @@ import lk.ijse.tailorshopmanagementsystem.model.tm.ReservationTm;
 import lk.ijse.tailorshopmanagementsystem.repository.OrderRepo;
 import lk.ijse.tailorshopmanagementsystem.repository.PlaceOrderRepo;
 import lk.ijse.tailorshopmanagementsystem.repository.ReservationRepo;
+import net.sf.jasperreports.engine.*;
+import net.sf.jasperreports.engine.design.JasperDesign;
+import net.sf.jasperreports.engine.xml.JRXmlLoader;
+import net.sf.jasperreports.view.JasperViewer;
 
 
 import java.io.IOException;
 import java.sql.*;
+import java.sql.Date;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 public class PlaceOrderFormController  {
     @FXML
@@ -606,5 +609,18 @@ public class PlaceOrderFormController  {
         } else {
             new Alert(Alert.AlertType.WARNING, "Order Completed Unsuccessfully!").show();
         }
+    }
+
+    public void btnBillOnAction(ActionEvent actionEvent) throws JRException, SQLException {
+        JasperDesign jasperDesign = JRXmlLoader.load("src/main/resources/report/orderBill1.jrxml");
+        JasperReport jasperReport = JasperCompileManager.compileReport(jasperDesign);
+
+        Map<String,Object> data = new HashMap<>();
+        data.put("orderID",txtOrderId.getText());
+
+        JasperPrint jasperPrint =
+                JasperFillManager.fillReport(jasperReport, data, DbConnection.getInstance().getConnection());
+        JasperViewer.viewReport(jasperPrint,false);
+
     }
 }

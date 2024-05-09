@@ -5,6 +5,7 @@ module lk.ijse.tailorshopmanagementsystem {
     requires static lombok;
     requires java.datatransfer;
     requires com.jfoenix;
+    requires jasperreports;
 
 
     opens lk.ijse.tailorshopmanagementsystem to javafx.fxml;

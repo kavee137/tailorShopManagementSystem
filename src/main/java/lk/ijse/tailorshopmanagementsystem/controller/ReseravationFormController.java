@@ -105,6 +105,7 @@ public class ReseravationFormController {
     private ObservableList<ReservationTm> obList = FXCollections.observableArrayList();
 
 
+
     public void initialize() {
         setDate();
         getCurrentReservationId();
@@ -118,7 +119,6 @@ public class ReseravationFormController {
         addValidationListener(txtNic, "[0-9V]+", true); // Numbers and 'V' (upper case)
         addValidationListener(txtQty, "\\d+", false); // Only numbers
     }
-
 
     private void addValidationListener(TextField textField, String regex, boolean caseSensitive) {
         textField.textProperty().addListener((observable, oldValue, newValue) -> {
@@ -144,7 +144,6 @@ public class ReseravationFormController {
             }));
         }
     }
-
 
     @FXML
     void btnAddToCartOnAction(ActionEvent event) {
@@ -325,7 +324,6 @@ public class ReseravationFormController {
         }
     }
 
-
     public void btnSearchOnAction(ActionEvent actionEvent) throws SQLException {
         String cusNic = txtNic.getText();
 
@@ -384,15 +382,6 @@ public class ReseravationFormController {
             netTotal += item.getTotal();
         }
         lblNetTotal.setText(String.valueOf(netTotal));
-    }
-    @FXML
-    void btnBackOnAction(ActionEvent event) throws IOException {
-        AnchorPane anchorPane = FXMLLoader.load(getClass().getResource("/view/dashboard_form.fxml"));
-        Stage stage = (Stage) rootNode.getScene().getWindow();
-
-        stage.setScene(new Scene(anchorPane));
-        stage.setTitle("Dashboard");
-        stage.centerOnScreen();
     }
 
     @FXML
@@ -517,7 +506,6 @@ public class ReseravationFormController {
     public void cmbSizeOnAction(ActionEvent actionEvent) {
         getQtyOnHand();
     }
-
 
     public void btnUpdateOnAction(ActionEvent actionEvent) throws SQLException {
         String resId = (txtReservationId.getText());

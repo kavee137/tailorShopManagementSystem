@@ -6,10 +6,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
@@ -54,13 +51,11 @@ public class UserFormController {
     @FXML
     private TextField txtName;
 
-
     @FXML
     private TextField txtEmail;
 
     @FXML
     private TextField txtStatus;
-
 
     public void initialize(){
         txtStatus.setText("Active");
@@ -68,6 +63,34 @@ public class UserFormController {
         getCurrentUserId();
         setCellValueFactory();
         loadAllUsers();
+
+        initializeValidation();
+    }
+
+    private void initializeValidation() {
+        addValidationListener(txtId, "U[0-9]+", true); // Upper 'U' followed by numbers (1-9) only
+        addValidationListener(txtEmail, "\\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Z|a-z]{2,}\\b", true); // Email address pattern
+        addValidationListener(txtName, "[a-zA-Z]+", true); // Letters only
+        addValidationListener(txtStatus, "(Active|Inactive)", true); // 'Active' or 'Inactive' words only
+    }
+
+    private void addValidationListener(TextField textField, String regex, boolean caseSensitive) {
+        textField.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue.matches(regex)) {
+                // If input matches the regex pattern
+                textField.setStyle("-fx-border-color: #3498db;");
+            } else {
+                // If input doesn't match the regex pattern
+                textField.setStyle("-fx-border-color: red;");
+            }
+        });
+
+        if (!caseSensitive) {
+            textField.setTextFormatter(new TextFormatter<>((change) -> {
+                change.setText(change.getText().replaceAll(regex, ""));
+                return change;
+            }));
+        }
     }
 
     private void showSelectedUserDetails() {
@@ -182,7 +205,6 @@ public class UserFormController {
         }
     }
 
-
     @FXML
     void btnSaveOnAction(ActionEvent event) {
         String id = txtId.getText();
@@ -203,7 +225,6 @@ public class UserFormController {
             throw new RuntimeException(e);
         }
     }
-
 
     @FXML
     void btnUpdateOnAction(ActionEvent event) {

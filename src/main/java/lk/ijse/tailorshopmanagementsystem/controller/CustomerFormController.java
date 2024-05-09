@@ -79,11 +79,11 @@ public class CustomerFormController {
     //    ------------------------ Validation Part  ---------------------------------
 
     private void initializeValidation() {
-        addValidationListener(txtCustomerId, "[C]\\d+", false); // Upper 'C' followed by numbers only
+        addValidationListener(txtCustomerId, "[C]\\d+", true); // Upper 'C' followed by numbers only
         addValidationListener(txtName, "[a-zA-Z]+", true); // Letters only
         addValidationListener(txtNic, "[0-9V]+", true); // Numbers and upper 'V' only
         addValidationListener(txtAddress, "[a-zA-Z\\s]+", true); // Letters and spaces only
-        addValidationListener(txtTel, "\\d+", true); // Numbers only
+        addValidationListener(txtTel, "\\d{10}", true); // Exactly 10 numbers
         addValidationListener(txtStatus, "(Active|Inactive)", true); // 'Active' or 'Inactive' words only
     }
 

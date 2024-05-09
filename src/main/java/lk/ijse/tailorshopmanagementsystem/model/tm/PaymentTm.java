@@ -7,7 +7,7 @@ import lombok.*;
 @NoArgsConstructor
 @EqualsAndHashCode
 
-public class PyamentTm {
+public class PaymentTm {
     private int reservationID;
     private String orderID;
     private int paymentID;

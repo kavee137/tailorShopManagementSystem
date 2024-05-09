@@ -71,7 +71,7 @@
                   <Cursor fx:constant="HAND" />
                </cursor>
             </JFXButton>
-            <JFXButton buttonType="RAISED" layoutX="882.0" layoutY="664.0" onAction="#btnPlaceOrderOnAction" prefHeight="34.0" prefWidth="120.0" style="-fx-background-color: #34495e;" text="Place Order" textFill="WHITE">
+            <JFXButton buttonType="RAISED" layoutX="912.0" layoutY="664.0" onAction="#btnPlaceOrderOnAction" prefHeight="34.0" prefWidth="120.0" style="-fx-background-color: #34495e;" text="Place Order" textFill="WHITE">
                <cursor>
                   <Cursor fx:constant="HAND" />
                </cursor>
@@ -199,6 +199,11 @@
                <font>
                   <Font name="System Italic" size="11.0" />
                </font>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </JFXButton>
+            <JFXButton buttonType="RAISED" layoutX="772.0" layoutY="664.0" onAction="#btnBillOnAction" prefHeight="34.0" prefWidth="120.0" style="-fx-background-color: #34495e;" text="Bill" textFill="WHITE">
                <cursor>
                   <Cursor fx:constant="HAND" />
                </cursor>
