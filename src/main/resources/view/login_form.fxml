@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- Import PasswordField -->
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import javafx.scene.control.Hyperlink?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.effect.MotionBlur?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane fx:id="rootNode" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" style="-fx-background-color: #ecf0f1;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lk.ijse.tailorshopmanagementsystem.controller.LoginFormController">
+   <children>
+      <ImageView fitHeight="902.0" fitWidth="1519.0" layoutX="-151.0" layoutY="-134.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../icon/130883-abstract-blue-low-poly-background-image.jpg" />
+         </image>
+      </ImageView>
+      <Rectangle arcHeight="20.0" arcWidth="20.0" fill="#ffffff29" height="393.0" layoutX="474.0" layoutY="117.0" stroke="#ffffffab" strokeType="INSIDE" width="334.0" />
+      <Text fill="WHITE" layoutX="571.0" layoutY="198.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Login">
+         <font>
+            <Font name="System Bold" size="62.0" />
+         </font>
+      </Text>
+      <TextField fx:id="txtUserId" layoutX="522.0" layoutY="271.0" onKeyReleased="#txtUserNameOnKeyReleased" prefHeight="35.0" prefWidth="244.0" promptText="user name" />
+      <PasswordField fx:id="txtPassword" layoutX="523.0" layoutY="332.0" prefHeight="35.0" prefWidth="244.0" promptText="password" /> <!-- Change to PasswordField -->
+      <Label layoutX="545.0" layoutY="452.0" text="Don't have an account?" textFill="WHITE" />
+      <Label layoutX="521.0" layoutY="252.0" text="user name:" textFill="#575757" />
+      <Label layoutX="523.0" layoutY="313.0" text="password" textFill="#575757" />
+      <Line endX="106.4000244140625" layoutX="642.0" layoutY="220.0" startX="-100.0" stroke="WHITE">
+         <effect>
+            <MotionBlur />
+         </effect></Line>
+      <Line endX="134.5611572265625" layoutX="627.0" layoutY="386.0" startX="-100.0" stroke="#ffffff26" />
+      <Hyperlink layoutX="674.0" layoutY="449.0" onAction="#linkRegistrationOnAction" text="registerHere" textFill="#6adcff" />
+      <JFXButton layoutX="573.0" layoutY="408.0" onAction="#btnLoginOnAction" prefHeight="26.0" prefWidth="150.0" style="-fx-background-color: #1e90ff;" text="Login" textFill="WHITE" />
+
+
+   </children>
+</AnchorPane>

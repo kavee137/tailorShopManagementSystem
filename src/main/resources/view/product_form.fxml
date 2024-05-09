@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXComboBox?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane fx:id="rootNode" prefHeight="720.0" prefWidth="1080.0" style="-fx-background-color: #edf2fb;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lk.ijse.tailorshopmanagementsystem.controller.ProductFormController">
+   <children>
+      <Rectangle arcHeight="30.0" arcWidth="30.0" fill="WHITE" height="276.0" layoutX="85.0" layoutY="24.0" strokeType="INSIDE" width="918.0" />
+      <TextField fx:id="txtId" layoutX="106.0" layoutY="205.0" prefHeight="35.0" prefWidth="245.0" />
+      <Label layoutX="106.0" layoutY="185.0" text="ProductID*" textFill="#757575">
+         <font>
+            <Font name="System Italic" size="11.0" />
+         </font></Label>
+      <Label layoutX="738.0" layoutY="35.0" text="ProductSize*" textFill="#757575">
+         <font>
+            <Font name="System Italic" size="11.0" />
+         </font></Label>
+      <Label layoutX="418.0" layoutY="185.0" text="UnitPrice*" textFill="#757575">
+         <font>
+            <Font name="System Italic" size="11.0" />
+         </font></Label>
+      <TextField fx:id="txtUnitPrice" layoutX="417.0" layoutY="205.0" prefHeight="35.0" prefWidth="245.0" />
+      <Label layoutX="738.0" layoutY="185.0" text="Qty On Hand*" textFill="#757575">
+         <font>
+            <Font name="System Italic" size="11.0" />
+         </font></Label>
+      <TextField fx:id="txtQtyOnHand" layoutX="738.0" layoutY="205.0" prefHeight="35.0" prefWidth="245.0" />
+      <Label layoutX="106.0" layoutY="36.0" text="ProductName*" textFill="#757575">
+         <font>
+            <Font name="System Italic" size="11.0" />
+         </font></Label>
+      <Label layoutX="418.0" layoutY="35.0" text="ProductColor*" textFill="#757575">
+         <font>
+            <Font name="System Italic" size="11.0" />
+         </font></Label>
+      <JFXButton buttonType="RAISED" contentDisplay="RIGHT" layoutX="575.0" layoutY="260.0" onAction="#btnSaveOnAction" prefHeight="10.0" prefWidth="50.0" style="-fx-background-color: #42a5f5;" text="Save" textFill="WHITE" AnchorPane.topAnchor="260.0">
+         <font>
+            <Font name="System Italic" size="11.0" />
+         </font>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </JFXButton>
+      <JFXButton buttonType="RAISED" contentDisplay="RIGHT" layoutX="518.0" layoutY="260.0" onAction="#btnUpdateOnAction" prefHeight="10.0" prefWidth="50.0" style="-fx-background-color: #42a5f5;" text="Update" textFill="WHITE" AnchorPane.topAnchor="260.0">
+         <font>
+            <Font name="System Italic" size="11.0" />
+         </font>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </JFXButton>
+      <JFXButton buttonType="RAISED" contentDisplay="RIGHT" layoutX="461.0" layoutY="260.0" onAction="#btnDeleteOnAction" prefHeight="10.0" prefWidth="50.0" style="-fx-background-color: #e74c3c;" text="Delete" textFill="WHITE">
+         <font>
+            <Font name="System Italic" size="11.0" />
+         </font>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </JFXButton>
+      <JFXButton buttonType="RAISED" contentDisplay="RIGHT" layoutX="404.0" layoutY="260.0" onAction="#btnClearOnAction" prefHeight="10.0" prefWidth="50.0" style="-fx-background-color: #42a5f5;" text="Clear" textFill="WHITE" AnchorPane.topAnchor="260.0">
+         <font>
+            <Font name="System Italic" size="11.0" />
+         </font>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </JFXButton>
+      <JFXButton buttonType="RAISED" contentDisplay="RIGHT" layoutX="632.0" layoutY="260.0" onAction="#btnSearchOnAction" prefHeight="10.0" prefWidth="50.0" style="-fx-background-color: #42a5f5;" text="Search" textFill="WHITE" AnchorPane.topAnchor="260.0">
+         <font>
+            <Font name="System Italic" size="11.0" />
+         </font>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </JFXButton>
+      <JFXComboBox fx:id="cmbProductName" layoutX="106.0" layoutY="50.0" onAction="#cmbProductNameOnAction" prefHeight="26.0" prefWidth="244.0" unFocusColor="BLACK" />
+      <TableView fx:id="tblProduct" layoutX="160.0" layoutY="327.0" prefHeight="373.0" prefWidth="774.0">
+        <columns>
+          <TableColumn fx:id="colId" prefWidth="101.24348449707031" text="Product ID" />
+          <TableColumn fx:id="colName" prefWidth="139.73101806640625" text="Product Name" />
+            <TableColumn fx:id="colColor" prefWidth="125.99862670898438" text="Product Color" />
+            <TableColumn fx:id="colSize" prefWidth="82.48574829101562" text="Product Size" />
+            <TableColumn fx:id="colUnitPrice" prefWidth="214.9154052734375" text="Unit Price" />
+            <TableColumn fx:id="colQtyOnHand" prefWidth="108.0" text="QTY On hand" />
+        </columns>
+      </TableView>
+      <JFXComboBox fx:id="cmbProductColor" layoutX="418.0" layoutY="51.0" onAction="#cmbProductColorOnAction" prefHeight="26.0" prefWidth="244.0" />
+      <JFXComboBox fx:id="cmbProductSize" layoutX="738.0" layoutY="51.0" onAction="#cmbProductSizeOnAction" prefHeight="26.0" prefWidth="244.0" />
+      <TextField fx:id="txtName" layoutX="106.0" layoutY="125.0" prefHeight="35.0" prefWidth="245.0" />
+      <TextField fx:id="txtColor" layoutX="417.0" layoutY="125.0" prefHeight="35.0" prefWidth="245.0" />
+      <TextField fx:id="txtSize" layoutX="738.0" layoutY="125.0" prefHeight="35.0" prefWidth="245.0" />
+      <Label layoutX="106.0" layoutY="105.0" text="New product name*" textFill="#757575">
+         <font>
+            <Font name="System Italic" size="11.0" />
+         </font>
+      </Label>
+      <Label layoutX="418.0" layoutY="105.0" text="New product color*" textFill="#757575">
+         <font>
+            <Font name="System Italic" size="11.0" />
+         </font>
+      </Label>
+      <Label layoutX="738.0" layoutY="105.0" text="New product Size*" textFill="#757575">
+         <font>
+            <Font name="System Italic" size="11.0" />
+         </font>
+      </Label>
+   </children>
+</AnchorPane>
