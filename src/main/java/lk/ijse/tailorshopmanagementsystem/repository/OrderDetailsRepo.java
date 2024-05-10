@@ -19,9 +19,9 @@ public class OrderDetailsRepo {
     }
 
     private static boolean save(OrderDetails od) throws SQLException {
-        String sql = "INSERT INTO orderDetails VALUES(?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO orderDetails VALUES(?, ?, ?, ?, ?, ?, ?, ?)";
 
-//        | orderID | fabricID | description | measurements      | fabricSize | unitPrice | qty  |
+//        | orderID | fabricID | description | measurements      | fabricSize | unitPrice | qty  | total
 
         PreparedStatement pstm = DbConnection.getInstance().getConnection()
                 .prepareStatement(sql);
@@ -33,6 +33,7 @@ public class OrderDetailsRepo {
         pstm.setDouble(5, od.getFabricSize());
         pstm.setDouble(6, od.getUnitPrice());
         pstm.setInt(7, od.getQty());
+        pstm.setDouble(8, od.getTotal());
 
         return pstm.executeUpdate() > 0;    //false ->  |
     }

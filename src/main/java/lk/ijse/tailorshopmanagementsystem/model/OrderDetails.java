@@ -18,5 +18,6 @@ public class OrderDetails {
     private double fabricSize;
     private double unitPrice;
     private int qty;
+    private double total;
 
 }

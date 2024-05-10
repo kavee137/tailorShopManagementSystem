@@ -235,7 +235,8 @@ public class PlaceOrderFormController  {
                     tm.getMeasurements(),
                     tm.getFabricSize(),
                     tm.getUnitPrice(),
-                    tm.getQty()
+                    tm.getQty(),
+                    tm.getTotal()
 
             );
 
@@ -561,7 +562,7 @@ public class PlaceOrderFormController  {
 
         ResultSet orderCartTableList = OrderRepo.getOrderCartTable(orderId);
 
-//        | description | fabricName | fabricColor | measurements      | fabricSize | unitPrice | qty  |
+//        | description | fabricName | fabricColor | measurements      | fabricSize | unitPrice | qty  | total
 
         while (orderCartTableList.next()) {
             String description = orderCartTableList.getString(1);
