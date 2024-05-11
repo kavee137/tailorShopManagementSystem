@@ -19,7 +19,7 @@ public class ReservationDetailsRepo {
     }
 
     private static boolean save(ReservationDetails rd) throws SQLException {
-        String sql = "INSERT INTO reservationDetails VALUES(?, ?, ?)";
+        String sql = "INSERT INTO reservationDetails VALUES(?, ?, ?, ?)";
 
         PreparedStatement pstm = DbConnection.getInstance().getConnection()
                 .prepareStatement(sql);
@@ -27,6 +27,7 @@ public class ReservationDetailsRepo {
         pstm.setInt(1, rd.getReservationID());
         pstm.setInt(2, rd.getProductID());
         pstm.setInt(3, rd.getQty());
+        pstm.setDouble(4, rd.getTotal());
 
         return pstm.executeUpdate() > 0;    //false ->  |
     }

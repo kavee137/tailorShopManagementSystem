@@ -613,7 +613,7 @@ public class PlaceOrderFormController  {
     }
 
     public void btnBillOnAction(ActionEvent actionEvent) throws JRException, SQLException {
-        JasperDesign jasperDesign = JRXmlLoader.load("src/main/resources/report/orderBill1.jrxml");
+        JasperDesign jasperDesign = JRXmlLoader.load("src/main/resources/report/orderBill.jrxml");
         JasperReport jasperReport = JasperCompileManager.compileReport(jasperDesign);
 
         Map<String,Object> data = new HashMap<>();

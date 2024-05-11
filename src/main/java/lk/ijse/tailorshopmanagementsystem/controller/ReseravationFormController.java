@@ -14,21 +14,27 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import lk.ijse.tailorshopmanagementsystem.Util.Regex;
+import lk.ijse.tailorshopmanagementsystem.db.DbConnection;
 import lk.ijse.tailorshopmanagementsystem.model.PlaceReservation;
 import lk.ijse.tailorshopmanagementsystem.model.Reservation;
 import lk.ijse.tailorshopmanagementsystem.model.ReservationDetails;
 import lk.ijse.tailorshopmanagementsystem.model.tm.ReservationTm;
 import lk.ijse.tailorshopmanagementsystem.repository.PlaceReservationRepo;
 import lk.ijse.tailorshopmanagementsystem.repository.ReservationRepo;
+import net.sf.jasperreports.engine.*;
+import net.sf.jasperreports.engine.design.JasperDesign;
+import net.sf.jasperreports.engine.xml.JRXmlLoader;
+import net.sf.jasperreports.view.JasperViewer;
 
 import java.io.IOException;
 import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+
+import static java.lang.Integer.parseInt;
 
 public class ReseravationFormController {
     @FXML
@@ -115,141 +121,178 @@ public class ReseravationFormController {
         setCmbStatus();
         setCellValueFactory();
 
-        addValidationListener(txtReservationId, "\\d+", false); // Only numbers
-        addValidationListener(txtNic, "[0-9V]+", true); // Numbers and 'V' (upper case)
-        addValidationListener(txtQty, "\\d+", false); // Only numbers
     }
 
-    private void addValidationListener(TextField textField, String regex, boolean caseSensitive) {
-        textField.textProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue.matches(regex)) {
-                // If input matches the regex pattern
-                textField.setStyle("-fx-border-color:  #3498db;");
-            } else {
-                // If input doesn't match the regex pattern
-                textField.setStyle("-fx-border-color: red;");
-            }
-        });
 
-        if (!caseSensitive) {
-            textField.setTextFormatter(new TextFormatter<>(change -> {
-                String newText = change.getControlNewText();
-                if (newText.matches(regex) || newText.isEmpty()) {
-                    // If the new text matches the regex pattern or is empty, accept the change
-                    return change;
-                } else {
-                    // If the new text doesn't match the regex pattern, reject the change
-                    return null;
-                }
-            }));
+
+
+
+    public void btnIdSearchOnAction(ActionEvent actionEvent) throws SQLException {
+        int nicFieldId = Integer.parseInt(txtReservationId.getText());
+
+        if (currentReservationIdForBillMethod >= nicFieldId) {
+
+            int resId = parseInt(txtReservationId.getText());
+            tblReservation.getItems().clear();
+
+            ResultSet reservationDetailsList = ReservationRepo.getReservationDetailsTable(resId);
+
+            while (reservationDetailsList.next()) {
+                int pId = reservationDetailsList.getInt(1);
+                String pName = reservationDetailsList.getString(2);
+                String pColor = reservationDetailsList.getString(3);
+                double unitPrice = reservationDetailsList.getDouble(4);
+                int qty = reservationDetailsList.getInt(5);
+                double total = qty * unitPrice;
+
+                ReservationTm r = new ReservationTm(pId, pName, pColor, unitPrice, qty, total, new JFXButton());
+                obList.add(r);
+                tblReservation.setItems(obList);
+            }
+
+            List<String> reservationJoinTablesList = ReservationRepo.getReservationJoinTable(resId);
+
+            lblCustomerId.setText(reservationJoinTablesList.get(0));
+            lblCustomerName.setText(reservationJoinTablesList.get(1));
+            lblPaymentId.setText(reservationJoinTablesList.get(2));
+            cmbPaymentType.setValue(reservationJoinTablesList.get(3));
+            lblNetTotal.setText(reservationJoinTablesList.get(4));
+            lblReservationDate.setText(reservationJoinTablesList.get(5));
+            dpReturnDate.setValue(LocalDate.parse(reservationJoinTablesList.get(6)));
+            cmbStatus.setValue(reservationJoinTablesList.get(7));
+            txtNic.setText(reservationJoinTablesList.get(8));
+        } else {
+            // Show error message if validation fails
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("ReservationID error");
+            alert.setHeaderText("Reservartion search Failed");
+            alert.setContentText("Please enter valid reservation ID!");
+            alert.showAndWait();
         }
+
     }
 
     @FXML
     void btnAddToCartOnAction(ActionEvent event) {
-        int pId = Integer.parseInt(lblProductId.getText());
-        String pName = cmbProductName.getValue();
-        String pColor = cmbProductColor.getValue();
-        double unitPrice = Double.parseDouble((lblUnitPrice.getText()));
-        int qty = Integer.parseInt(txtQty.getText());
-        double total = qty * unitPrice;
-
-        // Create a remove button for the cart item
-        JFXButton btnRemove = new JFXButton("Remove");
-        btnRemove.setOnAction((e) -> {
-            ButtonType yes = new ButtonType("yes", ButtonBar.ButtonData.OK_DONE);
-            ButtonType no = new ButtonType("no", ButtonBar.ButtonData.CANCEL_CLOSE);
-
-            Optional<ButtonType> type = new Alert(Alert.AlertType.INFORMATION, "Are you sure to remove?", yes, no).showAndWait();
-
-            if(type.orElse(no) == yes) {
-                int selectedIndex = tblReservation.getSelectionModel().getSelectedIndex();
-                obList.remove(selectedIndex);
-
-                tblReservation.refresh();
-                calculateNetTotal();
-            }
-        });
-
-        // Create a new cart item and add it to the list
-        ReservationTm productItem = new ReservationTm(pId, pName, pColor, unitPrice, qty, total, btnRemove);
-        obList.add(productItem);
-
-        // Refresh the cart table with the updated list
-        tblReservation.setItems(obList);
-        removeForNewItem();
-        calculateNetTotal();
-    }
-
-    public void btnIdSearchOnAction(ActionEvent actionEvent) throws SQLException {
-        int resId = Integer.parseInt(txtReservationId.getText());
-        tblReservation.getItems().clear();
-
-        ResultSet reservationDetailsList = ReservationRepo.getReservationDetailsTable(resId);
-
-        while (reservationDetailsList.next()) {
-            int pId = reservationDetailsList.getInt(1);
-            String pName = reservationDetailsList.getString(2);
-            String pColor = reservationDetailsList.getString(3);
-            double unitPrice = reservationDetailsList.getDouble(4);
-            int qty = reservationDetailsList.getInt(5);
+        if (isQtyValied()) {
+            int pId = parseInt(lblProductId.getText());
+            String pName = cmbProductName.getValue();
+            String pColor = cmbProductColor.getValue();
+            double unitPrice = Double.parseDouble((lblUnitPrice.getText()));
+            int qty = parseInt(txtQty.getText());
             double total = qty * unitPrice;
 
-            ReservationTm r = new ReservationTm(pId, pName, pColor, unitPrice, qty, total, new JFXButton());
-            obList.add(r);
+
+            // Create a remove button for the cart item
+            JFXButton btnRemove = new JFXButton("Remove");
+            btnRemove.setOnAction((e) -> {
+                ButtonType yes = new ButtonType("yes", ButtonBar.ButtonData.OK_DONE);
+                ButtonType no = new ButtonType("no", ButtonBar.ButtonData.CANCEL_CLOSE);
+
+                Optional<ButtonType> type = new Alert(Alert.AlertType.INFORMATION, "Are you sure to remove?", yes, no).showAndWait();
+
+                if(type.orElse(no) == yes) {
+                    int selectedIndex = tblReservation.getSelectionModel().getSelectedIndex();
+                    obList.remove(selectedIndex);
+
+                    tblReservation.refresh();
+                    calculateNetTotal();
+                }
+            });
+
+            // Create a new cart item and add it to the list
+            ReservationTm productItem = new ReservationTm(pId, pName, pColor, unitPrice, qty, total, btnRemove);
+            obList.add(productItem);
+
+            // Refresh the cart table with the updated list
             tblReservation.setItems(obList);
+            removeForNewItem();
+            calculateNetTotal();
+        } else {
+            // Show error message if validation fails
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Validation Error");
+            alert.setHeaderText("Validation Failed");
+            alert.setContentText("Please fill in the qty field number only.");
+            alert.showAndWait();
         }
-
-        List<String> reservationJoinTablesList = ReservationRepo.getReservationJoinTable(resId);
-
-        lblCustomerId.setText(reservationJoinTablesList.get(0));
-        lblCustomerName.setText(reservationJoinTablesList.get(1));
-        lblPaymentId.setText(reservationJoinTablesList.get(2));
-        cmbPaymentType.setValue(reservationJoinTablesList.get(3));
-        lblNetTotal.setText(reservationJoinTablesList.get(4));
-        lblReservationDate.setText(reservationJoinTablesList.get(5));
-        dpReturnDate.setValue(LocalDate.parse(reservationJoinTablesList.get(6)));
-        cmbStatus.setValue(reservationJoinTablesList.get(7));
-        txtNic.setText(reservationJoinTablesList.get(8));
     }
 
     @FXML
     void btnReservedOnAction(ActionEvent event) throws SQLException {
 
-        int resId = Integer.parseInt(txtReservationId.getText());
-        String cusId = lblCustomerId.getText();
-        int paymentId = Integer.parseInt(lblPaymentId.getText());
-        Date resDate = Date.valueOf(lblReservationDate.getText());
-        Date dpReturnDateValue = Date.valueOf(dpReturnDate.getValue());
-        String status = "Incomplete";
-        double netTotal = Double.parseDouble(lblNetTotal.getText());
-        String paymentType = cmbPaymentType.getValue();
+        //if තුනක් දාන්න හේතුව error message 3 වෙන වෙනම පෙන්වන්න.
 
-        var reservation = new Reservation(resId, cusId, paymentId, resDate, dpReturnDateValue, status);
+        if (lblCustomerName.getText() != null && !lblCustomerName.getText().isEmpty()) {
 
-        List<ReservationDetails> rdList = new ArrayList<>();
+            LocalDate selectedDate = dpReturnDate.getValue();
+            if (selectedDate != null && !selectedDate.equals(LocalDate.of(1970, 1, 1))) {
 
-        for (int i = 0; i < tblReservation.getItems().size(); i++) {
-            ReservationTm tm = obList.get(i);
+                if (isValied()) {
 
-            ReservationDetails rd = new ReservationDetails(
-                    resId,
-                    tm.getProductId(),
-                    tm.getQty()
-            );
+                    int resId = parseInt(txtReservationId.getText());
+                    String cusId = lblCustomerId.getText();
+                    int paymentId = parseInt(lblPaymentId.getText());
+                    Date resDate = Date.valueOf(lblReservationDate.getText());
+                    Date dpReturnDateValue = Date.valueOf(dpReturnDate.getValue());
+                    String status = "Incomplete";
+                    double netTotal = Double.parseDouble(lblNetTotal.getText());
+                    String paymentType = cmbPaymentType.getValue();
 
-            rdList.add(rd);
-        }
-        PlaceReservation pr = new PlaceReservation(reservation, rdList);
+                    var reservation = new Reservation(resId, cusId, paymentId, resDate, dpReturnDateValue, status);
 
-        boolean isPlaced = PlaceReservationRepo.placeReservation(pr, netTotal, paymentType);
+                    List<ReservationDetails> rdList = new ArrayList<>();
 
-        if(isPlaced) {
-            new Alert(Alert.AlertType.CONFIRMATION, "Order Placed!").show();
+                    for (int i = 0; i < tblReservation.getItems().size(); i++) {
+                        ReservationTm tm = obList.get(i);
 
-            clearFields();
+                        ReservationDetails rd = new ReservationDetails(
+                                resId,
+                                tm.getProductId(),
+                                tm.getQty(),
+                                tm.getTotal()
+                        );
+
+                        rdList.add(rd);
+                    }
+                    PlaceReservation pr = new PlaceReservation(reservation, rdList);
+
+                    boolean isPlaced = PlaceReservationRepo.placeReservation(pr, netTotal, paymentType);
+
+                    if(isPlaced) {
+                        new Alert(Alert.AlertType.CONFIRMATION, "Order Placed!").show();
+
+                        clearFields();
+                } else {
+                    new Alert(Alert.AlertType.WARNING, "Order Placed Unsuccessfully!").show();
+                }
+
+                } else {
+                    // Show error message if validation fails
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Validation Error");
+                    alert.setHeaderText("Validation Failed");
+                    alert.setContentText("Please fill in all fields correctly.");
+                    alert.showAndWait();
+                }
+
+            } else {
+                // DatePicker is null or empty
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Date Error");
+                alert.setHeaderText("Return Date not selected");
+                alert.setContentText("Please select a return date.");
+                alert.showAndWait();
+            }
+
         } else {
-            new Alert(Alert.AlertType.WARNING, "Order Placed Unsuccessfully!").show();
+            // Label text is null
+
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Customer Error");
+            alert.setHeaderText("Customer not found!");
+            alert.setContentText("Please fill in the NIC correctly.");
+            alert.showAndWait();
         }
     }
 
@@ -325,6 +368,9 @@ public class ReseravationFormController {
     }
 
     public void btnSearchOnAction(ActionEvent actionEvent) throws SQLException {
+        lblCustomerName.setText("");
+        lblCustomerId.setText("");
+
         String cusNic = txtNic.getText();
 
         List<String> list  = ReservationRepo.customerSearch(cusNic);
@@ -337,9 +383,12 @@ public class ReseravationFormController {
         }
     }
 
+
+    int currentReservationIdForBillMethod = 0;
     private void getCurrentReservationId() {
         try {
             int currentId = ReservationRepo.getCurrentId();
+            currentReservationIdForBillMethod = currentId;
 
             int nextReservationId = generateNextReservationId(currentId);
             txtReservationId.setText(String.valueOf(nextReservationId));
@@ -361,16 +410,17 @@ public class ReseravationFormController {
         lblReservationDate.setText(String.valueOf(now));
     }
 
-    public void btnAddNewCustomerOnAction(ActionEvent actionEvent) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/customer_form.fxml"));
-        Parent load = loader.load();
-        rootNode.getChildren().clear();
-        rootNode.getChildren().add(load);
+//    public void btnAddNewCustomerOnAction(ActionEvent actionEvent) throws IOException {
+//        FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/customer_form.fxml"));
+//        Parent load = loader.load();
+//        rootNode.getChildren().clear();
+//        rootNode.getChildren().add(load);
+//
+//        // Get the stage from any node
+//        Stage stage = (Stage) rootNode.getScene().getWindow();
+//        stage.setTitle("Customer Manage");
+//    }
 
-        // Get the stage from any node
-        Stage stage = (Stage) rootNode.getScene().getWindow();
-        stage.setTitle("Customer Manage");
-    }
     @FXML
     public void btnClearForNewItem(ActionEvent actionEvent) {
         removeForNewItem();
@@ -419,7 +469,6 @@ public class ReseravationFormController {
         txtQty.setStyle(null);
         txtReservationId.setStyle(null);
 
-//        initialize();
     }
 
     @FXML
@@ -527,6 +576,73 @@ public class ReseravationFormController {
             new Alert(Alert.AlertType.WARNING, "Reservation Completed Unsuccessfully!").show();
         }
     }
+
+    public void btnBillOnAction(ActionEvent actionEvent) throws JRException, SQLException {
+
+        int nicFieldId = Integer.parseInt(txtReservationId.getText());
+
+        if (currentReservationIdForBillMethod >= nicFieldId) {
+
+
+            JasperDesign jasperDesign = JRXmlLoader.load("src/main/resources/report/reservationBill.jrxml");
+            JasperReport jasperReport = JasperCompileManager.compileReport(jasperDesign);
+
+            Map<String, Object> data = new HashMap<>();
+            data.put("reservationID", txtReservationId.getText());
+
+            JasperPrint jasperPrint =
+                    JasperFillManager.fillReport(jasperReport, data, DbConnection.getInstance().getConnection());
+            JasperViewer.viewReport(jasperPrint, false);
+        }else {
+            // Show error message if validation fails
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("ReservationID error");
+            alert.setHeaderText("Reservartion search Failed");
+            alert.setContentText("Please enter valid reservation ID!");
+            alert.showAndWait();
+        }
+
+    }
+
+
+
+
+
+
+
+
+
+
+    public void idKeyRelaseAction(javafx.scene.input.KeyEvent keyEvent) {
+        Regex.setTextColor(lk.ijse.tailorshopmanagementsystem.Util.TextField.RESID, txtReservationId);
+    }
+    public void nicKeyRelaseAction(javafx.scene.input.KeyEvent keyEvent) {
+        Regex.setTextColor(lk.ijse.tailorshopmanagementsystem.Util.TextField.NIC, txtNic);
+    }
+    public void qtyKeyRelaseAction(javafx.scene.input.KeyEvent keyEvent) {
+        Regex.setTextColor(lk.ijse.tailorshopmanagementsystem.Util.TextField.QTY, txtQty);
+    }
+
+    public boolean isValied(){
+//        boolean nameValid = Regex.setTextColor(lk.ijse.tailorshopmanagementsystem.Util.TextField.NAME, txtName);
+        boolean nicValid = Regex.setTextColor(lk.ijse.tailorshopmanagementsystem.Util.TextField.NIC, txtNic);
+//        boolean addressValid = Regex.setTextColor(lk.ijse.tailorshopmanagementsystem.Util.TextField.LBLNAME, lblCustomerName);
+//        boolean telValid = Regex.setTextColor(lk.ijse.tailorshopmanagementsystem.Util.TextField.TEL, txtTel);
+//        boolean statusValid = Regex.setTextColor(lk.ijse.tailorshopmanagementsystem.Util.TextField.STATUS, txtStatus);
+        boolean idValid = Regex.setTextColor(lk.ijse.tailorshopmanagementsystem.Util.TextField.RESID, txtReservationId);
+
+        return idValid && nicValid;
+    }
+
+    public boolean isQtyValied(){
+        boolean qtyValid = Regex.setTextColor(lk.ijse.tailorshopmanagementsystem.Util.TextField.QTY, txtQty);
+
+        return qtyValid;
+    }
+
+
+
+
 
 
 }

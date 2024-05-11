@@ -14,6 +14,7 @@ public class ReservationDetails {
     private int reservationID;
     private int productID;
     private int qty;
+    private double total;
 }
 
 

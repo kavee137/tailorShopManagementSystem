@@ -10,6 +10,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import lk.ijse.tailorshopmanagementsystem.Util.Regex;
 import lk.ijse.tailorshopmanagementsystem.model.Customer;
 import lk.ijse.tailorshopmanagementsystem.model.Customer1;
 import lk.ijse.tailorshopmanagementsystem.model.tm.CustomerTm;
@@ -71,43 +72,71 @@ public class CustomerFormController {
         getCurrentCustomerId();
         showSelectedUserDetails();
 
-        initializeValidation();
+//        initializeValidation();
     }
 
 
 
-    //    ------------------------ Validation Part  ---------------------------------
+//        ------------------------ Validation Part  ---------------------------------
 
-    private void initializeValidation() {
-        addValidationListener(txtCustomerId, "[C]\\d+", true); // Upper 'C' followed by numbers only
-        addValidationListener(txtName, "[a-zA-Z]+", true); // Letters only
-        addValidationListener(txtNic, "[0-9V]+", true); // Numbers and upper 'V' only
-        addValidationListener(txtAddress, "[a-zA-Z\\s]+", true); // Letters and spaces only
-        addValidationListener(txtTel, "\\d{10}", true); // Exactly 10 numbers
-        addValidationListener(txtStatus, "(Active|Inactive)", true); // 'Active' or 'Inactive' words only
-    }
-
-    private void addValidationListener(TextField textField, String regex, boolean caseSensitive) {
-        textField.textProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue.matches(regex)) {
-                // If input matches the regex pattern
-                textField.setStyle("-fx-border-color: #3498db;");
-            } else {
-                // If input doesn't match the regex pattern
-                textField.setStyle("-fx-border-color: red;");
-            }
-        });
-
-        if (!caseSensitive) {
-            textField.setTextFormatter(new TextFormatter<>((change) -> {
-                change.setText(change.getText().replaceAll(regex, ""));
-                return change;
-            }));
-        }
-    }
-
-
+//    private void initializeValidation() {
+//        addValidationListener(txtCustomerId, "[C]\\d+", true); // Upper 'C' followed by numbers only
+//        addValidationListener(txtName, "[a-zA-Z]+", true); // Letters only
+//        addValidationListener(txtNic, "[0-9V]+", true); // Numbers and upper 'V' only
+//        addValidationListener(txtAddress, "[a-zA-Z\\s]+", true); // Letters and spaces only
+//        addValidationListener(txtTel, "\\d{10}", true); // Exactly 10 numbers
+//        addValidationListener(txtStatus, "(Active|Inactive)", true); // 'Active' or 'Inactive' words only
+//    }
+//
+//    private void addValidationListener(TextField textField, String regex, boolean caseSensitive) {
+//        textField.textProperty().addListener((observable, oldValue, newValue) -> {
+//            if (newValue.matches(regex)) {
+//                // If input matches the regex pattern
+//                textField.setStyle("-fx-border-color: #3498db;");
+//            } else {
+//                // If input doesn't match the regex pattern
+//                textField.setStyle("-fx-border-color: red;");
+//            }
+//        });
+//
+//        if (!caseSensitive) {
+//            textField.setTextFormatter(new TextFormatter<>((change) -> {
+//                change.setText(change.getText().replaceAll(regex, ""));
+//                return change;
+//            }));
+//        }
+//    }
+//
+//
 //    ------------------------ End of Validation Part  ---------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//    public boolean isValied(){
+//        if (!Regex.setTextColor(TextField.ID,txtID)) return false;
+//        if (!Regex.setTextColor(TextField.EMAIL,txtEmail)) return false;
+//        return true;
+//    }
+
+
+
+
 
 
 
@@ -195,17 +224,26 @@ public class CustomerFormController {
         String status = txtStatus.getText();
         String userId = "U01";
 
-        Customer customer = new Customer(id, nic, name, address, tel, userId, status);
+        if (isValied()) {
+            Customer customer = new Customer(id, nic, name, address, tel, userId, status);
 
-        try {
-            boolean isUpdated = CustomerRepo.update(customer);
-            if(isUpdated) {
-                new Alert(Alert.AlertType.CONFIRMATION, "customer updated!").show();
-                clearFields();
-                initialize();
+            try {
+                boolean isUpdated = CustomerRepo.update(customer);
+                if (isUpdated) {
+                    new Alert(Alert.AlertType.CONFIRMATION, "customer updated!").show();
+                    clearFields();
+                    initialize();
+                }
+            } catch (SQLException e) {
+                new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
             }
-        } catch (SQLException e) {
-            new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
+        } else {
+            // Show error message if validation fails
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Validation Error");
+            alert.setHeaderText("Validation Failed");
+            alert.setContentText("Please fill in all fields correctly.");
+            alert.showAndWait();
         }
     }
 
@@ -220,35 +258,109 @@ public class CustomerFormController {
         String status = "Active";
 
         Customer customer = new Customer(id, nic, name, address, tel, userId, status);
-
-        try {
-            boolean isSaved = CustomerRepo.save(customer);
-            if (isSaved) {
-                new Alert(Alert.AlertType.CONFIRMATION, "customer saved!").show();
-                clearFields();
+        if (isValied()) {
+            try {
+                boolean isSaved = CustomerRepo.save(customer);
+                if (isSaved) {
+                    new Alert(Alert.AlertType.CONFIRMATION, "customer saved!").show();
+                    clearFields();
 //                getCurrentCustomerId();
-                initialize();
+                    initialize();
+                }
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
             }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
+        } else {
+            // Show error message if validation fails
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Validation Error");
+            alert.setHeaderText("Validation Failed");
+            alert.setContentText("Please fill in all fields correctly.");
+            alert.showAndWait();
         }
     }
+
+
+
+
+
+
+
+    public void nameKeyRelaseAction(javafx.scene.input.KeyEvent keyEvent) {
+        Regex.setTextColor(lk.ijse.tailorshopmanagementsystem.Util.TextField.NAME, txtName);
+    }
+    public void nicKeyRelaseAction(javafx.scene.input.KeyEvent keyEvent) {
+        Regex.setTextColor(lk.ijse.tailorshopmanagementsystem.Util.TextField.NIC, txtNic);
+    }
+    public void addressKeyRelaseAction(javafx.scene.input.KeyEvent keyEvent) {
+        Regex.setTextColor(lk.ijse.tailorshopmanagementsystem.Util.TextField.ADDRESS, txtAddress);
+    }
+
+    public void telKeyRelaseAction(javafx.scene.input.KeyEvent keyEvent) {
+        Regex.setTextColor(lk.ijse.tailorshopmanagementsystem.Util.TextField.TEL, txtTel);
+    }
+
+    public void statusKeyRelaseAction(javafx.scene.input.KeyEvent keyEvent) {
+        Regex.setTextColor(lk.ijse.tailorshopmanagementsystem.Util.TextField.STATUS, txtStatus);
+    }
+
+    public void idKeyRelaseAction(javafx.scene.input.KeyEvent keyEvent) {
+        Regex.setTextColor(lk.ijse.tailorshopmanagementsystem.Util.TextField.CUSID, txtCustomerId);
+    }
+
+
+
+    public boolean isValied(){
+        boolean nameValid = Regex.setTextColor(lk.ijse.tailorshopmanagementsystem.Util.TextField.NAME, txtName);
+        boolean nicValid = Regex.setTextColor(lk.ijse.tailorshopmanagementsystem.Util.TextField.NIC, txtNic);
+        boolean addressValid = Regex.setTextColor(lk.ijse.tailorshopmanagementsystem.Util.TextField.ADDRESS, txtAddress);
+        boolean telValid = Regex.setTextColor(lk.ijse.tailorshopmanagementsystem.Util.TextField.TEL, txtTel);
+        boolean statusValid = Regex.setTextColor(lk.ijse.tailorshopmanagementsystem.Util.TextField.STATUS, txtStatus);
+        boolean idValid = Regex.setTextColor(lk.ijse.tailorshopmanagementsystem.Util.TextField.CUSID, txtCustomerId);
+
+        return nameValid && nicValid && addressValid && telValid && statusValid && idValid;
+    }
+
+
+
+
+
+
+
+
 
 
     public void btnSearchOnAction(ActionEvent actionEvent) throws SQLException {
         String nic = txtNic.getText();
 
-        Customer1 customer1 = CustomerRepo.nicSearch(nic);
-        if (customer1 != null) {
-            txtCustomerId.setText(customer1.getCustomerId());
-            txtName.setText(customer1.getCustomerName());
-            txtAddress.setText(customer1.getCustomerAddress());
-            txtTel.setText(customer1.getCustomerTel());
-            txtStatus.setText(customer1.getStatus());
-        }else {
-            new Alert(Alert.AlertType.INFORMATION, "customer not found!").show();
+        if (isSearchNicValied()) {
+
+            Customer1 customer1 = CustomerRepo.nicSearch(nic);
+            if (customer1 != null) {
+                txtCustomerId.setText(customer1.getCustomerId());
+                txtName.setText(customer1.getCustomerName());
+                txtAddress.setText(customer1.getCustomerAddress());
+                txtTel.setText(customer1.getCustomerTel());
+                txtStatus.setText(customer1.getStatus());
+            } else {
+                new Alert(Alert.AlertType.INFORMATION, "customer not found!").show();
+            }
+        } else {
+            // Show error message if validation fails
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Validation Error");
+            alert.setHeaderText("Validation Failed");
+            alert.setContentText("Please fill in all fields correctly.");
+            alert.showAndWait();
         }
     }
+
+    public boolean isSearchNicValied(){
+        boolean nicValid = Regex.setTextColor(lk.ijse.tailorshopmanagementsystem.Util.TextField.NIC, txtNic);
+        return nicValid;
+    }
+
+
 
     @FXML
     void btnDeleteOnAction(ActionEvent event) {
@@ -274,11 +386,23 @@ public class CustomerFormController {
 
     private void clearFields() {
         txtCustomerId.setText("");
+        txtCustomerId.setStyle("");// Reset style to default
+
         txtNic.setText("");
+        txtNic.setStyle(""); // Reset style to default
+
         txtName.setText("");
+        txtName.setStyle(""); // Reset style to default
+
         txtAddress.setText("");
+        txtAddress.setStyle(""); // Reset style to default
+
         txtTel.setText("");
+        txtTel.setStyle(""); // Reset style to default
+
+        txtStatus.setStyle(""); // Reset style to default
     }
+
 
     @FXML
     public void btnActiveOnAction(ActionEvent actionEvent) {
