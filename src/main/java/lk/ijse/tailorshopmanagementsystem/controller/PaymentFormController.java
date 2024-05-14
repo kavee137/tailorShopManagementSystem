@@ -18,6 +18,7 @@ import java.util.List;
 public class PaymentFormController {
     @FXML
     private TableView<PaymentTm> tblPayment;
+
     @FXML
     private TableColumn<?, ?> colOrderId;
 
@@ -32,7 +33,6 @@ public class PaymentFormController {
 
     @FXML
     private TableColumn<?, ?> colReservationId;
-
 
     public void initialize() {
         setCellValueFactory();
@@ -69,9 +69,5 @@ public class PaymentFormController {
             throw new RuntimeException(e);
         }
     }
-
-
-
-
 
 }

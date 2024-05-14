@@ -71,76 +71,7 @@ public class CustomerFormController {
         loadAllCustomers();
         getCurrentCustomerId();
         showSelectedUserDetails();
-
-//        initializeValidation();
     }
-
-
-
-//        ------------------------ Validation Part  ---------------------------------
-
-//    private void initializeValidation() {
-//        addValidationListener(txtCustomerId, "[C]\\d+", true); // Upper 'C' followed by numbers only
-//        addValidationListener(txtName, "[a-zA-Z]+", true); // Letters only
-//        addValidationListener(txtNic, "[0-9V]+", true); // Numbers and upper 'V' only
-//        addValidationListener(txtAddress, "[a-zA-Z\\s]+", true); // Letters and spaces only
-//        addValidationListener(txtTel, "\\d{10}", true); // Exactly 10 numbers
-//        addValidationListener(txtStatus, "(Active|Inactive)", true); // 'Active' or 'Inactive' words only
-//    }
-//
-//    private void addValidationListener(TextField textField, String regex, boolean caseSensitive) {
-//        textField.textProperty().addListener((observable, oldValue, newValue) -> {
-//            if (newValue.matches(regex)) {
-//                // If input matches the regex pattern
-//                textField.setStyle("-fx-border-color: #3498db;");
-//            } else {
-//                // If input doesn't match the regex pattern
-//                textField.setStyle("-fx-border-color: red;");
-//            }
-//        });
-//
-//        if (!caseSensitive) {
-//            textField.setTextFormatter(new TextFormatter<>((change) -> {
-//                change.setText(change.getText().replaceAll(regex, ""));
-//                return change;
-//            }));
-//        }
-//    }
-//
-//
-//    ------------------------ End of Validation Part  ---------------------------------
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//    public boolean isValied(){
-//        if (!Regex.setTextColor(TextField.ID,txtID)) return false;
-//        if (!Regex.setTextColor(TextField.EMAIL,txtEmail)) return false;
-//        return true;
-//    }
-
-
-
-
-
-
-
-
 
     private void showSelectedUserDetails() {
         CustomerTm selectedUser = tblCustomer.getSelectionModel().getSelectedItem();
@@ -280,18 +211,14 @@ public class CustomerFormController {
         }
     }
 
-
-
-
-
-
-
     public void nameKeyRelaseAction(javafx.scene.input.KeyEvent keyEvent) {
         Regex.setTextColor(lk.ijse.tailorshopmanagementsystem.Util.TextField.NAME, txtName);
     }
+
     public void nicKeyRelaseAction(javafx.scene.input.KeyEvent keyEvent) {
         Regex.setTextColor(lk.ijse.tailorshopmanagementsystem.Util.TextField.NIC, txtNic);
     }
+
     public void addressKeyRelaseAction(javafx.scene.input.KeyEvent keyEvent) {
         Regex.setTextColor(lk.ijse.tailorshopmanagementsystem.Util.TextField.ADDRESS, txtAddress);
     }
@@ -308,8 +235,6 @@ public class CustomerFormController {
         Regex.setTextColor(lk.ijse.tailorshopmanagementsystem.Util.TextField.CUSID, txtCustomerId);
     }
 
-
-
     public boolean isValied(){
         boolean nameValid = Regex.setTextColor(lk.ijse.tailorshopmanagementsystem.Util.TextField.NAME, txtName);
         boolean nicValid = Regex.setTextColor(lk.ijse.tailorshopmanagementsystem.Util.TextField.NIC, txtNic);
@@ -320,15 +245,6 @@ public class CustomerFormController {
 
         return nameValid && nicValid && addressValid && telValid && statusValid && idValid;
     }
-
-
-
-
-
-
-
-
-
 
     public void btnSearchOnAction(ActionEvent actionEvent) throws SQLException {
         String nic = txtNic.getText();
@@ -359,8 +275,6 @@ public class CustomerFormController {
         boolean nicValid = Regex.setTextColor(lk.ijse.tailorshopmanagementsystem.Util.TextField.NIC, txtNic);
         return nicValid;
     }
-
-
 
     @FXML
     void btnDeleteOnAction(ActionEvent event) {
@@ -402,7 +316,6 @@ public class CustomerFormController {
 
         txtStatus.setStyle(""); // Reset style to default
     }
-
 
     @FXML
     public void btnActiveOnAction(ActionEvent actionEvent) {

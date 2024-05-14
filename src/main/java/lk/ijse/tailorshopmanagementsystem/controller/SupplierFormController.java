@@ -10,6 +10,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import lk.ijse.tailorshopmanagementsystem.Util.Regex;
 import lk.ijse.tailorshopmanagementsystem.model.Supplier;
 import lk.ijse.tailorshopmanagementsystem.model.tm.SupplierTm;
 import lk.ijse.tailorshopmanagementsystem.model.tm.UserTm;
@@ -65,35 +66,6 @@ public class SupplierFormController {
         loadAllSuppliers();
         showSelectedSupplierDetails();
 
-        initializeValidation();
-    }
-
-    private void initializeValidation() {
-        addValidationListener(txtId, "S[0-9]+", true); // Upper 'E' followed by numbers (1-9) only
-        addValidationListener(txtNic, "[0-9V]+", true); // Numbers and 'V' (upper case)
-        addValidationListener(txtName, "[a-zA-Z]+", true); // Letters only
-        addValidationListener(txtAddress, "[a-zA-Z ]+", true); // Letters and space only
-        addValidationListener(txtTel, "\\d{10}", true); // Exactly 10 numbers
-        addValidationListener(txtStatus, "(Active|Inactive)", true); // 'Active' or 'Inactive' words only
-    }
-
-    private void addValidationListener(TextField textField, String regex, boolean caseSensitive) {
-        textField.textProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue.matches(regex)) {
-                // If input matches the regex pattern
-                textField.setStyle("-fx-border-color: #3498db;");
-            } else {
-                // If input doesn't match the regex pattern
-                textField.setStyle("-fx-border-color: red;");
-            }
-        });
-
-        if (!caseSensitive) {
-            textField.setTextFormatter(new TextFormatter<>((change) -> {
-                change.setText(change.getText().replaceAll(regex, ""));
-                return change;
-            }));
-        }
     }
 
     private void showSelectedSupplierDetails() {
@@ -196,6 +168,13 @@ public class SupplierFormController {
         txtNic.setText("");
         txtTel.setText("");
         txtName.setText("");
+
+        txtId.setStyle("");
+        txtAddress.setStyle("");
+        txtNic.setStyle("");
+        txtTel.setStyle("");
+        txtName.setStyle("");
+        txtStatus.setStyle("");
     }
 
     @FXML
@@ -216,24 +195,36 @@ public class SupplierFormController {
 
     @FXML
     void btnSaveOnAction(ActionEvent event) {
-        String id = txtId.getText();
-        String nic = txtNic.getText();
-        String name = txtName.getText();
-        String address = txtAddress.getText();
-        String tel = txtTel.getText();
-        String status = txtStatus.getText();
 
-        Supplier supplier = new Supplier(id, nic, name, address, tel, status);
+        if (isValied()) {
 
-        try {
-            boolean isSaved = SupplierRepo.save(supplier);
-            if (isSaved) {
-                new Alert(Alert.AlertType.CONFIRMATION, "supplier saved!").show();
-                clearFields();
-                initialize();
+            String id = txtId.getText();
+            String nic = txtNic.getText();
+            String name = txtName.getText();
+            String address = txtAddress.getText();
+            String tel = txtTel.getText();
+            String status = txtStatus.getText();
+
+            Supplier supplier = new Supplier(id, nic, name, address, tel, status);
+
+            try {
+                boolean isSaved = SupplierRepo.save(supplier);
+                if (isSaved) {
+                    new Alert(Alert.AlertType.CONFIRMATION, "supplier saved!").show();
+                    clearFields();
+                    initialize();
+                }
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
             }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
+
+        } else {
+            // Show error message if validation fails
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Validation Error");
+            alert.setHeaderText("Validation Failed");
+            alert.setContentText("Please fill in all fields correctly.");
+            alert.showAndWait();
         }
     }
 
@@ -256,25 +247,71 @@ public class SupplierFormController {
 
     @FXML
     void btnUpdateOnAction(ActionEvent event) {
-        String id = txtId.getText();
-        String nic = txtNic.getText();
-        String name = txtName.getText();
-        String address = txtAddress.getText();
-        String tel = txtTel.getText();
-        String status = txtStatus.getText();
 
-        Supplier supplier = new Supplier(id, nic, name, address, tel, status);
+        if (isValied()) {
 
-        try {
-            boolean isUpdated = SupplierRepo.update(supplier);
-            if(isUpdated) {
-                new Alert(Alert.AlertType.CONFIRMATION, "employee updated!").show();
-                clearFields();
-                initialize();
+            String id = txtId.getText();
+            String nic = txtNic.getText();
+            String name = txtName.getText();
+            String address = txtAddress.getText();
+            String tel = txtTel.getText();
+            String status = txtStatus.getText();
+
+            Supplier supplier = new Supplier(id, nic, name, address, tel, status);
+
+            try {
+                boolean isUpdated = SupplierRepo.update(supplier);
+                if(isUpdated) {
+                    new Alert(Alert.AlertType.CONFIRMATION, "employee updated!").show();
+                    clearFields();
+                    initialize();
+                }
+            } catch (SQLException e) {
+                new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
             }
-        } catch (SQLException e) {
-            new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
+        } else {
+            // Show error message if validation fails
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Validation Error");
+            alert.setHeaderText("Validation Failed");
+            alert.setContentText("Please fill in all fields correctly.");
+            alert.showAndWait();
         }
+    }
+
+    public boolean isValied(){
+        boolean nameValid = Regex.setTextColor(lk.ijse.tailorshopmanagementsystem.Util.TextField.NAME, txtName);
+        boolean nicValid = Regex.setTextColor(lk.ijse.tailorshopmanagementsystem.Util.TextField.NIC, txtNic);
+        boolean addressValid = Regex.setTextColor(lk.ijse.tailorshopmanagementsystem.Util.TextField.ADDRESS, txtAddress);
+        boolean telValid = Regex.setTextColor(lk.ijse.tailorshopmanagementsystem.Util.TextField.TEL, txtTel);
+        boolean statusValid = Regex.setTextColor(lk.ijse.tailorshopmanagementsystem.Util.TextField.STATUS, txtStatus);
+        boolean idValid = Regex.setTextColor(lk.ijse.tailorshopmanagementsystem.Util.TextField.SUPID, txtId);
+
+        return nameValid && nicValid && addressValid && telValid && statusValid && idValid;
+    }
+
+    public void idKeyReleaseAction(javafx.scene.input.KeyEvent keyEvent) {
+        Regex.setTextColor(lk.ijse.tailorshopmanagementsystem.Util.TextField.SUPID, txtId);
+    }
+
+    public void telKeyReleaseAction(javafx.scene.input.KeyEvent keyEvent) {
+        Regex.setTextColor(lk.ijse.tailorshopmanagementsystem.Util.TextField.TEL, txtTel);
+    }
+
+    public void nicKeyReleaseAction(javafx.scene.input.KeyEvent keyEvent) {
+        Regex.setTextColor(lk.ijse.tailorshopmanagementsystem.Util.TextField.NIC, txtNic);
+    }
+
+    public void nameKeyReleaseAction(javafx.scene.input.KeyEvent keyEvent) {
+        Regex.setTextColor(lk.ijse.tailorshopmanagementsystem.Util.TextField.NAME, txtName);
+    }
+
+    public void addressKeyReleaseAction(javafx.scene.input.KeyEvent keyEvent) {
+        Regex.setTextColor(lk.ijse.tailorshopmanagementsystem.Util.TextField.ADDRESS, txtAddress);
+    }
+
+    public void statusKeyReleaseAction(javafx.scene.input.KeyEvent keyEvent) {
+        Regex.setTextColor(lk.ijse.tailorshopmanagementsystem.Util.TextField.STATUS, txtStatus);
     }
 
 }

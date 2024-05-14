@@ -8,6 +8,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
+import lk.ijse.tailorshopmanagementsystem.Util.Regex;
 import lk.ijse.tailorshopmanagementsystem.model.Customer;
 import lk.ijse.tailorshopmanagementsystem.model.Fabric;
 import lk.ijse.tailorshopmanagementsystem.model.Product1;
@@ -79,52 +80,7 @@ public class FabricFormController {
         setCellValueFactory();
         loadAllFabric();
         showSelectedUserDetails();
-
-        initializeValidation();
     }
-
-
-
-    private void initializeValidation() {
-        addValidationListener(txtId, "F[0-9]+", true); // Upper 'F' followed by numbers (1-9) only
-        addValidationListener(txtColor, "[a-zA-Z]+", true); // Letters only
-        addValidationListener(txtName, "[a-zA-Z]+", true); // Letters only
-        addValidationListener(txtQtyOnHand,  "\\d+", true); // Numbers only
-    }
-
-    private void addValidationListener(TextField textField, String regex, boolean caseSensitive) {
-        textField.textProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue.matches(regex)) {
-                // If input matches the regex pattern
-                textField.setStyle("-fx-border-color: #3498db;");
-            } else {
-                // If input doesn't match the regex pattern
-                textField.setStyle("-fx-border-color: red;");
-            }
-        });
-
-        if (!caseSensitive) {
-            textField.setTextFormatter(new TextFormatter<>((change) -> {
-                change.setText(change.getText().replaceAll(regex, ""));
-                return change;
-            }));
-        }
-    }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     private void showSelectedUserDetails() {
         FabricTm selectedUser = tblFabric.getSelectionModel().getSelectedItem();
@@ -184,7 +140,6 @@ public class FabricFormController {
         }
     }
 
-
     private void getCurrentFabricId() {
         try {
             String currentId = FabricRepo.getCurrentId();
@@ -221,8 +176,6 @@ public class FabricFormController {
             throw new RuntimeException(e);
         }
     }
-
-
     @FXML
     void btnClearOnAction(ActionEvent event) {
         clearFields();
@@ -237,12 +190,12 @@ public class FabricFormController {
         txtName.setText("");
         txtColor.setText("");
         txtQtyOnHand.setText("");
+
+        txtId.setStyle("");
+        txtName.setStyle("");
+        txtColor.setStyle("");
+        txtQtyOnHand.setStyle("");
     }
-
-
-
-
-
 
     @FXML
     void btnDeleteOnAction(ActionEvent event) {
@@ -260,34 +213,62 @@ public class FabricFormController {
         }
     }
 
-
-
-
-
-
     @FXML
     void btnSaveOnAction(ActionEvent event) {
-        String id = txtId.getText();
-        String supId = cmbSupplierId.getValue();
-        String name = txtName.getText();
-        String color = txtColor.getText();
-        int qty = Integer.parseInt(txtQtyOnHand.getText());
+        if (isValied() && (cmbSupplierId.getValue() != null && !cmbSupplierId.getValue().toString().isEmpty())) {
 
-        Fabric fabric = new Fabric(id, supId, name, color, qty);
+            String id = txtId.getText();
+            String supId = cmbSupplierId.getValue();
+            String name = txtName.getText();
+            String color = txtColor.getText();
+            int qty = Integer.parseInt(txtQtyOnHand.getText());
 
-        try {
-            boolean isSaved = FabricRepo.save(fabric);
-            if (isSaved) {
-                new Alert(Alert.AlertType.CONFIRMATION, "Fabric saved!").show();
-                clearFields();
-                initialize();
+            Fabric fabric = new Fabric(id, supId, name, color, qty);
+
+            try {
+                boolean isSaved = FabricRepo.save(fabric);
+                if (isSaved) {
+                    new Alert(Alert.AlertType.CONFIRMATION, "Fabric saved!").show();
+                    clearFields();
+                    initialize();
+                }
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
             }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
+        }else {
+            // Show error message if validation fails
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Validation Error");
+            alert.setHeaderText("Validation Failed");
+            alert.setContentText("Please fill in all fields correctly.");
+            alert.showAndWait();
         }
     }
 
+    public boolean isValied(){
+        boolean nameValid = Regex.setTextColor(lk.ijse.tailorshopmanagementsystem.Util.TextField.NAME, txtName);
+        boolean color = Regex.setTextColor(lk.ijse.tailorshopmanagementsystem.Util.TextField.NAME, txtColor);
+        boolean qtyOnHand = Regex.setTextColor(lk.ijse.tailorshopmanagementsystem.Util.TextField.QTY, txtQtyOnHand);
+        boolean idValid = Regex.setTextColor(lk.ijse.tailorshopmanagementsystem.Util.TextField.FABID, txtId);
 
+        return nameValid && color && qtyOnHand && idValid ;
+    }
+
+    public void nameKeyReleaseAction(javafx.scene.input.KeyEvent keyEvent) {
+        Regex.setTextColor(lk.ijse.tailorshopmanagementsystem.Util.TextField.NAME, txtName);
+    }
+
+    public void idKeyReleaseAction(javafx.scene.input.KeyEvent keyEvent) {
+        Regex.setTextColor(lk.ijse.tailorshopmanagementsystem.Util.TextField.FABID, txtId);
+    }
+
+    public void colorKeyReleaseAction(javafx.scene.input.KeyEvent keyEvent) {
+        Regex.setTextColor(lk.ijse.tailorshopmanagementsystem.Util.TextField.NAME, txtColor);
+    }
+
+    public void qtyOnHandKeyReleaseAction(javafx.scene.input.KeyEvent keyEvent) {
+        Regex.setTextColor(lk.ijse.tailorshopmanagementsystem.Util.TextField.QTY, txtQtyOnHand);
+    }
     @FXML
     public void btnSearchOnAction(ActionEvent actionEvent) throws SQLException {
         String fabName = (String) cmbFabricName.getValue();
@@ -307,35 +288,42 @@ public class FabricFormController {
             new Alert(Alert.AlertType.INFORMATION, "Fabric not found!").show();
         }
     }
-
-
     @FXML
     void btnUpdateOnAction(ActionEvent event) {
-        String id = txtId.getText();
-        String supId = cmbSupplierId.getValue();
-        String name = txtName.getText();
-        String color = txtColor.getText();
-        int qty = Integer.parseInt(txtQtyOnHand.getText());
 
-        Fabric fabric = new Fabric(id, supId, name, color, qty);
+        if (isValied() && (cmbSupplierId.getValue() != null && !cmbSupplierId.getValue().toString().isEmpty())) {
+            String id = txtId.getText();
+            String supId = cmbSupplierId.getValue();
+            String name = txtName.getText();
+            String color = txtColor.getText();
+            int qty = Integer.parseInt(txtQtyOnHand.getText());
 
-        try {
-            boolean isUpdated = FabricRepo.update(fabric);
-            if(isUpdated) {
-                new Alert(Alert.AlertType.CONFIRMATION, "Fabric updated!").show();
-                clearFields();
-                initialize();
+            Fabric fabric = new Fabric(id, supId, name, color, qty);
+
+            try {
+                boolean isUpdated = FabricRepo.update(fabric);
+                if(isUpdated) {
+                    new Alert(Alert.AlertType.CONFIRMATION, "Fabric updated!").show();
+                    clearFields();
+                    initialize();
+                }
+            } catch (SQLException e) {
+                new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
             }
-        } catch (SQLException e) {
-            new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
+
+        }else {
+            // Show error message if validation fails
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Validation Error");
+            alert.setHeaderText("Validation Failed");
+            alert.setContentText("Please fill in all fields correctly.");
+            alert.showAndWait();
         }
     }
-
     @FXML
     void cmbFabricNameOnAction(ActionEvent event) {
         getColorsForFabric();
     }
-
 
     public void getColorsForFabric() {
         ObservableList<String> obList = FXCollections.observableArrayList();

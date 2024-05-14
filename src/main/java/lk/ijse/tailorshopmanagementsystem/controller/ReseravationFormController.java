@@ -123,10 +123,6 @@ public class ReseravationFormController {
 
     }
 
-
-
-
-
     public void btnIdSearchOnAction(ActionEvent actionEvent) throws SQLException {
         int nicFieldId = Integer.parseInt(txtReservationId.getText());
 
@@ -263,9 +259,9 @@ public class ReseravationFormController {
                         new Alert(Alert.AlertType.CONFIRMATION, "Order Placed!").show();
 
                         clearFields();
-                } else {
-                    new Alert(Alert.AlertType.WARNING, "Order Placed Unsuccessfully!").show();
-                }
+                     } else {
+                         new Alert(Alert.AlertType.WARNING, "Order Placed Unsuccessfully!").show();
+                    }
 
                 } else {
                     // Show error message if validation fails
@@ -383,8 +379,8 @@ public class ReseravationFormController {
         }
     }
 
-
     int currentReservationIdForBillMethod = 0;
+
     private void getCurrentReservationId() {
         try {
             int currentId = ReservationRepo.getCurrentId();
@@ -409,17 +405,6 @@ public class ReseravationFormController {
         LocalDate now = LocalDate.now();
         lblReservationDate.setText(String.valueOf(now));
     }
-
-//    public void btnAddNewCustomerOnAction(ActionEvent actionEvent) throws IOException {
-//        FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/customer_form.fxml"));
-//        Parent load = loader.load();
-//        rootNode.getChildren().clear();
-//        rootNode.getChildren().add(load);
-//
-//        // Get the stage from any node
-//        Stage stage = (Stage) rootNode.getScene().getWindow();
-//        stage.setTitle("Customer Manage");
-//    }
 
     @FXML
     public void btnClearForNewItem(ActionEvent actionEvent) {
@@ -502,7 +487,6 @@ public class ReseravationFormController {
         String color = (String) cmbProductColor.getValue();
         String size = (String) cmbSize.getValue();
 
-
         try {
             List<String> qtyList = ReservationRepo.getQtyOnHand(name, color, size);
 
@@ -578,11 +562,9 @@ public class ReseravationFormController {
     }
 
     public void btnBillOnAction(ActionEvent actionEvent) throws JRException, SQLException {
-
         int nicFieldId = Integer.parseInt(txtReservationId.getText());
 
         if (currentReservationIdForBillMethod >= nicFieldId) {
-
 
             JasperDesign jasperDesign = JRXmlLoader.load("src/main/resources/report/reservationBill.jrxml");
             JasperReport jasperReport = JasperCompileManager.compileReport(jasperDesign);
@@ -601,34 +583,22 @@ public class ReseravationFormController {
             alert.setContentText("Please enter valid reservation ID!");
             alert.showAndWait();
         }
-
     }
-
-
-
-
-
-
-
-
-
 
     public void idKeyRelaseAction(javafx.scene.input.KeyEvent keyEvent) {
         Regex.setTextColor(lk.ijse.tailorshopmanagementsystem.Util.TextField.RESID, txtReservationId);
     }
+
     public void nicKeyRelaseAction(javafx.scene.input.KeyEvent keyEvent) {
         Regex.setTextColor(lk.ijse.tailorshopmanagementsystem.Util.TextField.NIC, txtNic);
     }
+
     public void qtyKeyRelaseAction(javafx.scene.input.KeyEvent keyEvent) {
         Regex.setTextColor(lk.ijse.tailorshopmanagementsystem.Util.TextField.QTY, txtQty);
     }
 
     public boolean isValied(){
-//        boolean nameValid = Regex.setTextColor(lk.ijse.tailorshopmanagementsystem.Util.TextField.NAME, txtName);
         boolean nicValid = Regex.setTextColor(lk.ijse.tailorshopmanagementsystem.Util.TextField.NIC, txtNic);
-//        boolean addressValid = Regex.setTextColor(lk.ijse.tailorshopmanagementsystem.Util.TextField.LBLNAME, lblCustomerName);
-//        boolean telValid = Regex.setTextColor(lk.ijse.tailorshopmanagementsystem.Util.TextField.TEL, txtTel);
-//        boolean statusValid = Regex.setTextColor(lk.ijse.tailorshopmanagementsystem.Util.TextField.STATUS, txtStatus);
         boolean idValid = Regex.setTextColor(lk.ijse.tailorshopmanagementsystem.Util.TextField.RESID, txtReservationId);
 
         return idValid && nicValid;
@@ -639,10 +609,5 @@ public class ReseravationFormController {
 
         return qtyValid;
     }
-
-
-
-
-
 
 }

@@ -29,9 +29,9 @@
             <Font name="System Italic" size="11.0" />
          </font>
       </Label>
-      <TextField fx:id="txtName" layoutX="509.0" layoutY="126.0" prefHeight="26.0" prefWidth="151.0" />
-      <TextField fx:id="txtQtyOnHand" layoutX="212.0" layoutY="178.0" prefHeight="26.0" prefWidth="172.0" />
-      <TextField fx:id="txtId" layoutX="197.0" layoutY="126.0" prefHeight="26.0" prefWidth="187.0" />
+      <TextField fx:id="txtName" layoutX="509.0" layoutY="126.0" onKeyReleased="#nameKeyReleaseAction" prefHeight="26.0" prefWidth="151.0" />
+      <TextField fx:id="txtQtyOnHand" layoutX="212.0" layoutY="178.0" onKeyReleased="#qtyOnHandKeyReleaseAction" prefHeight="26.0" prefWidth="172.0" />
+      <TextField fx:id="txtId" layoutX="197.0" layoutY="126.0" onKeyReleased="#idKeyReleaseAction" prefHeight="26.0" prefWidth="187.0" />
       <JFXButton buttonType="RAISED" contentDisplay="RIGHT" layoutX="622.0" layoutY="231.0" onAction="#btnSaveOnAction" prefHeight="10.0" prefWidth="50.0" style="-fx-background-color: #42a5f5;" text="Save" textFill="WHITE">
          <font>
             <Font name="System Italic" size="11.0" />
@@ -69,7 +69,7 @@
             <Font name="System Italic" size="11.0" />
          </font>
       </Label>
-      <TextField fx:id="txtColor" layoutX="763.0" layoutY="126.0" prefHeight="26.0" prefWidth="194.0" />
+      <TextField fx:id="txtColor" layoutX="763.0" layoutY="126.0" onKeyReleased="#colorKeyReleaseAction" prefHeight="26.0" prefWidth="194.0" />
       <TableView fx:id="tblFabric" layoutX="232.0" layoutY="291.0" prefHeight="372.0" prefWidth="630.0">
          <columns>
             <TableColumn fx:id="colFabricId" prefWidth="75.0" text="Fabric ID" />

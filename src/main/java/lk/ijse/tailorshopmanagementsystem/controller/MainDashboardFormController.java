@@ -32,21 +32,15 @@ public class MainDashboardFormController {
         loadUser();
     }
 
-
-
     private void loadUser() throws SQLException {
         String count = UserRepo.getTotalUser();
         lblUserCount.setText(count);
     }
 
-
     private void loadSupplier() throws SQLException {
         String count = SupplierRepo.getTotalSuppliers();
         lblSupplierCount.setText(count);
     }
-
-
-
 
     private void loadProduct() throws SQLException {
         String count = ProductRepo.getTotalProduct();
@@ -77,6 +71,5 @@ public class MainDashboardFormController {
         String count = CustomerRepo.getCustomerCount();
         lblCustomerCount.setText(count);
     }
-
 
 }

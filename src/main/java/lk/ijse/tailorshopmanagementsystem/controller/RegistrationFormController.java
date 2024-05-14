@@ -81,4 +81,21 @@ public class RegistrationFormController {
         initialize();
    }
 
+    @FXML
+    void lblPasswordOnAction(ActionEvent event) {
+        String id = txtId.getText();
+        String name = txtName.getText();
+        String password = txtPassword.getText();
+        String email = txtEmail.getText();
+
+        try {
+            boolean isSaved = UserRepo.saveUser(id, name, email, password);
+            if(isSaved) {
+                new Alert(Alert.AlertType.CONFIRMATION, "user saved!").show();
+                clearField();
+            }
+        } catch (SQLException e) {
+            new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
+        }
+    }
 }

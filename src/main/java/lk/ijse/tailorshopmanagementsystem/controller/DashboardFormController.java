@@ -19,7 +19,6 @@ public class DashboardFormController {
     public JFXButton dButton;
     @FXML
     private AnchorPane rootNode;
-
     @FXML
     private VBox vboxButtons;
 
@@ -226,7 +225,6 @@ public class DashboardFormController {
                 break;
         }
     }
-
 
     public void btnDashboardOnAction(ActionEvent actionEvent) {
 

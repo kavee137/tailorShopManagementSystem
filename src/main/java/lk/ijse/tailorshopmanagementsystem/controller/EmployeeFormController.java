@@ -12,6 +12,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import lk.ijse.tailorshopmanagementsystem.Util.Regex;
 import lk.ijse.tailorshopmanagementsystem.model.Employee;
 import lk.ijse.tailorshopmanagementsystem.model.tm.EmployeeTm;
 import lk.ijse.tailorshopmanagementsystem.model.tm.ProductTm;
@@ -89,48 +90,47 @@ public class EmployeeFormController {
         txtUserId.setText("U01");
         txtStatus.setText("Active");
         showSelectedEmployeeDetails();
-
-        initializeValidation();
     }
 
-    private void initializeValidation() {
-        addValidationListener(txtId, "E[1-9]+", true); // Upper 'E' followed by numbers (1-9) only
-        addValidationListener(txtNic, "[0-9V]+", true); // Numbers and 'V' (upper case)
-        addValidationListener(txtName, "[a-zA-Z]+", true); // Letters only
-        addValidationListener(txtSalary, "\\d+", true); // Numbers only
-        addValidationListener(txtAddress, "[a-zA-Z ]+", true); // Letters and space only
-        addValidationListener(txtTel, "\\d{10}", true); // Exactly 10 numbers
-        addValidationListener(txtStatus, "(Active|Inactive)", true); // 'Active' or 'Inactive' words only
+    public void idKeyReleaseAction(javafx.scene.input.KeyEvent keyEvent) {
+        Regex.setTextColor(lk.ijse.tailorshopmanagementsystem.Util.TextField.EID, txtId);
     }
 
-    private void addValidationListener(TextField textField, String regex, boolean caseSensitive) {
-        textField.textProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue.matches(regex)) {
-                // If input matches the regex pattern
-                textField.setStyle("-fx-border-color: #3498db;");
-            } else {
-                // If input doesn't match the regex pattern
-                textField.setStyle("-fx-border-color: red;");
-            }
-        });
-
-        if (!caseSensitive) {
-            textField.setTextFormatter(new TextFormatter<>((change) -> {
-                change.setText(change.getText().replaceAll(regex, ""));
-                return change;
-            }));
-        }
+    public void telKeyReleaseAction(javafx.scene.input.KeyEvent keyEvent) {
+        Regex.setTextColor(lk.ijse.tailorshopmanagementsystem.Util.TextField.TEL, txtTel);
     }
 
+    public void nicKeyReleaseAction(javafx.scene.input.KeyEvent keyEvent) {
+        Regex.setTextColor(lk.ijse.tailorshopmanagementsystem.Util.TextField.NIC, txtNic);
+    }
 
+    public void nameKeyReleaseAction(javafx.scene.input.KeyEvent keyEvent) {
+        Regex.setTextColor(lk.ijse.tailorshopmanagementsystem.Util.TextField.NAME, txtName);
+    }
 
+    public void addressKeyReleaseAction(javafx.scene.input.KeyEvent keyEvent) {
+        Regex.setTextColor(lk.ijse.tailorshopmanagementsystem.Util.TextField.ADDRESS, txtAddress);
+    }
 
+    public void salaryKeyReleaseAction(javafx.scene.input.KeyEvent keyEvent) {
+        Regex.setTextColor(lk.ijse.tailorshopmanagementsystem.Util.TextField.PRICEDOT, txtSalary);
+    }
 
+    public void statusKeyReleaseAction(javafx.scene.input.KeyEvent keyEvent) {
+        Regex.setTextColor(lk.ijse.tailorshopmanagementsystem.Util.TextField.STATUS, txtStatus);
+    }
 
+    public boolean isValied(){
+        boolean nameValid = Regex.setTextColor(lk.ijse.tailorshopmanagementsystem.Util.TextField.NAME, txtName);
+        boolean nicValid = Regex.setTextColor(lk.ijse.tailorshopmanagementsystem.Util.TextField.NIC, txtNic);
+        boolean addressValid = Regex.setTextColor(lk.ijse.tailorshopmanagementsystem.Util.TextField.ADDRESS, txtAddress);
+        boolean telValid = Regex.setTextColor(lk.ijse.tailorshopmanagementsystem.Util.TextField.TEL, txtTel);
+        boolean salary = Regex.setTextColor(lk.ijse.tailorshopmanagementsystem.Util.TextField.PRICEDOT, txtSalary);
+        boolean statusValid = Regex.setTextColor(lk.ijse.tailorshopmanagementsystem.Util.TextField.STATUS, txtStatus);
+        boolean idValid = Regex.setTextColor(lk.ijse.tailorshopmanagementsystem.Util.TextField.EID, txtId);
 
-
-
-
+        return nameValid && nicValid && addressValid && telValid && statusValid && idValid && salary;
+    }
 
     private void showSelectedEmployeeDetails() {
         EmployeeTm selectedUser = tblEmployee.getSelectionModel().getSelectedItem();
@@ -211,7 +211,6 @@ public class EmployeeFormController {
     private List<String> getEmployeePosition() {
         ObservableList<String> obList = FXCollections.observableArrayList();
 
-
         try {
             List<String> codeList = EmployeeRepo.getPosition();
 
@@ -224,16 +223,6 @@ public class EmployeeFormController {
             throw new RuntimeException(e);
         }
         return obList;
-    }
-
-
-    public void btnBackOnAction(ActionEvent actionEvent) throws IOException {
-        AnchorPane anchorPane = FXMLLoader.load(getClass().getResource("/view/dashboard_form.fxml"));
-        Stage stage = (Stage) rootNode.getScene().getWindow();
-
-        stage.setScene(new Scene(anchorPane));
-        stage.setTitle("Dashboard");
-        stage.centerOnScreen();
     }
 
     public void cmbPositionOnAction(ActionEvent actionEvent) {
@@ -270,32 +259,50 @@ public class EmployeeFormController {
         txtUserId.setText("U01");
         txtStatus.setText("Active");
 
+        txtId.setStyle("");
+        txtNic.setStyle("");
+        txtName.setStyle("");
+        txtSalary.setStyle("");
+        txtAddress.setStyle("");
+        txtTel.setStyle("");
+        txtStatus.setStyle("");
+
     }
 
     @FXML
     void btnSaveOnAction(ActionEvent event) {
-        String id = txtId.getText();
-        String nic = txtNic.getText();
-        String name = txtName.getText();
-        String address = txtAddress.getText();
-        String tel = txtTel.getText();
-        String salary = txtSalary.getText();
-        String position = cmbPositionName.getValue();
-        String userId = txtUserId.getText();
-        String status = "Active";
 
+        if (isValied() && (cmbPositionName.getValue() != null && !cmbPositionName.getValue().toString().isEmpty())) {
 
-        Employee employee = new Employee(id, userId, nic, position, name, tel, address, salary, status);
+            String id = txtId.getText();
+            String nic = txtNic.getText();
+            String name = txtName.getText();
+            String address = txtAddress.getText();
+            String tel = txtTel.getText();
+            String salary = txtSalary.getText();
+            String position = cmbPositionName.getValue();
+            String userId = txtUserId.getText();
+            String status = "Active";
 
-        try {
-            boolean isSaved = EmployeeRepo.save(employee);
-            if (isSaved) {
-                new Alert(Alert.AlertType.CONFIRMATION, "customer saved!").show();
-                clearFields();
-                initialize();
+            Employee employee = new Employee(id, userId, nic, position, name, tel, address, salary, status);
+
+            try {
+                boolean isSaved = EmployeeRepo.save(employee);
+                if (isSaved) {
+                    new Alert(Alert.AlertType.CONFIRMATION, "customer saved!").show();
+                    clearFields();
+                    initialize();
+                }
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
             }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
+        } else {
+            // Show error message if validation fails
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Validation Error");
+            alert.setHeaderText("Validation Failed");
+            alert.setContentText("Please fill in all fields correctly.");
+            alert.showAndWait();
         }
     }
 
@@ -314,7 +321,6 @@ public class EmployeeFormController {
             new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
         }
     }
-
 
     public void btnSearchOnAction(ActionEvent actionEvent) throws SQLException {
         String nic = txtNic.getText();
@@ -338,30 +344,40 @@ public class EmployeeFormController {
     public void btnActiveOnAction(ActionEvent actionEvent) {
         txtStatus.setText("Active");
     }
-
     @FXML
     void btnUpdateOnAction(ActionEvent event) {
-        String id = txtId.getText();
-        String nic = txtNic.getText();
-        String name = txtName.getText();
-        String position = cmbPositionName.getValue();
-        String salary = txtSalary.getText();
-        String address = txtAddress.getText();
-        String tel = txtTel.getText();
-        String userId = "U01";
-        String status = txtStatus.getText();
 
-        Employee employee = new Employee(id, userId, nic, position, name, tel, address, salary, status);
+        if (isValied() && (cmbPositionName.getValue() != null && !cmbPositionName.getValue().toString().isEmpty())) {
 
-        try {
-            boolean isUpdated = EmployeeRepo.update(employee);
-            if(isUpdated) {
-                new Alert(Alert.AlertType.CONFIRMATION, "employee updated!").show();
-                clearFields();
-                initialize();
+            String id = txtId.getText();
+            String nic = txtNic.getText();
+            String name = txtName.getText();
+            String position = cmbPositionName.getValue();
+            String salary = txtSalary.getText();
+            String address = txtAddress.getText();
+            String tel = txtTel.getText();
+            String userId = "U01";
+            String status = txtStatus.getText();
+
+            Employee employee = new Employee(id, userId, nic, position, name, tel, address, salary, status);
+
+            try {
+                boolean isUpdated = EmployeeRepo.update(employee);
+                if(isUpdated) {
+                    new Alert(Alert.AlertType.CONFIRMATION, "employee updated!").show();
+                    clearFields();
+                    initialize();
+                }
+            } catch (SQLException e) {
+                new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
             }
-        } catch (SQLException e) {
-            new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
+        } else {
+            // Show error message if validation fails
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Validation Error");
+            alert.setHeaderText("Validation Failed");
+            alert.setContentText("Please fill in all fields correctly.");
+            alert.showAndWait();
         }
     }
 }

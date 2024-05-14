@@ -26,6 +26,25 @@ public class OrderRepo {
 
 
 
+    public static List<String> getFabricId(String name, String color) throws SQLException {
+        String sql = "SELECT fabricID FROM fabric WHERE fabricName = ? AND fabricColor = ?";
+
+        Connection connection = DbConnection.getInstance().getConnection();
+        PreparedStatement pstm = connection.prepareStatement(sql);
+        pstm.setObject(1, name);
+        pstm.setObject(2, color);
+
+
+        List<String> idList = new ArrayList<>();
+
+        ResultSet resultSet = pstm.executeQuery();
+        while (resultSet.next()) {
+            idList.add(resultSet.getString(1));
+        }
+
+        return idList;
+
+    }
 
     public static String getOrderCount() throws SQLException {
         String sql = "SELECT COUNT(*) AS processingOrderCount FROM orders WHERE status = 'Processing'";
@@ -91,7 +110,6 @@ public class OrderRepo {
 
         return rowData;
     }
-
 
     public static boolean save(Order order) throws SQLException {
 

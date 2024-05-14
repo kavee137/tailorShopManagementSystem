@@ -1,19 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import com.jfoenix.controls.JFXButton?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.PasswordField?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.effect.MotionBlur?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.shape.Line?>
-<?import javafx.scene.shape.Rectangle?>
-<?import javafx.scene.text.Font?>
-<?import javafx.scene.text.Text?>
+<?import com.jfoenix.controls.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.text.*?>
 
-<AnchorPane prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lk.ijse.tailorshopmanagementsystem.controller.RegistrationFormController">
+<AnchorPane prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lk.ijse.tailorshopmanagementsystem.controller.RegistrationFormController">
    <children>
       <ImageView fitHeight="736.0" fitWidth="1359.0" layoutX="-1.0" pickOnBounds="true" preserveRatio="true">
          <image>
@@ -40,7 +35,7 @@
          </font></JFXButton>
       <TextField fx:id="txtName" layoutX="532.0" layoutY="351.0" prefHeight="35.0" prefWidth="244.0" promptText="User Name" />
       <TextField fx:id="txtEmail" layoutX="534.0" layoutY="415.0" prefHeight="35.0" prefWidth="244.0" promptText="Email" />
-      <PasswordField fx:id="txtPassword" layoutX="535.0" layoutY="479.0" prefHeight="35.0" prefWidth="244.0" promptText="New Password" />
+      <PasswordField fx:id="txtPassword" layoutX="535.0" layoutY="479.0" onAction="#lblPasswordOnAction" prefHeight="35.0" prefWidth="244.0" promptText="New Password" />
       <Label layoutX="533.0" layoutY="396.0" text="Email" textFill="WHITE" />
       <Label layoutX="534.0" layoutY="461.0" text="New Password" textFill="WHITE" />
    </children>

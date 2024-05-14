@@ -13,6 +13,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import lk.ijse.tailorshopmanagementsystem.Util.Regex;
 import lk.ijse.tailorshopmanagementsystem.db.DbConnection;
 import lk.ijse.tailorshopmanagementsystem.model.Order;
 import lk.ijse.tailorshopmanagementsystem.model.OrderDetails;
@@ -144,56 +145,7 @@ public class PlaceOrderFormController  {
         setPaymentType();
         getCurrentPaymentId();
         setCellValueFactory();
-        // Call the method to initialize validation for text fields
-        initializeValidation();
     }
-
-    //    ------------------------ Validation Part  ---------------------------------
-
-    private void initializeValidation() {
-            addValidationListener(txtNic, "[0-9]*V?", true); // Numbers and 'V' (upper case)
-            addValidationListener(txtQty, "\\d+", true); // Only numbers
-            addValidationListener(txtOrderId, "O\\d*", true); // Only 'O' followed by numbers
-            addValidationListener(txtFabricSize, "\\d*\\.?\\d*", true); // Only numbers and dot '.'
-            addValidationListener(txtPrice, "(?:\\d*\\.\\d+)|(?:\\d+\\.?)", true); // Numbers and dot '.'
-            addNullValidationListener(txtDescription); // Can't be null, show red if null
-            addNullValidationListener(txtMeasurements); // Can't be null, show red if null
-    }
-
-    private void addValidationListener(TextField textField, String regex, boolean caseSensitive) {
-        textField.textProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue.matches(regex)) {
-                // If input matches the regex pattern
-                textField.setStyle("-fx-border-color: #3498db;");
-            } else {
-                // If input doesn't match the regex pattern
-                textField.setStyle("-fx-border-color: red;");
-            }
-        });
-
-        if (!caseSensitive) {
-            textField.setTextFormatter(new TextFormatter<>((change) -> {
-                change.setText(change.getText().replaceAll(regex, ""));
-                return change;
-            }));
-        }
-    }
-
-    private void addNullValidationListener(TextField textField) {
-        textField.textProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue == null || newValue.trim().isEmpty()) {
-                // If text is null or empty, show red border
-                textField.setStyle("-fx-border-color: red;");
-            } else {
-                // If text is not null or empty, show default border color
-                textField.setStyle("-fx-border-color: #3498db;");
-            }
-        });
-    }
-
-
-//    ------------------------ End of Validation Part  ---------------------------------
-
 
     void setCmbStatus() {
         ObservableList<String> status = FXCollections.observableArrayList();
@@ -203,86 +155,98 @@ public class PlaceOrderFormController  {
 
         cmbStatus.setItems(status);
     }
-
     @FXML
     void btnPlaceOrderOnAction(ActionEvent event) throws SQLException {
 
-        String orderId = txtOrderId.getText();
-        String cusId = lblCustomerId.getText();
-        int paymentId = Integer.parseInt(lblPaymentId.getText());
-        String employeeID = (String) cmbTailorId.getValue();
-        Date orderDate = Date.valueOf(lblOrderDate.getText());
-        Date returnDateValue = Date.valueOf(returnDate.getValue());
-        String paymentType = cmbPaymentType.getValue();
-        double netTotal = Double.parseDouble(lblNetTotal.getText());
-        String status = "processing";
+        if (!txtOrderId.getText().isEmpty() &&
+                returnDate.getValue() != null &&
+                !txtNic.getText().isEmpty() &&
+                !lblEmployeeName.getText().isEmpty() &&
+                cmbTailorId.getValue() != null &&
+                !lblCustomerName.getText().isEmpty() &&
+                !tblOrderCart.getItems().isEmpty()) {
 
-        var order = new Order(orderId, cusId, paymentId, employeeID, orderDate, returnDateValue, status);
+            String orderId = txtOrderId.getText();
+            String cusId = lblCustomerId.getText();
+            int paymentId = Integer.parseInt(lblPaymentId.getText());
+            String employeeID = (String) cmbTailorId.getValue();
+            Date orderDate = Date.valueOf(lblOrderDate.getText());
+            Date returnDateValue = Date.valueOf(returnDate.getValue());
+            String paymentType = cmbPaymentType.getValue();
+            double netTotal = Double.parseDouble(lblNetTotal.getText());
+            String status = "processing";
 
-        List<OrderDetails> odList = new ArrayList<>();
+            var order = new Order(orderId, cusId, paymentId, employeeID, orderDate, returnDateValue, status);
 
-        for (int i = 0; i < tblOrderCart.getItems().size(); i++) {
-            CartTm tm = obList.get(i);
+            List<OrderDetails> odList = new ArrayList<>();
 
+            for (int i = 0; i < tblOrderCart.getItems().size(); i++) {
+                CartTm tm = obList.get(i);
 
-            List<String> fabId = getFabricId(obList.get(i).getFabricName(), obList.get(i).getFabricColor());
-            System.out.println(fabId);
+                List<String> fabId = OrderRepo.getFabricId(obList.get(i).getFabricName(), obList.get(i).getFabricColor());
+                System.out.println(fabId);
 
-            OrderDetails od = new OrderDetails(
-                    orderId,
-                    fabId.get(0),
-                    tm.getDescription(),
-                    tm.getMeasurements(),
-                    tm.getFabricSize(),
-                    tm.getUnitPrice(),
-                    tm.getQty(),
-                    tm.getTotal()
+                OrderDetails od = new OrderDetails(
+                        orderId,
+                        fabId.get(0),
+                        tm.getDescription(),
+                        tm.getMeasurements(),
+                        tm.getFabricSize(),
+                        tm.getUnitPrice(),
+                        tm.getQty(),
+                        tm.getTotal()
 
-            );
+                );
 
-            odList.add(od);
-        }
-
-
-        PlaceOrder po = new PlaceOrder(order, odList);
-        try {
-            boolean isPlaced = PlaceOrderRepo.placeOrder(po, paymentType, netTotal);
-            if (isPlaced) {
-                new Alert(Alert.AlertType.CONFIRMATION, "Order Placed!").show();
-            } else {
-                new Alert(Alert.AlertType.WARNING, "Order Placed Unsuccessfully!").show();
+                odList.add(od);
             }
-        } catch (SQLException e) {
-            new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
+
+            PlaceOrder po = new PlaceOrder(order, odList);
+            try {
+                boolean isPlaced = PlaceOrderRepo.placeOrder(po, paymentType, netTotal);
+                if (isPlaced) {
+                    new Alert(Alert.AlertType.CONFIRMATION, "Order Placed!").show();
+                } else {
+                    new Alert(Alert.AlertType.WARNING, "Order Placed Unsuccessfully!").show();
+                }
+            } catch (SQLException e) {
+                new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
+            }
+
+        } else {
+            showErrorAlert("Details Failed", "Please fill in all fields correctly.");
         }
-    }
-
-    private List<String> getFabricId(String name, String color) throws SQLException {
-        String sql = "SELECT fabricID FROM fabric WHERE fabricName = ? AND fabricColor = ?";
-
-        Connection connection = DbConnection.getInstance().getConnection();
-        PreparedStatement pstm = connection.prepareStatement(sql);
-        pstm.setObject(1, name);
-        pstm.setObject(2, color);
-
-
-        List<String> idList = new ArrayList<>();
-
-        ResultSet resultSet = pstm.executeQuery();
-        while (resultSet.next()) {
-            idList.add(resultSet.getString(1));
-        }
-
-        return idList;
-
     }
 
     @FXML
     void btnAddToCartOnAction(ActionEvent event) {
+        String qty1 = lblQtyOnHand.getText();
+
+        if (qty1 == null || qty1.isEmpty()) {
+            showErrorAlert("Fabric Details Failed", "Please select fabric details!");
+
+        }else if (isAddToCartValid()) {
+                addToCart();
+        } else {
+            showErrorAlert("Validation Failed", "Please fill in all fields correctly.");
+        }
+    }
+
+    private boolean isAddToCartValid() {
+            boolean fabSize = Regex.setTextColor(lk.ijse.tailorshopmanagementsystem.Util.TextField.QTY, txtFabricSize);
+            boolean description = Regex.setTextColor(lk.ijse.tailorshopmanagementsystem.Util.TextField.DESCRIPTION, txtDescription);
+            boolean measurements = Regex.setTextColor(lk.ijse.tailorshopmanagementsystem.Util.TextField.ANY, txtMeasurements);
+            boolean price = Regex.setTextColor(lk.ijse.tailorshopmanagementsystem.Util.TextField.PRICE, txtPrice);
+            boolean qty = Regex.setTextColor(lk.ijse.tailorshopmanagementsystem.Util.TextField.QTY, txtQty);
+
+            return fabSize && description && measurements && price && qty;
+    }
+
+    private void addToCart() {
         String description = txtDescription.getText();
         String fabricName = (String) cmbFabricName.getValue();
         String fabricColor = (String) cmbFabricColor.getValue();
-        double fabricSize = Double.parseDouble((txtFabricSize.getText()));
+        double fabricSize = Double.parseDouble(txtFabricSize.getText());
         String measurements = txtMeasurements.getText();
         int qty = Integer.parseInt(txtQty.getText());
         double unitPrice = Double.parseDouble(txtPrice.getText());
@@ -313,7 +277,34 @@ public class PlaceOrderFormController  {
         tblOrderCart.setItems(obList);
         removeForNewItem();
         calculateNetTotal();
+    }
 
+    private void showErrorAlert(String headerText, String contentText) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Validation Error");
+        alert.setHeaderText(headerText);
+        alert.setContentText(contentText);
+        alert.showAndWait();
+    }
+
+    public void fabricSizeKeyRelaseAction(javafx.scene.input.KeyEvent keyEvent) {
+        Regex.setTextColor(lk.ijse.tailorshopmanagementsystem.Util.TextField.FABSIZE, txtFabricSize);
+    }
+
+    public void descriptionKeyRelaseAction(javafx.scene.input.KeyEvent keyEvent) {
+        Regex.setTextColor(lk.ijse.tailorshopmanagementsystem.Util.TextField.DESCRIPTION, txtDescription);
+    }
+
+    public void priceKeyReleaseAction(javafx.scene.input.KeyEvent keyEvent) {
+        Regex.setTextColor(lk.ijse.tailorshopmanagementsystem.Util.TextField.PRICE, txtPrice);
+    }
+
+    public void qty2KeyRelaseAction(javafx.scene.input.KeyEvent keyEvent) {
+        Regex.setTextColor(lk.ijse.tailorshopmanagementsystem.Util.TextField.QTY, txtQty);
+    }
+
+    public void meKeyRelaseAction(javafx.scene.input.KeyEvent keyEvent) {
+        Regex.setTextColor(lk.ijse.tailorshopmanagementsystem.Util.TextField.ANY, txtMeasurements);
     }
 
     private void calculateNetTotal() {
@@ -391,7 +382,6 @@ public class PlaceOrderFormController  {
             throw new RuntimeException(e);
         }
     }
-
     @FXML
     void btnClearOnAction(ActionEvent event) {
         clearFields();
@@ -460,9 +450,11 @@ public class PlaceOrderFormController  {
 
     }
 
+    String currentId1 = null;
     private void getCurrentOrderId() {
         try {
             String currentId = OrderRepo.getCurrentId();
+            currentId1 = currentId;
 
             String nextOrderId = generateNextOrderId(currentId);
             txtOrderId.setText(nextOrderId);
@@ -511,7 +503,6 @@ public class PlaceOrderFormController  {
 //        getSuggestions(String.valueOf(txtNic));
     }
 
-
     public void btnSearchOnAction(ActionEvent actionEvent) throws SQLException {
         String cusNic = txtNic.getText();
 
@@ -523,18 +514,6 @@ public class PlaceOrderFormController  {
         } else {
             new Alert(Alert.AlertType.INFORMATION, "customer not found!").show();
         }
-    }
-
-    public void btnAddNewCustomerOnAction(ActionEvent actionEvent) throws IOException {
-
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/customer_form.fxml"));
-        Parent load = loader.load();
-        rootNode.getChildren().clear();
-        rootNode.getChildren().add(load);
-
-        // Get the stage from any node
-        Stage stage = (Stage) rootNode.getScene().getWindow();
-        stage.setTitle("Customer Manage");
     }
 
     public void cmbTailorIdOnAction(ActionEvent actionEvent) {
@@ -554,15 +533,37 @@ public class PlaceOrderFormController  {
         txtPrice.setText("");
         txtQty.setText("");
         txtMeasurements.setText("");
+
+        txtFabricSize.setStyle("");
+        txtDescription.setStyle("");
+        txtMeasurements.setStyle("");
+        txtPrice.setStyle("");
+        txtQty.setStyle("");
     }
 
     public void btnIdSearchOnAction(ActionEvent actionEvent) throws SQLException {
+        String orderId2 = txtOrderId.getText();
+        int lastThreeDigits1 = Integer.parseInt(currentId1.substring(1));
+        int lastThreeDigits2 = Integer.parseInt(orderId2.substring(1));
+
+        if (lastThreeDigits1 < lastThreeDigits2) {
+            showErrorAlert("Order ID failed!", "Please enter order ID less than to next OrderID!.");
+
+
+        } else if (lastThreeDigits1 > lastThreeDigits2) {
+            searchId();
+
+        } else {
+            searchId();
+        }
+
+    }
+
+    private void searchId () throws SQLException {
         String orderId = txtOrderId.getText();
         tblOrderCart.getItems().clear();
 
         ResultSet orderCartTableList = OrderRepo.getOrderCartTable(orderId);
-
-//        | description | fabricName | fabricColor | measurements      | fabricSize | unitPrice | qty  | total
 
         while (orderCartTableList.next()) {
             String description = orderCartTableList.getString(1);
@@ -580,8 +581,6 @@ public class PlaceOrderFormController  {
         }
 
         List<String> orderJoinTablesList = OrderRepo.getOrderDetails(orderId);
-//SELECT o.orderDate, o.returnDate, o.employeeID, o.status, o.paymentID, c.NIC, c.customerName, c.customerID, e.employeeName, p.paymentType, p.price
-
 
         lblOrderDate.setText(orderJoinTablesList.get(0));
         returnDate.setValue(LocalDate.parse(orderJoinTablesList.get(1)));
@@ -594,9 +593,7 @@ public class PlaceOrderFormController  {
         lblEmployeeName.setText(orderJoinTablesList.get(8));
         cmbPaymentType.setValue(orderJoinTablesList.get(9));
         lblNetTotal.setText(orderJoinTablesList.get(10));
-
     }
-
 
     public void btnUpdateOnAction(ActionEvent actionEvent) throws SQLException {
         String orderId = txtOrderId.getText();
@@ -613,15 +610,34 @@ public class PlaceOrderFormController  {
     }
 
     public void btnBillOnAction(ActionEvent actionEvent) throws JRException, SQLException {
+        findLargerOrderID(currentId1, txtOrderId.getText());
+    }
+
+    public void findLargerOrderID(String currentId1, String orderId1) throws JRException, SQLException {
+        // Extract the last three digits from the order IDs
+        int lastThreeDigits1 = Integer.parseInt(currentId1.substring(1));
+        int lastThreeDigits2 = Integer.parseInt(orderId1.substring(1));
+
+        // Compare the last three digits numerically
+        if (lastThreeDigits1 < lastThreeDigits2) {
+            showErrorAlert("Order ID failed!", "Please enter order ID less than to next OrderID!.");
+
+        } else if (lastThreeDigits1 > lastThreeDigits2) {
+            printBill();
+        } else {
+            printBill();
+        }
+    }
+
+    private void printBill() throws JRException, SQLException {
         JasperDesign jasperDesign = JRXmlLoader.load("src/main/resources/report/orderBill.jrxml");
         JasperReport jasperReport = JasperCompileManager.compileReport(jasperDesign);
 
-        Map<String,Object> data = new HashMap<>();
-        data.put("orderID",txtOrderId.getText());
+        Map<String, Object> data = new HashMap<>();
+        data.put("orderID", txtOrderId.getText());
 
         JasperPrint jasperPrint =
                 JasperFillManager.fillReport(jasperReport, data, DbConnection.getInstance().getConnection());
-        JasperViewer.viewReport(jasperPrint,false);
-
+        JasperViewer.viewReport(jasperPrint, false);
     }
 }

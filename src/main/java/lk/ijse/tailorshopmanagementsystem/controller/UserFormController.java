@@ -10,6 +10,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import lk.ijse.tailorshopmanagementsystem.Util.Regex;
 import lk.ijse.tailorshopmanagementsystem.model.Supplier;
 import lk.ijse.tailorshopmanagementsystem.model.User;
 import lk.ijse.tailorshopmanagementsystem.model.tm.UserTm;
@@ -23,37 +24,26 @@ import java.util.List;
 public class UserFormController {
 
     public AnchorPane rootNode;
-
     @FXML
     private TextField txtPassword;
-
     @FXML
     private TableColumn<?, ?> colEmail;
-
     @FXML
     private TableColumn<?, ?> colId;
-
     @FXML
     private TableColumn<?, ?> colPassword;
-
     @FXML
     private TableColumn<?, ?> colStatus;
-
     @FXML
     private TableColumn<?, ?> colUserName;
-
     @FXML
     private TableView<UserTm> tblUser;
-
     @FXML
     private TextField txtId;
-
     @FXML
     private TextField txtName;
-
     @FXML
     private TextField txtEmail;
-
     @FXML
     private TextField txtStatus;
 
@@ -63,34 +53,6 @@ public class UserFormController {
         getCurrentUserId();
         setCellValueFactory();
         loadAllUsers();
-
-        initializeValidation();
-    }
-
-    private void initializeValidation() {
-        addValidationListener(txtId, "U[0-9]+", true); // Upper 'U' followed by numbers (1-9) only
-        addValidationListener(txtEmail, "\\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Z|a-z]{2,}\\b", true); // Email address pattern
-        addValidationListener(txtName, "[a-zA-Z]+", true); // Letters only
-        addValidationListener(txtStatus, "(Active|Inactive)", true); // 'Active' or 'Inactive' words only
-    }
-
-    private void addValidationListener(TextField textField, String regex, boolean caseSensitive) {
-        textField.textProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue.matches(regex)) {
-                // If input matches the regex pattern
-                textField.setStyle("-fx-border-color: #3498db;");
-            } else {
-                // If input doesn't match the regex pattern
-                textField.setStyle("-fx-border-color: red;");
-            }
-        });
-
-        if (!caseSensitive) {
-            textField.setTextFormatter(new TextFormatter<>((change) -> {
-                change.setText(change.getText().replaceAll(regex, ""));
-                return change;
-            }));
-        }
     }
 
     private void showSelectedUserDetails() {
@@ -157,22 +119,10 @@ public class UserFormController {
             throw new RuntimeException(e);
         }
     }
-
     @FXML
     void btnActiveOnAction(ActionEvent event) {
         txtStatus.setText("Active");
     }
-
-    @FXML
-    public void btnBackOnAction(ActionEvent actionEvent) throws IOException {
-        AnchorPane anchorPane = FXMLLoader.load(getClass().getResource("/view/dashboard_form.fxml"));
-        Stage stage = (Stage) rootNode.getScene().getWindow();
-
-        stage.setScene(new Scene(anchorPane));
-        stage.setTitle("Dashboard");
-        stage.centerOnScreen();
-    }
-
     @FXML
     void btnClearOnAction(ActionEvent event) {
         clearFields();
@@ -189,7 +139,6 @@ public class UserFormController {
         loadAllUsers();
         getCurrentUserId();
     }
-
     @FXML
     void btnDeleteOnAction(ActionEvent event) {
         String id = txtId.getText();
@@ -205,46 +154,93 @@ public class UserFormController {
         }
     }
 
+    public void idKeyReleaseAction(javafx.scene.input.KeyEvent keyEvent) {
+        Regex.setTextColor(lk.ijse.tailorshopmanagementsystem.Util.TextField.UID, txtId);
+    }
+
+    public void emailKeyReleaseAction(javafx.scene.input.KeyEvent keyEvent) {
+        Regex.setTextColor(lk.ijse.tailorshopmanagementsystem.Util.TextField.EMAIL, txtEmail);
+    }
+
+    public void passwordKeyReleaseAction(javafx.scene.input.KeyEvent keyEvent) {
+        Regex.setTextColor(lk.ijse.tailorshopmanagementsystem.Util.TextField.ANY, txtPassword);
+    }
+
+    public void statusKeyReleaseAction(javafx.scene.input.KeyEvent keyEvent) {
+        Regex.setTextColor(lk.ijse.tailorshopmanagementsystem.Util.TextField.STATUS, txtStatus);
+    }
+
+    public void nameKeyReleaseAction(javafx.scene.input.KeyEvent keyEvent) {
+        Regex.setTextColor(lk.ijse.tailorshopmanagementsystem.Util.TextField.NAME, txtName);
+    }
+
+    public boolean isValied(){
+        boolean name = Regex.setTextColor(lk.ijse.tailorshopmanagementsystem.Util.TextField.NAME, txtName);
+        boolean email = Regex.setTextColor(lk.ijse.tailorshopmanagementsystem.Util.TextField.EMAIL, txtEmail);
+        boolean password = Regex.setTextColor(lk.ijse.tailorshopmanagementsystem.Util.TextField.ANY, txtPassword);
+        boolean status = Regex.setTextColor(lk.ijse.tailorshopmanagementsystem.Util.TextField.STATUS, txtStatus);
+        boolean id = Regex.setTextColor(lk.ijse.tailorshopmanagementsystem.Util.TextField.UID, txtId);
+
+        return name && email && password && status && id ;
+    }
     @FXML
     void btnSaveOnAction(ActionEvent event) {
-        String id = txtId.getText();
-        String userName = txtName.getText();
-        String email = txtEmail.getText();
-        String password = txtPassword.getText();
-        String status = txtStatus.getText();
 
-        User user = new User(id, userName, email, password, status);
+        if (isValied()) {
+            String id = txtId.getText();
+            String userName = txtName.getText();
+            String email = txtEmail.getText();
+            String password = txtPassword.getText();
+            String status = txtStatus.getText();
 
-        try {
-            boolean isSaved = UserRepo.save(user);
-            if (isSaved) {
-                new Alert(Alert.AlertType.CONFIRMATION, "user saved!").show();
-                clearFields();
+            User user = new User(id, userName, email, password, status);
+
+            try {
+                boolean isSaved = UserRepo.save(user);
+                if (isSaved) {
+                    new Alert(Alert.AlertType.CONFIRMATION, "user saved!").show();
+                    clearFields();
+                }
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
             }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
+        } else {
+            // Show error message if validation fails
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Validation Error");
+            alert.setHeaderText("Validation Failed");
+            alert.setContentText("Please fill in all fields correctly.");
+            alert.showAndWait();
         }
     }
-
     @FXML
     void btnUpdateOnAction(ActionEvent event) {
-        String id = txtId.getText();
-        String name = txtName.getText();
-        String email = txtEmail.getText();
-        String password = txtPassword.getText();
-        String status = txtStatus.getText();
+        if (isValied()) {
 
-        User user = new User(id, name, email, password, status);
+            String id = txtId.getText();
+            String name = txtName.getText();
+            String email = txtEmail.getText();
+            String password = txtPassword.getText();
+            String status = txtStatus.getText();
 
-        try {
-            boolean isUpdated = UserRepo.update(user);
-            if(isUpdated) {
-                new Alert(Alert.AlertType.CONFIRMATION, "user updated!").show();
-                clearFields();
+            User user = new User(id, name, email, password, status);
+
+            try {
+                boolean isUpdated = UserRepo.update(user);
+                if(isUpdated) {
+                    new Alert(Alert.AlertType.CONFIRMATION, "user updated!").show();
+                    clearFields();
+                }
+            } catch (SQLException e) {
+                new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
             }
-        } catch (SQLException e) {
-            new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
+        } else {
+            // Show error message if validation fails
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Validation Error");
+            alert.setHeaderText("Validation Failed");
+            alert.setContentText("Please fill in all fields correctly.");
+            alert.showAndWait();
         }
     }
-
 }

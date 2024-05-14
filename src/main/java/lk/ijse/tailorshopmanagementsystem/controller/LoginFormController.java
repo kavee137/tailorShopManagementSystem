@@ -31,7 +31,6 @@ public class LoginFormController {
         initializeValidation();
     }
 
-
     private void initializeValidation() {
         addValidationListener(txtUserId, "[a-zA-Z]+", true); // Letters only
 
@@ -55,19 +54,6 @@ public class LoginFormController {
             }));
         }
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     public void btnLoginOnAction(ActionEvent actionEvent) throws IOException {
         String userId = txtUserId.getText();
@@ -128,9 +114,28 @@ public class LoginFormController {
         stage.show();
     }
 
-
     public void txtUserNameOnKeyReleased(KeyEvent keyEvent) {
     }
 
+    public void txtPasswordOnAction(ActionEvent actionEvent) throws IOException {
+        String userId = txtUserId.getText();
+        String pw = txtPassword.getText();
 
+        try {
+            checkCredential(userId, pw);
+        } catch (SQLException e) {
+            new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
+        }
+    }
+
+    public void txtUsernameOnAction(ActionEvent actionEvent) throws IOException {
+        String userId = txtUserId.getText();
+        String pw = txtPassword.getText();
+
+        try {
+            checkCredential(userId, pw);
+        } catch (SQLException e) {
+            new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
+        }
+    }
 }

@@ -14,7 +14,6 @@
 <AnchorPane fx:id="rootNode" prefHeight="720.0" prefWidth="1080.0" style="-fx-background-color: #edf2fb;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lk.ijse.tailorshopmanagementsystem.controller.ProductFormController">
    <children>
       <Rectangle arcHeight="30.0" arcWidth="30.0" fill="WHITE" height="276.0" layoutX="85.0" layoutY="24.0" strokeType="INSIDE" width="918.0" />
-      <TextField fx:id="txtId" layoutX="106.0" layoutY="205.0" prefHeight="35.0" prefWidth="245.0" />
       <Label layoutX="106.0" layoutY="185.0" text="ProductID*" textFill="#757575">
          <font>
             <Font name="System Italic" size="11.0" />
@@ -27,12 +26,12 @@
          <font>
             <Font name="System Italic" size="11.0" />
          </font></Label>
-      <TextField fx:id="txtUnitPrice" layoutX="417.0" layoutY="205.0" prefHeight="35.0" prefWidth="245.0" />
+      <TextField fx:id="txtUnitPrice" layoutX="417.0" layoutY="205.0" onKeyReleased="#priceKeyReleaseAction" prefHeight="35.0" prefWidth="245.0" />
       <Label layoutX="738.0" layoutY="185.0" text="Qty On Hand*" textFill="#757575">
          <font>
             <Font name="System Italic" size="11.0" />
          </font></Label>
-      <TextField fx:id="txtQtyOnHand" layoutX="738.0" layoutY="205.0" prefHeight="35.0" prefWidth="245.0" />
+      <TextField fx:id="txtQtyOnHand" layoutX="738.0" layoutY="205.0" onKeyReleased="#qtyOnHandKeyReleaseAction" prefHeight="35.0" prefWidth="245.0" />
       <Label layoutX="106.0" layoutY="36.0" text="ProductName*" textFill="#757575">
          <font>
             <Font name="System Italic" size="11.0" />
@@ -94,9 +93,9 @@
       </TableView>
       <JFXComboBox fx:id="cmbProductColor" layoutX="418.0" layoutY="51.0" onAction="#cmbProductColorOnAction" prefHeight="26.0" prefWidth="244.0" />
       <JFXComboBox fx:id="cmbProductSize" layoutX="738.0" layoutY="51.0" onAction="#cmbProductSizeOnAction" prefHeight="26.0" prefWidth="244.0" />
-      <TextField fx:id="txtName" layoutX="106.0" layoutY="125.0" prefHeight="35.0" prefWidth="245.0" />
-      <TextField fx:id="txtColor" layoutX="417.0" layoutY="125.0" prefHeight="35.0" prefWidth="245.0" />
-      <TextField fx:id="txtSize" layoutX="738.0" layoutY="125.0" prefHeight="35.0" prefWidth="245.0" />
+      <TextField fx:id="txtName" layoutX="106.0" layoutY="125.0" onKeyReleased="#nameKeyReleaseAction" prefHeight="35.0" prefWidth="245.0" />
+      <TextField fx:id="txtColor" layoutX="417.0" layoutY="125.0" onKeyReleased="#colorKeyReleaseAction" prefHeight="35.0" prefWidth="245.0" />
+      <TextField fx:id="txtSize" layoutX="738.0" layoutY="125.0" onKeyReleased="#sizeKeyReleaseAction" prefHeight="35.0" prefWidth="245.0" />
       <Label layoutX="106.0" layoutY="105.0" text="New product name*" textFill="#757575">
          <font>
             <Font name="System Italic" size="11.0" />
@@ -110,6 +109,11 @@
       <Label layoutX="738.0" layoutY="105.0" text="New product Size*" textFill="#757575">
          <font>
             <Font name="System Italic" size="11.0" />
+         </font>
+      </Label>
+      <Label fx:id="lblProductId" layoutX="127.0" layoutY="216.0" prefWidth="44.0">
+         <font>
+            <Font size="16.0" />
          </font>
       </Label>
    </children>

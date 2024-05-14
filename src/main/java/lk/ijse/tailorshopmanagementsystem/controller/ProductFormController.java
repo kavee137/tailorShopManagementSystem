@@ -11,6 +11,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import lk.ijse.tailorshopmanagementsystem.Util.Regex;
 import lk.ijse.tailorshopmanagementsystem.model.Customer;
 import lk.ijse.tailorshopmanagementsystem.model.Product;
 import lk.ijse.tailorshopmanagementsystem.model.Product1;
@@ -26,6 +27,8 @@ import java.util.List;
 public class ProductFormController {
     @FXML
     public TextField txtColor;
+    @FXML
+    private Label lblProductId;
     @FXML
     private TableColumn<?, ?> colId;
     @FXML
@@ -51,8 +54,6 @@ public class ProductFormController {
     @FXML
     private JFXComboBox <String> cmbProductName;
     @FXML
-    private TextField txtId;
-    @FXML
     private TextField txtQtyOnHand;
     @FXML
     private TextField txtUnitPrice;
@@ -70,49 +71,7 @@ public class ProductFormController {
         getProductName();
         showSelectedProductDetails();
 
-        initializeValidation();
     }
-
-
-
-
-    private void initializeValidation() {
-        addValidationListener(txtId, "\\d+", true); // Numbers only
-        addValidationListener(txtName, "[a-zA-Z]+", true); // Letters only
-        addValidationListener(txtColor, "[a-zA-Z]+", true); // Letters only
-        addValidationListener(txtSize, "\\d+", true); // Numbers only
-        addValidationListener(txtUnitPrice, "\\d+", true); // Numbers only
-        addValidationListener(txtQtyOnHand, "\\d+", true); // Numbers only
-    }
-
-    private void addValidationListener(TextField textField, String regex, boolean caseSensitive) {
-        textField.textProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue.matches(regex)) {
-                // If input matches the regex pattern
-                textField.setStyle("-fx-border-color: #3498db;");
-            } else {
-                // If input doesn't match the regex pattern
-                textField.setStyle("-fx-border-color: red;");
-            }
-        });
-
-        if (!caseSensitive) {
-            textField.setTextFormatter(new TextFormatter<>((change) -> {
-                change.setText(change.getText().replaceAll(regex, ""));
-                return change;
-            }));
-        }
-    }
-
-
-
-
-
-
-
-
-
-
 
     private void showSelectedProductDetails() {
         ProductTm selectedUser = tblProduct.getSelectionModel().getSelectedItem();
@@ -124,7 +83,7 @@ public class ProductFormController {
             txtName.setText(selectedUser.getProductName());
             txtColor.setText(selectedUser.getProductColor());
             txtSize.setText(selectedUser.getProductSize());
-            txtId.setText(String.valueOf(selectedUser.getProductID()));
+            lblProductId.setText(String.valueOf(selectedUser.getProductID()));
             txtUnitPrice.setText(String.valueOf(selectedUser.getUnitPrice()));
             txtQtyOnHand.setText(String.valueOf(selectedUser.getQtyOnHand()));
         }
@@ -224,7 +183,7 @@ public class ProductFormController {
             int currentId = ProductRepo.getCurrentId();
 
             int nextProductId = Integer.parseInt(String.valueOf(generateNextProductId(currentId)));
-            txtId.setText(String.valueOf(nextProductId));
+            lblProductId.setText(String.valueOf(nextProductId));
 
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -237,11 +196,43 @@ public class ProductFormController {
         }
         return 1;
     }
-
     @FXML
     void btnUpdateOnAction(ActionEvent event) {
 
-        String id = txtId.getText();
+        String id = lblProductId.getText();
+        String name = txtName.getText();
+        String color = txtColor.getText();
+        String size = txtSize.getText();
+        String price = txtUnitPrice.getText();
+        String qtyOnHand = txtQtyOnHand.getText();
+
+
+        Product product = new Product(id, name, color, size, price, qtyOnHand);
+
+        if (isValied()) {
+            try {
+                boolean isUpdated = ProductRepo.update(product);
+                if(isUpdated) {
+                    new Alert(Alert.AlertType.CONFIRMATION, "product updated!").show();
+                    clearFields();
+                    initialize();
+                }
+            } catch (SQLException e) {
+                new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
+            }
+        } else {
+            // Show error message if validation fails
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Validation Error");
+            alert.setHeaderText("Validation Failed");
+            alert.setContentText("Please fill in all fields correctly.");
+            alert.showAndWait();
+        }
+    }
+    @FXML
+    void btnSaveOnAction(ActionEvent event) {
+
+        String id = lblProductId.getText();
         String name = txtName.getText();
         String color = txtColor.getText();
         String size = txtSize.getText();
@@ -249,39 +240,55 @@ public class ProductFormController {
         String qtyOnHand = txtQtyOnHand.getText();
 
         Product product = new Product(id, name, color, size, price, qtyOnHand);
-        try {
-            boolean isUpdated = ProductRepo.update(product);
-            if(isUpdated) {
-                new Alert(Alert.AlertType.CONFIRMATION, "product updated!").show();
-                clearFields();
-                initialize();
+        if (isValied()) {
+            try {
+                boolean isSaved = ProductRepo.save(product);
+                if (isSaved) {
+                    new Alert(Alert.AlertType.CONFIRMATION, "product saved!").show();
+                    clearFields();
+                    initialize();
+                }
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
             }
-        } catch (SQLException e) {
-            new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
+        } else {
+            // Show error message if validation fails
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Validation Error");
+            alert.setHeaderText("Validation Failed");
+            alert.setContentText("Please fill in all fields correctly.");
+            alert.showAndWait();
         }
     }
 
-    @FXML
-    void btnSaveOnAction(ActionEvent event) {
-        String id = txtId.getText();
-        String name = txtName.getText();
-        String color = txtColor.getText();
-        String size = txtSize.getText();
-        String price = txtUnitPrice.getText();
-        String qtyOnHand = txtQtyOnHand.getText();
+    public boolean isValied() {
+        boolean nameValid = Regex.setTextColor(lk.ijse.tailorshopmanagementsystem.Util.TextField.NAME, txtName);
+        boolean color = Regex.setTextColor(lk.ijse.tailorshopmanagementsystem.Util.TextField.NAME, txtColor);
+        boolean size = Regex.setTextColor(lk.ijse.tailorshopmanagementsystem.Util.TextField.QTY, txtSize);
+        boolean unitPrice = Regex.setTextColor(lk.ijse.tailorshopmanagementsystem.Util.TextField.PRICEDOT, txtUnitPrice);
+        boolean qtyOnHand = Regex.setTextColor(lk.ijse.tailorshopmanagementsystem.Util.TextField.QTY, txtQtyOnHand);
 
-        Product product = new Product(id, name, color, size, price, qtyOnHand);
+        return nameValid && color && size && unitPrice && qtyOnHand;
+    }
 
-        try {
-            boolean isSaved = ProductRepo.save(product);
-            if (isSaved) {
-                new Alert(Alert.AlertType.CONFIRMATION, "product saved!").show();
-                clearFields();
-                initialize();
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+    public void sizeKeyReleaseAction(javafx.scene.input.KeyEvent keyEvent) {
+        Regex.setTextColor(lk.ijse.tailorshopmanagementsystem.Util.TextField.FABSIZE, txtSize);
+    }
+
+    public void colorKeyReleaseAction(javafx.scene.input.KeyEvent keyEvent) {
+        Regex.setTextColor(lk.ijse.tailorshopmanagementsystem.Util.TextField.NAME, txtColor);
+    }
+
+    public void priceKeyReleaseAction(javafx.scene.input.KeyEvent keyEvent) {
+        Regex.setTextColor(lk.ijse.tailorshopmanagementsystem.Util.TextField.PRICEDOT, txtUnitPrice);
+    }
+
+    public void nameKeyReleaseAction(javafx.scene.input.KeyEvent keyEvent) {
+        Regex.setTextColor(lk.ijse.tailorshopmanagementsystem.Util.TextField.NAME, txtName);
+    }
+
+    public void qtyOnHandKeyReleaseAction(javafx.scene.input.KeyEvent keyEvent) {
+        Regex.setTextColor(lk.ijse.tailorshopmanagementsystem.Util.TextField.QTY, txtQtyOnHand);
     }
 
     @FXML
@@ -299,23 +306,39 @@ public class ProductFormController {
         String cmbProductColorValue = (String) cmbProductColor.getValue();
         String cmbProductSizeValue = (String) cmbProductSize.getValue();
 
-        txtName.setText(cmbProductNameValue);
-        txtColor.setText(cmbProductColorValue);
-        txtSize.setText(cmbProductSizeValue);
+        if (cmbProductNameValue != null && cmbProductColorValue != null && cmbProductSizeValue != null) {
 
-        Product1 product1 = ProductRepo.productSearch(cmbProductNameValue, cmbProductColorValue, cmbProductSizeValue);
-        if (product1 != null) {
-            txtId.setText(product1.getProductID());
-            txtUnitPrice.setText(product1.getUnitPrice());
-            txtQtyOnHand.setText(product1.getQtyOnHand());
-        }else {
-            new Alert(Alert.AlertType.INFORMATION, "customer not found!").show();
+            txtName.setText(cmbProductNameValue);
+            txtColor.setText(cmbProductColorValue);
+            txtSize.setText(cmbProductSizeValue);
+
+            Product1 product1 = ProductRepo.productSearch(cmbProductNameValue, cmbProductColorValue, cmbProductSizeValue);
+            if (product1 != null) {
+                lblProductId.setText(product1.getProductID());
+                txtUnitPrice.setText(product1.getUnitPrice());
+                txtQtyOnHand.setText(product1.getQtyOnHand());
+            }
+
+        } else {
+            // Handle the case where one or more values are null
+            showErrorAlert("Product details Failed", "Please select product details!");
         }
+
+
+
+    }
+
+    private void showErrorAlert(String headerText, String contentText) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Validation Error");
+        alert.setHeaderText(headerText);
+        alert.setContentText(contentText);
+        alert.showAndWait();
     }
 
     @FXML
     void btnDeleteOnAction(ActionEvent event) {
-        String id = txtId.getText();
+        String id = lblProductId.getText();
 
         try {
             boolean isDeleted = ProductRepo.delete(id);
@@ -328,7 +351,6 @@ public class ProductFormController {
             new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
         }
     }
-
     @FXML
     void btnClearOnAction(ActionEvent event) {
         clearFields();
@@ -348,6 +370,14 @@ public class ProductFormController {
         txtSize.setText("");
         txtName.setText("");
         txtColor.setText("");
+
+        txtUnitPrice.setStyle(""); // Set text color to default
+        txtQtyOnHand.setStyle(""); // Set text color to default
+        txtSize.setStyle(""); // Set text color to default
+        txtName.setStyle(""); // Set text color to default
+        txtColor.setStyle(""); // Set text color to default
+        lblProductId.setStyle(""); // Set text color to default
+
     }
 
     public void cmbProductNameOnAction(ActionEvent actionEvent) {
@@ -361,4 +391,6 @@ public class ProductFormController {
     public void cmbProductSizeOnAction(ActionEvent actionEvent) {
 
     }
+
+
 }

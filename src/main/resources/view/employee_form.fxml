@@ -49,11 +49,11 @@
             <Font name="System Italic" size="11.0" />
          </font>
       </Label>
-      <TextField fx:id="txtTel" layoutX="214.0" layoutY="151.0" prefHeight="26.0" prefWidth="192.0" />
-      <TextField fx:id="txtNic" layoutX="501.0" layoutY="76.0" prefHeight="26.0" prefWidth="182.0" />
-      <TextField fx:id="txtName" layoutX="741.0" layoutY="76.0" prefHeight="26.0" prefWidth="216.0" />
-      <TextField fx:id="txtAddress" layoutX="741.0" layoutY="115.0" prefHeight="26.0" prefWidth="215.0" />
-      <TextField fx:id="txtId" layoutX="213.0" layoutY="76.0" prefHeight="26.0" prefWidth="192.0" />
+      <TextField fx:id="txtTel" layoutX="214.0" layoutY="151.0" onKeyReleased="#telKeyReleaseAction" prefHeight="26.0" prefWidth="192.0" />
+      <TextField fx:id="txtNic" layoutX="501.0" layoutY="76.0" onKeyReleased="#nicKeyReleaseAction" prefHeight="26.0" prefWidth="182.0" />
+      <TextField fx:id="txtName" layoutX="741.0" layoutY="76.0" onKeyReleased="#nameKeyReleaseAction" prefHeight="26.0" prefWidth="216.0" />
+      <TextField fx:id="txtAddress" layoutX="741.0" layoutY="115.0" onKeyReleased="#addressKeyReleaseAction" prefHeight="26.0" prefWidth="215.0" />
+      <TextField fx:id="txtId" layoutX="213.0" layoutY="76.0" onKeyReleased="#idKeyReleaseAction" prefHeight="26.0" prefWidth="192.0" />
       <JFXComboBox fx:id="cmbPositionName" layoutX="215.0" layoutY="111.0" onAction="#cmbPositionOnAction" prefHeight="26.0" prefWidth="190.0" />
       <JFXButton fx:id="btnSave" buttonType="RAISED" contentDisplay="RIGHT" layoutX="665.0" layoutY="209.0" onAction="#btnSaveOnAction" prefHeight="10.0" prefWidth="50.0" style="-fx-background-color: #42a5f5;" text="Save" textFill="WHITE">
          <font>
@@ -87,7 +87,7 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </JFXButton>
-      <TextField fx:id="txtSalary" layoutX="503.0" layoutY="114.0" prefHeight="26.0" prefWidth="175.0" />
+      <TextField fx:id="txtSalary" layoutX="503.0" layoutY="114.0" onKeyReleased="#salaryKeyReleaseAction" prefHeight="26.0" prefWidth="175.0" />
       <TableView fx:id="tblEmployee" layoutX="79.0" layoutY="295.0" prefHeight="391.0" prefWidth="919.0">
         <columns>
           <TableColumn fx:id="colId" prefWidth="70.2102575302124" text="employeeID" />
@@ -124,7 +124,7 @@
             <Font name="System Italic" size="11.0" />
          </font>
       </Label>
-      <TextField fx:id="txtStatus" layoutX="742.0" layoutY="151.0" prefHeight="26.0" prefWidth="203.0" />
+      <TextField fx:id="txtStatus" layoutX="742.0" layoutY="151.0" onKeyReleased="#statusKeyReleaseAction" prefHeight="26.0" prefWidth="203.0" />
       <JFXButton buttonType="RAISED" contentDisplay="RIGHT" layoutX="892.0" layoutY="156.0" onAction="#btnActiveOnAction" prefHeight="16.0" prefWidth="48.0" style="-fx-background-color: green;" text="Active" textFill="WHITE">
          <font>
             <Font name="System Bold" size="9.0" />
