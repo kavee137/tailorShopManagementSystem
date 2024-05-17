@@ -207,10 +207,13 @@ public class PlaceOrderFormController  {
                 boolean isPlaced = PlaceOrderRepo.placeOrder(po, paymentType, netTotal);
                 if (isPlaced) {
                     new Alert(Alert.AlertType.CONFIRMATION, "Order Placed!").show();
+                    printBill();
+                    clearFields();
+
                 } else {
                     new Alert(Alert.AlertType.WARNING, "Order Placed Unsuccessfully!").show();
                 }
-            } catch (SQLException e) {
+            } catch (SQLException | JRException e) {
                 new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
             }
 
@@ -630,6 +633,19 @@ public class PlaceOrderFormController  {
         }
     }
 
+
+    public void btnViewOrdersOnAction(ActionEvent actionEvent) throws SQLException, IOException {
+
+        FXMLLoader customerLoader = new FXMLLoader(getClass().getResource("/view/ViewOrderForm.fxml"));
+        Parent customerRoot = customerLoader.load();
+        rootNode.getChildren().clear();
+        rootNode.getChildren().add(customerRoot);
+
+        Stage stage = (Stage) rootNode.getScene().getWindow();
+        stage.setTitle("Order view");
+    }
+
+
     private void printBill() throws JRException, SQLException {
         JasperDesign jasperDesign = JRXmlLoader.load("src/main/resources/report/orderBill.jrxml");
         JasperReport jasperReport = JasperCompileManager.compileReport(jasperDesign);
@@ -641,4 +657,7 @@ public class PlaceOrderFormController  {
                 JasperFillManager.fillReport(jasperReport, data, DbConnection.getInstance().getConnection());
         JasperViewer.viewReport(jasperPrint, false);
     }
+
+
+
 }

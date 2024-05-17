@@ -178,10 +178,8 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </JFXButton>
-      <JFXButton buttonType="RAISED" contentDisplay="RIGHT" layoutX="38.0" layoutY="17.0" onAction="#btnViewReservationsOnAction" prefHeight="36.0" prefWidth="122.0" style="-fx-background-color: gray; -fx-background-radius: 7;" text="View Reservations" textFill="WHITE">
-         <font>
-            <Font name="System Italic" size="11.0" />
-         </font>
+      <Rectangle arcHeight="30.0" arcWidth="30.0" fill="WHITE" height="61.0" layoutX="81.0" layoutY="28.0" strokeType="INSIDE" width="142.0" />
+      <JFXButton buttonType="RAISED" layoutX="92.0" layoutY="37.0" onAction="#btnViewReservationsOnAction" prefHeight="34.0" prefWidth="120.0" style="-fx-background-color: #34495e; -fx-background-radius: 100;" text="View Reservations" textFill="WHITE">
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor>

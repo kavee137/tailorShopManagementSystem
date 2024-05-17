@@ -529,7 +529,6 @@ public class ReseravationFormController {
 
 
     }
-
     @FXML
     void lblNicOnAction(ActionEvent event) {
 
@@ -607,7 +606,6 @@ public class ReseravationFormController {
         }
     }
 
-
     public void reservedBill() throws JRException, SQLException {
 //        int nicFieldId = Integer.parseInt(txtReservationId.getText());
 
@@ -619,8 +617,7 @@ public class ReseravationFormController {
             Map<String, Object> data = new HashMap<>();
             data.put("reservationID", txtReservationId.getText());
 
-            JasperPrint jasperPrint =
-                    JasperFillManager.fillReport(jasperReport, data, DbConnection.getInstance().getConnection());
+            JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, data, DbConnection.getInstance().getConnection());
             JasperViewer.viewReport(jasperPrint, false);
         }else {
             // Show error message if validation fails
@@ -632,10 +629,6 @@ public class ReseravationFormController {
         }
 
     }
-
-
-
-
 
     public void idKeyRelaseAction(javafx.scene.input.KeyEvent keyEvent) {
         Regex.setTextColor(lk.ijse.tailorshopmanagementsystem.Util.TextField.RESID, txtReservationId);

@@ -33,7 +33,6 @@ public class LoginFormController {
 
     private void initializeValidation() {
         addValidationListener(txtUserId, "[a-zA-Z]+", true); // Letters only
-
     }
 
     private void addValidationListener(TextField textField, String regex, boolean caseSensitive) {

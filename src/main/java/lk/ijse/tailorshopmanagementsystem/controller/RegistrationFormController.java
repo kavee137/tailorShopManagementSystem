@@ -5,6 +5,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import lk.ijse.tailorshopmanagementsystem.Util.Regex;
 import lk.ijse.tailorshopmanagementsystem.db.DbConnection;
 import lk.ijse.tailorshopmanagementsystem.repository.EmployeeRepo;
 import lk.ijse.tailorshopmanagementsystem.repository.UserRepo;
@@ -34,6 +35,7 @@ public class RegistrationFormController {
         getCurrentUserId();
     }
 
+
     private void getCurrentUserId() {
         try {
             String currentId = UserRepo.getUserId();
@@ -57,19 +59,29 @@ public class RegistrationFormController {
 
     @FXML
     void btnRegisterOnAction(ActionEvent event) {
-        String id = txtId.getText();
-        String name = txtName.getText();
-        String password = txtPassword.getText();
-        String email = txtEmail.getText();
+        if (isValied()) {
 
-        try {
-            boolean isSaved = UserRepo.saveUser(id, name, email, password);
-            if(isSaved) {
-                new Alert(Alert.AlertType.CONFIRMATION, "user saved!").show();
-                clearField();
+            String id = txtId.getText();
+            String name = txtName.getText();
+            String password = txtPassword.getText();
+            String email = txtEmail.getText();
+
+            try {
+                boolean isSaved = UserRepo.saveUser(id, name, email, password);
+                if(isSaved) {
+                    new Alert(Alert.AlertType.CONFIRMATION, "user saved!").show();
+                    clearField();
+                }
+            } catch (SQLException e) {
+                new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
             }
-        } catch (SQLException e) {
-            new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
+        } else {
+            // Show error message if validation fails
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Validation Error");
+            alert.setHeaderText("Validation Failed");
+            alert.setContentText("Please fill in all fields correctly.");
+            alert.showAndWait();
         }
     }
 
@@ -98,4 +110,37 @@ public class RegistrationFormController {
             new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
         }
     }
+
+
+    public boolean isValied(){
+        boolean name = Regex.setTextColor(lk.ijse.tailorshopmanagementsystem.Util.TextField.NAME, txtName);
+        boolean email = Regex.setTextColor(lk.ijse.tailorshopmanagementsystem.Util.TextField.EMAIL, txtEmail);
+        boolean id = Regex.setTextColor(lk.ijse.tailorshopmanagementsystem.Util.TextField.UID, txtId);
+
+        return name && email && id ;
+    }
+
+
+
+    public void userIdOnKeyReleased(javafx.scene.input.KeyEvent keyEvent) {
+        Regex.setTextColor(lk.ijse.tailorshopmanagementsystem.Util.TextField.UID, txtId);
+    }
+
+    public void emailOnKeyReleased(javafx.scene.input.KeyEvent keyEvent) {
+        Regex.setTextColor(lk.ijse.tailorshopmanagementsystem.Util.TextField.EMAIL, txtEmail);
+    }
+
+    public void userNameOnKeyReleased(javafx.scene.input.KeyEvent keyEvent) {
+        Regex.setTextColor(lk.ijse.tailorshopmanagementsystem.Util.TextField.NAME, txtName);
+    }
+
+
+
+
+
+
+
+
+
+
 }
