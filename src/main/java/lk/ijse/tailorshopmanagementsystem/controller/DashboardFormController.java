@@ -235,7 +235,7 @@ public class DashboardFormController {
     }
 
     public void btnOrdersOnAction(ActionEvent actionEvent) {
-
+        vboxSubButtons.setVisible(!vboxSubButtons.isVisible());
     }
 
     public void btnCustomerOnAction(ActionEvent actionEvent) {
@@ -261,4 +261,27 @@ public class DashboardFormController {
     public void btnFabricOnAction(ActionEvent actionEvent) {
 
     }
+
+
+
+
+
+
+
+    @FXML
+    private VBox vboxSubButtons;
+
+    public void btnViewOrdersOnAction(ActionEvent actionEvent) {
+    }
+
+    public void btnAnotherActionOnAction(ActionEvent actionEvent) {
+
+    }
+
+//    @FXML
+//    private void btnOrdersOnAction(ActionEvent event) {
+//        // Toggle visibility of sub-buttons VBox
+//
+//    }
+
 }

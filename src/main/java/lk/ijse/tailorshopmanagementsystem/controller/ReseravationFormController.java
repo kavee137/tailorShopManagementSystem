@@ -169,6 +169,17 @@ public class ReseravationFormController {
     }
 
     @FXML
+    void btnViewReservationsOnAction(ActionEvent event) throws IOException {
+        FXMLLoader customerLoader = new FXMLLoader(getClass().getResource("/view/ViewReservationForm.fxml"));
+        Parent customerRoot = customerLoader.load();
+        rootNode.getChildren().clear();
+        rootNode.getChildren().add(customerRoot);
+
+        Stage stage = (Stage) rootNode.getScene().getWindow();
+        stage.setTitle("View Reservations");
+    }
+
+    @FXML
     void btnAddToCartOnAction(ActionEvent event) {
         if (isQtyValied()) {
             int pId = parseInt(lblProductId.getText());
@@ -215,7 +226,7 @@ public class ReseravationFormController {
     }
 
     @FXML
-    void btnReservedOnAction(ActionEvent event) throws SQLException {
+    void btnReservedOnAction(ActionEvent event) throws SQLException, JRException {
 
         //if තුනක් දාන්න හේතුව error message 3 වෙන වෙනම පෙන්වන්න.
 
@@ -224,6 +235,7 @@ public class ReseravationFormController {
             LocalDate selectedDate = dpReturnDate.getValue();
             if (selectedDate != null && !selectedDate.equals(LocalDate.of(1970, 1, 1))) {
 
+                if (!tblReservation.getItems().isEmpty()) {
                 if (isValied()) {
 
                     int resId = parseInt(txtReservationId.getText());
@@ -257,18 +269,28 @@ public class ReseravationFormController {
 
                     if(isPlaced) {
                         new Alert(Alert.AlertType.CONFIRMATION, "Order Placed!").show();
-
+                        reservedBill();
                         clearFields();
                      } else {
                          new Alert(Alert.AlertType.WARNING, "Order Placed Unsuccessfully!").show();
                     }
-
                 } else {
-                    // Show error message if validation fails
                     Alert alert = new Alert(Alert.AlertType.ERROR);
                     alert.setTitle("Validation Error");
                     alert.setHeaderText("Validation Failed");
                     alert.setContentText("Please fill in all fields correctly.");
+                    alert.showAndWait();
+                }
+
+                } else {
+                    // Show error message if validation fails
+
+
+                    // Show error message if validation fails
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Table Error");
+                    alert.setHeaderText("Table details Failed");
+                    alert.setContentText("Please add to cart 1 or more items!");
                     alert.showAndWait();
                 }
 
@@ -584,6 +606,36 @@ public class ReseravationFormController {
             alert.showAndWait();
         }
     }
+
+
+    public void reservedBill() throws JRException, SQLException {
+//        int nicFieldId = Integer.parseInt(txtReservationId.getText());
+
+        if (!tblReservation.getItems().isEmpty()) {
+
+            JasperDesign jasperDesign = JRXmlLoader.load("src/main/resources/report/reservationBill.jrxml");
+            JasperReport jasperReport = JasperCompileManager.compileReport(jasperDesign);
+
+            Map<String, Object> data = new HashMap<>();
+            data.put("reservationID", txtReservationId.getText());
+
+            JasperPrint jasperPrint =
+                    JasperFillManager.fillReport(jasperReport, data, DbConnection.getInstance().getConnection());
+            JasperViewer.viewReport(jasperPrint, false);
+        }else {
+            // Show error message if validation fails
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("ReservationID error");
+            alert.setHeaderText("Reservartion search Failed");
+            alert.setContentText("Please enter valid reservation ID!");
+            alert.showAndWait();
+        }
+
+    }
+
+
+
+
 
     public void idKeyRelaseAction(javafx.scene.input.KeyEvent keyEvent) {
         Regex.setTextColor(lk.ijse.tailorshopmanagementsystem.Util.TextField.RESID, txtReservationId);

@@ -32,6 +32,38 @@ public class MainDashboardFormController {
         loadUser();
     }
 
+    public void pieChartConnect() {
+        //ObservableList<MostSellItemTm> obList = FXCollections.observableArrayList();
+
+//        List<MostAppointmentTM> itemList = null;
+//        try {
+//            itemList = DashBoardRepo.getMostSellItem();
+//        } catch (SQLException e) {
+//            throw new RuntimeException(e);
+//        }
+//        Customer item;
+//        for (MostAppointmentTM sellItem : itemList) {
+//            try {
+//                item = CustomerRepo.searchById(sellItem.getCustomerId());
+//            } catch (SQLException e) {
+//                throw new RuntimeException(e);
+//            }
+//
+//            ObservableList<PieChart.Data> pieChartData =
+//                    FXCollections.observableArrayList(
+//                            new PieChart.Data(item.getCustomerId(), sellItem.getVisitCount())
+//                    );
+//
+//            PieChart.getData().addAll(pieChartData);
+//        }
+    }
+
+
+
+
+
+
+
     private void loadUser() throws SQLException {
         String count = UserRepo.getTotalUser();
         lblUserCount.setText(count);

@@ -14,35 +14,35 @@
 
 <AnchorPane fx:id="rootNode" prefHeight="720.0" prefWidth="1080.0" style="-fx-background-color: edf2fb;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lk.ijse.tailorshopmanagementsystem.controller.ReseravationFormController">
    <children>
-      <Rectangle arcHeight="30.0" arcWidth="30.0" fill="WHITE" height="233.0" layoutX="22.0" layoutY="26.0" strokeType="INSIDE" width="1035.0" />
-      <Label layoutX="535.0" layoutY="52.0" text="Reservation Date:" textFill="#757575">
+      <Rectangle arcHeight="30.0" arcWidth="30.0" fill="WHITE" height="233.0" layoutX="22.0" layoutY="76.0" strokeType="INSIDE" width="1035.0" />
+      <Label layoutX="535.0" layoutY="102.0" text="Reservation Date:" textFill="#757575">
          <font>
             <Font name="System Italic" size="11.0" />
          </font>
       </Label>
-      <Label layoutX="203.0" layoutY="96.0" text="Customer NIC:" textFill="#757575">
+      <Label layoutX="203.0" layoutY="146.0" text="Customer NIC:" textFill="#757575">
          <font>
             <Font name="System Italic" size="11.0" />
          </font>
       </Label>
-      <Label layoutX="535.0" layoutY="96.0" text="Customer Name:" textFill="#757575">
+      <Label layoutX="535.0" layoutY="146.0" text="Customer Name:" textFill="#757575">
          <font>
             <Font name="System Italic" size="11.0" />
          </font>
       </Label>
-      <Label layoutX="203.0" layoutY="52.0" text="Reservation ID:" textFill="#757575">
+      <Label layoutX="203.0" layoutY="102.0" text="Reservation ID:" textFill="#757575">
          <font>
             <Font name="System Italic" size="11.0" />
          </font>
       </Label>
-      <Label layoutX="757.0" layoutY="51.0" text="Return date:" textFill="#757575">
+      <Label layoutX="757.0" layoutY="101.0" text="Return date:" textFill="#757575">
          <font>
             <Font name="System Italic" size="11.0" />
          </font>
       </Label>
-      <DatePicker fx:id="dpReturnDate" layoutX="830.0" layoutY="49.0" />
-      <TextField fx:id="txtNic" layoutX="298.0" layoutY="90.0" onKeyReleased="#nicKeyRelaseAction" prefHeight="33.0" prefWidth="215.0" />
-      <JFXButton buttonType="RAISED" contentDisplay="RIGHT" layoutX="908.0" layoutY="284.0" onAction="#btnClearOnAction" prefHeight="31.0" prefWidth="122.0" style="-fx-background-color: #7f8c8d; -fx-background-radius: 15;" text="Clear" textFill="WHITE">
+      <DatePicker fx:id="dpReturnDate" layoutX="830.0" layoutY="99.0" />
+      <TextField fx:id="txtNic" layoutX="298.0" layoutY="140.0" onKeyReleased="#nicKeyRelaseAction" prefHeight="33.0" prefWidth="215.0" />
+      <JFXButton buttonType="RAISED" contentDisplay="RIGHT" layoutX="908.0" layoutY="334.0" onAction="#btnClearOnAction" prefHeight="31.0" prefWidth="122.0" style="-fx-background-color: #7f8c8d; -fx-background-radius: 15;" text="Clear" textFill="WHITE">
          <font>
             <Font name="System Italic" size="11.0" />
          </font>
@@ -50,8 +50,8 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </JFXButton>
-      <TextField fx:id="txtReservationId" layoutX="298.0" layoutY="43.0" onAction="#lblNicOnAction" onKeyReleased="#idKeyRelaseAction" prefHeight="33.0" prefWidth="215.0" />
-      <JFXButton buttonType="RAISED" contentDisplay="RIGHT" layoutX="465.0" layoutY="98.0" onAction="#btnSearchOnAction" prefHeight="17.0" prefWidth="40.0" style="-fx-background-color: #7f8c8d; -fx-background-radius: 10;" text="Search" textFill="WHITE">
+      <TextField fx:id="txtReservationId" layoutX="298.0" layoutY="93.0" onAction="#lblNicOnAction" onKeyReleased="#idKeyRelaseAction" prefHeight="33.0" prefWidth="215.0" />
+      <JFXButton buttonType="RAISED" contentDisplay="RIGHT" layoutX="465.0" layoutY="148.0" onAction="#btnSearchOnAction" prefHeight="17.0" prefWidth="40.0" style="-fx-background-color: #7f8c8d; -fx-background-radius: 10;" text="Search" textFill="WHITE">
          <font>
             <Font name="System Bold" size="9.0" />
          </font>
@@ -59,50 +59,50 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </JFXButton>
-      <Label layoutX="686.0" layoutY="184.0" text="Price" textFill="#757575">
+      <Label layoutX="686.0" layoutY="234.0" text="Price" textFill="#757575">
          <font>
             <Font name="System Italic" size="11.0" />
          </font>
       </Label>
-      <Label layoutX="827.0" layoutY="184.0" text="Qty:" textFill="#757575">
+      <Label layoutX="827.0" layoutY="234.0" text="Qty:" textFill="#757575">
          <font>
             <Font name="System Italic" size="11.0" />
          </font>
       </Label>
-      <TextField fx:id="txtQty" layoutX="803.0" layoutY="208.0" onKeyReleased="#qtyKeyRelaseAction" prefHeight="33.0" prefWidth="66.0" />
-      <JFXButton buttonType="RAISED" layoutX="908.0" layoutY="207.0" onAction="#btnAddToCartOnAction" prefHeight="31.0" prefWidth="122.0" style="-fx-background-color: #3498db; -fx-background-radius: 15;" text="Add to cart" textFill="WHITE">
+      <TextField fx:id="txtQty" layoutX="803.0" layoutY="258.0" onKeyReleased="#qtyKeyRelaseAction" prefHeight="33.0" prefWidth="66.0" />
+      <JFXButton buttonType="RAISED" layoutX="908.0" layoutY="257.0" onAction="#btnAddToCartOnAction" prefHeight="31.0" prefWidth="122.0" style="-fx-background-color: #3498db; -fx-background-radius: 15;" text="Add to cart" textFill="WHITE">
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor>
       </JFXButton>
-      <Label layoutX="53.0" layoutY="184.0" text="Product Name" textFill="#757575">
+      <Label layoutX="53.0" layoutY="234.0" text="Product Name" textFill="#757575">
          <font>
             <Font name="System Italic" size="11.0" />
          </font>
       </Label>
-      <JFXComboBox fx:id="cmbProductName" layoutX="43.0" layoutY="203.0" onAction="#cmbProductNameOnAction" prefHeight="33.0" prefWidth="94.0" />
-      <Label layoutX="193.0" layoutY="184.0" text="Product Color" textFill="#757575">
+      <JFXComboBox fx:id="cmbProductName" layoutX="43.0" layoutY="253.0" onAction="#cmbProductNameOnAction" prefHeight="33.0" prefWidth="94.0" />
+      <Label layoutX="193.0" layoutY="234.0" text="Product Color" textFill="#757575">
          <font>
             <Font name="System Italic" size="11.0" />
          </font>
       </Label>
-      <JFXComboBox fx:id="cmbProductColor" layoutX="182.0" layoutY="203.0" onAction="#cmbProductColorOnAction" prefHeight="33.0" prefWidth="94.0" />
-      <Label layoutX="431.0" layoutY="184.0" text="qty On Hand" textFill="#757575">
+      <JFXComboBox fx:id="cmbProductColor" layoutX="182.0" layoutY="253.0" onAction="#cmbProductColorOnAction" prefHeight="33.0" prefWidth="94.0" />
+      <Label layoutX="431.0" layoutY="234.0" text="qty On Hand" textFill="#757575">
          <font>
             <Font name="System Italic" size="11.0" />
          </font>
       </Label>
-      <JFXButton buttonType="RAISED" layoutX="908.0" layoutY="164.0" onAction="#btnClearForNewItem" prefHeight="31.0" prefWidth="122.0" style="-fx-background-color: gray; -fx-background-radius: 15;" text="Clear for new item" textFill="WHITE">
+      <JFXButton buttonType="RAISED" layoutX="908.0" layoutY="214.0" onAction="#btnClearForNewItem" prefHeight="31.0" prefWidth="122.0" style="-fx-background-color: gray; -fx-background-radius: 15;" text="Clear for new item" textFill="WHITE">
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor>
       </JFXButton>
-      <Label layoutX="775.0" layoutY="95.0" text="Customer ID:" textFill="#757575">
+      <Label layoutX="775.0" layoutY="145.0" text="Customer ID:" textFill="#757575">
          <font>
             <Font name="System Italic" size="11.0" />
          </font>
       </Label>
-      <TableView fx:id="tblReservation" layoutX="191.0" layoutY="285.0" prefHeight="321.0" prefWidth="665.0">
+      <TableView fx:id="tblReservation" layoutX="191.0" layoutY="335.0" prefHeight="270.0" prefWidth="665.0">
         <columns>
           <TableColumn fx:id="colProductId" prefWidth="75.0" text="Product ID" />
           <TableColumn fx:id="colProductName" prefWidth="101.56170654296875" text="Product Name" />
@@ -135,7 +135,7 @@
       </Label>
       <JFXComboBox fx:id="cmbPaymentType" layoutX="373.0" layoutY="636.0" prefHeight="33.0" prefWidth="183.0" />
       <Label fx:id="lblPaymentId" layoutX="104.0" layoutY="645.0" prefHeight="17.0" prefWidth="95.0" />
-      <Label layoutX="561.0" layoutY="184.0" text="Product ID" textFill="#757575">
+      <Label layoutX="561.0" layoutY="234.0" text="Product ID" textFill="#757575">
          <font>
             <Font name="System Italic" size="11.0" />
          </font>
@@ -144,19 +144,19 @@
          <font>
             <Font name="System Bold" size="13.0" />
          </font></Label>
-      <Label fx:id="lblQtyOnHand" layoutX="460.0" layoutY="217.0" />
-      <Label fx:id="lblCustomerId" layoutX="845.0" layoutY="94.0" prefHeight="17.0" prefWidth="61.0" />
-      <Label fx:id="lblUnitPrice" layoutX="675.0" layoutY="220.0" />
-      <Label fx:id="lblReservationDate" layoutX="625.0" layoutY="51.0" prefHeight="17.0" prefWidth="126.0" />
-      <Label fx:id="lblCustomerName" layoutX="622.0" layoutY="95.0" prefHeight="17.0" prefWidth="144.0" />
-      <Label layoutX="350.0" layoutY="184.0" text="Size" textFill="#757575">
+      <Label fx:id="lblQtyOnHand" layoutX="460.0" layoutY="267.0" />
+      <Label fx:id="lblCustomerId" layoutX="845.0" layoutY="144.0" prefHeight="17.0" prefWidth="61.0" />
+      <Label fx:id="lblUnitPrice" layoutX="675.0" layoutY="270.0" />
+      <Label fx:id="lblReservationDate" layoutX="625.0" layoutY="101.0" prefHeight="17.0" prefWidth="126.0" />
+      <Label fx:id="lblCustomerName" layoutX="622.0" layoutY="145.0" prefHeight="17.0" prefWidth="144.0" />
+      <Label layoutX="350.0" layoutY="234.0" text="Size" textFill="#757575">
          <font>
             <Font name="System Italic" size="11.0" />
          </font>
       </Label>
-      <JFXComboBox fx:id="cmbSize" layoutX="309.0" layoutY="203.0" onAction="#cmbSizeOnAction" prefHeight="33.0" prefWidth="94.0" />
-      <Label fx:id="lblProductId" layoutX="574.0" layoutY="217.0" />
-      <JFXButton buttonType="RAISED" contentDisplay="RIGHT" layoutX="465.0" layoutY="51.0" onAction="#btnIdSearchOnAction" prefHeight="17.0" prefWidth="40.0" style="-fx-background-color: #7f8c8d; -fx-background-radius: 10;" text="Search" textFill="WHITE">
+      <JFXComboBox fx:id="cmbSize" layoutX="309.0" layoutY="253.0" onAction="#cmbSizeOnAction" prefHeight="33.0" prefWidth="94.0" />
+      <Label fx:id="lblProductId" layoutX="574.0" layoutY="267.0" />
+      <JFXButton buttonType="RAISED" contentDisplay="RIGHT" layoutX="465.0" layoutY="101.0" onAction="#btnIdSearchOnAction" prefHeight="17.0" prefWidth="40.0" style="-fx-background-color: #7f8c8d; -fx-background-radius: 10;" text="Search" textFill="WHITE">
          <font>
             <Font name="System Bold" size="9.0" />
          </font>
@@ -164,8 +164,8 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </JFXButton>
-      <JFXComboBox fx:id="cmbStatus" layoutX="43.0" layoutY="38.0" prefHeight="33.0" prefWidth="139.0" />
-      <JFXButton buttonType="RAISED" contentDisplay="RIGHT" layoutX="66.0" layoutY="106.0" onAction="#btnUpdateOnAction" prefHeight="25.0" prefWidth="83.0" style="-fx-background-color: #42a5f5; -fx-background-radius: 15;" text="Update" textFill="WHITE">
+      <JFXComboBox fx:id="cmbStatus" layoutX="43.0" layoutY="88.0" prefHeight="33.0" prefWidth="139.0" />
+      <JFXButton buttonType="RAISED" contentDisplay="RIGHT" layoutX="66.0" layoutY="156.0" onAction="#btnUpdateOnAction" prefHeight="25.0" prefWidth="83.0" style="-fx-background-color: #42a5f5; -fx-background-radius: 15;" text="Update" textFill="WHITE">
          <font>
             <Font name="System Italic" size="11.0" />
          </font>
@@ -174,6 +174,14 @@
          </cursor>
       </JFXButton>
       <JFXButton buttonType="RAISED" layoutX="789.0" layoutY="634.0" onAction="#btnBillOnAction" prefHeight="34.0" prefWidth="120.0" style="-fx-background-color: #34495e; -fx-background-radius: 15;" text="Bill" textFill="WHITE">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </JFXButton>
+      <JFXButton buttonType="RAISED" contentDisplay="RIGHT" layoutX="38.0" layoutY="17.0" onAction="#btnViewReservationsOnAction" prefHeight="36.0" prefWidth="122.0" style="-fx-background-color: gray; -fx-background-radius: 7;" text="View Reservations" textFill="WHITE">
+         <font>
+            <Font name="System Italic" size="11.0" />
+         </font>
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor>

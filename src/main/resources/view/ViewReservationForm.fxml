@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane fx:id="rootNode" prefHeight="720.0" prefWidth="1080.0" style="-fx-background-color: edf2fb;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lk.ijse.tailorshopmanagementsystem.controller.ViewReservationFormController">
+   <children>
+      <Rectangle arcHeight="30.0" arcWidth="30.0" fill="WHITE" height="147.0" layoutX="217.0" layoutY="36.0" strokeType="INSIDE" width="629.0" />
+      <Label layoutX="246.0" layoutY="62.0" text="From" textFill="#757575">
+         <font>
+            <Font name="System Italic" size="11.0" />
+         </font>
+      </Label>
+      <Label layoutX="515.0" layoutY="63.0" text="To" textFill="#757575">
+         <font>
+            <Font name="System Italic" size="11.0" />
+         </font>
+      </Label>
+      <DatePicker fx:id="dpDateTo" layoutX="541.0" layoutY="59.0" />
+      <JFXButton buttonType="RAISED" contentDisplay="RIGHT" layoutX="388.0" layoutY="126.0" onAction="#btnClearOnAction" prefHeight="27.0" prefWidth="95.0" style="-fx-background-color: #42a5f5; -fx-background-radius: 15;" text="Clear" textFill="WHITE">
+         <font>
+            <Font name="System Italic" size="11.0" />
+         </font>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </JFXButton>
+      <JFXButton buttonType="RAISED" contentDisplay="RIGHT" layoutX="755.0" layoutY="60.0" onAction="#btnSearchOnAction" prefHeight="23.0" prefWidth="58.0" style="-fx-background-color: #7f8c8d; -fx-background-radius: 10;" text="Search" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="9.0" />
+         </font>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </JFXButton>
+      <DatePicker fx:id="dpDateFrom" layoutX="281.0" layoutY="59.0" />
+      <TableView fx:id="tblReservationView" layoutX="14.0" layoutY="209.0" prefHeight="484.0" prefWidth="1053.0">
+        <columns>
+          <TableColumn fx:id="colResId" prefWidth="84.49997806549072" text="Reservation ID" />
+          <TableColumn fx:id="colCusId" prefWidth="46.122283935546875" text="Cus ID" />
+            <TableColumn fx:id="colNic" prefWidth="122.20819091796875" text="NIC" />
+            <TableColumn fx:id="colCusName" prefWidth="76.77484130859375" text="Cus Name" />
+            <TableColumn fx:id="colAddress" prefWidth="82.322021484375" text="Address" />
+            <TableColumn fx:id="colTel" prefWidth="97.69970703125" text="Tel" />
+            <TableColumn fx:id="colPayId" minWidth="3.800262451171875" prefWidth="38.55804443359375" text="Pay ID" />
+            <TableColumn fx:id="colResDate" prefWidth="86.18035888671875" text="Res Date" />
+            <TableColumn fx:id="colRetDate" prefWidth="95.31964111328125" text="Ret Date" />
+            <TableColumn fx:id="colStatus" prefWidth="77.0494384765625" text="Status" />
+            <TableColumn fx:id="colPId" prefWidth="36.45880126953125" text="P ID" />
+            <TableColumn fx:id="colQty" prefWidth="36.00457763671875" text="QTY" />
+            <TableColumn fx:id="colTotal" prefWidth="59.3223876953125" text="Total" />
+            <TableColumn fx:id="colPType" prefWidth="46.1373291015625" text="P Type" />
+            <TableColumn fx:id="colPrice" prefWidth="66.72802734375" text="Price" />
+        </columns>
+      </TableView>
+      <JFXButton buttonType="RAISED" contentDisplay="RIGHT" layoutX="509.0" layoutY="126.0" onAction="#btnShowAllOnAction" prefHeight="27.0" prefWidth="95.0" style="-fx-background-color: #42a5f5; -fx-background-radius: 15;" text="Show All" textFill="WHITE">
+         <font>
+            <Font name="System Italic" size="11.0" />
+         </font>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </JFXButton>
+      <JFXButton buttonType="RAISED" contentDisplay="RIGHT" layoutX="629.0" layoutY="126.0" onAction="#btnShowCompletedOnAction" prefHeight="27.0" prefWidth="95.0" style="-fx-background-color: #42a5f5; -fx-background-radius: 15;" text="Show Completed" textFill="WHITE">
+         <font>
+            <Font name="System Italic" size="11.0" />
+         </font>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </JFXButton>
+   </children>
+</AnchorPane>
