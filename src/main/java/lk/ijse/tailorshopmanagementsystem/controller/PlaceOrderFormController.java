@@ -633,7 +633,6 @@ public class PlaceOrderFormController  {
         }
     }
 
-
     public void btnViewOrdersOnAction(ActionEvent actionEvent) throws SQLException, IOException {
 
         FXMLLoader customerLoader = new FXMLLoader(getClass().getResource("/view/ViewOrderForm.fxml"));
@@ -644,7 +643,6 @@ public class PlaceOrderFormController  {
         Stage stage = (Stage) rootNode.getScene().getWindow();
         stage.setTitle("Order view");
     }
-
 
     private void printBill() throws JRException, SQLException {
         JasperDesign jasperDesign = JRXmlLoader.load("src/main/resources/report/orderBill.jrxml");

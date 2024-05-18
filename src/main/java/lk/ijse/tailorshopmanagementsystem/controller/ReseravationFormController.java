@@ -124,6 +124,11 @@ public class ReseravationFormController {
     }
 
     public void btnIdSearchOnAction(ActionEvent actionEvent) throws SQLException {
+        idSearch();
+    }
+
+    void idSearch() throws SQLException {
+
         int nicFieldId = Integer.parseInt(txtReservationId.getText());
 
         if (currentReservationIdForBillMethod >= nicFieldId) {
@@ -165,7 +170,11 @@ public class ReseravationFormController {
             alert.setContentText("Please enter valid reservation ID!");
             alert.showAndWait();
         }
+    }
 
+    @FXML
+    void lblNicOnAction(ActionEvent event) throws SQLException {
+        idSearch();
     }
 
     @FXML
@@ -228,7 +237,7 @@ public class ReseravationFormController {
     @FXML
     void btnReservedOnAction(ActionEvent event) throws SQLException, JRException {
 
-        //if තුනක් දාන්න හේතුව error message 3 වෙන වෙනම පෙන්වන්න.
+        // if කිහිපයක් දාන්න හේතුව error message 3 වෙන වෙනම පෙන්වන්න.
 
         if (lblCustomerName.getText() != null && !lblCustomerName.getText().isEmpty()) {
 
@@ -236,57 +245,55 @@ public class ReseravationFormController {
             if (selectedDate != null && !selectedDate.equals(LocalDate.of(1970, 1, 1))) {
 
                 if (!tblReservation.getItems().isEmpty()) {
-                if (isValied()) {
 
-                    int resId = parseInt(txtReservationId.getText());
-                    String cusId = lblCustomerId.getText();
-                    int paymentId = parseInt(lblPaymentId.getText());
-                    Date resDate = Date.valueOf(lblReservationDate.getText());
-                    Date dpReturnDateValue = Date.valueOf(dpReturnDate.getValue());
-                    String status = "Incomplete";
-                    double netTotal = Double.parseDouble(lblNetTotal.getText());
-                    String paymentType = cmbPaymentType.getValue();
+                    if (isValied()) {
 
-                    var reservation = new Reservation(resId, cusId, paymentId, resDate, dpReturnDateValue, status);
+                        int resId = parseInt(txtReservationId.getText());
+                        String cusId = lblCustomerId.getText();
+                        int paymentId = parseInt(lblPaymentId.getText());
+                        Date resDate = Date.valueOf(lblReservationDate.getText());
+                        Date dpReturnDateValue = Date.valueOf(dpReturnDate.getValue());
+                        String status = "Incomplete";
+                        double netTotal = Double.parseDouble(lblNetTotal.getText());
+                        String paymentType = cmbPaymentType.getValue();
 
-                    List<ReservationDetails> rdList = new ArrayList<>();
+                        var reservation = new Reservation(resId, cusId, paymentId, resDate, dpReturnDateValue, status);
 
-                    for (int i = 0; i < tblReservation.getItems().size(); i++) {
-                        ReservationTm tm = obList.get(i);
+                        List<ReservationDetails> rdList = new ArrayList<>();
 
-                        ReservationDetails rd = new ReservationDetails(
-                                resId,
-                                tm.getProductId(),
-                                tm.getQty(),
-                                tm.getTotal()
-                        );
+                        for (int i = 0; i < tblReservation.getItems().size(); i++) {
+                            ReservationTm tm = obList.get(i);
 
-                        rdList.add(rd);
+                            ReservationDetails rd = new ReservationDetails(
+                                    resId,
+                                    tm.getProductId(),
+                                    tm.getQty(),
+                                    tm.getTotal()
+                            );
+
+                            rdList.add(rd);
+                        }
+                        PlaceReservation pr = new PlaceReservation(reservation, rdList);
+
+                        boolean isPlaced = PlaceReservationRepo.placeReservation(pr, netTotal, paymentType);
+
+                        if(isPlaced) {
+                            new Alert(Alert.AlertType.CONFIRMATION, "Order Placed!").show();
+                            reservedBill();
+                            clearFields();
+                         } else {
+                             new Alert(Alert.AlertType.WARNING, "Order Placed Unsuccessfully!").show();
+                        }
+                    } else {
+                        Alert alert = new Alert(Alert.AlertType.ERROR);
+                        alert.setTitle("Validation Error");
+                        alert.setHeaderText("Validation Failed");
+                        alert.setContentText("Please fill in all fields correctly.");
+                        alert.showAndWait();
                     }
-                    PlaceReservation pr = new PlaceReservation(reservation, rdList);
-
-                    boolean isPlaced = PlaceReservationRepo.placeReservation(pr, netTotal, paymentType);
-
-                    if(isPlaced) {
-                        new Alert(Alert.AlertType.CONFIRMATION, "Order Placed!").show();
-                        reservedBill();
-                        clearFields();
-                     } else {
-                         new Alert(Alert.AlertType.WARNING, "Order Placed Unsuccessfully!").show();
-                    }
-                } else {
-                    Alert alert = new Alert(Alert.AlertType.ERROR);
-                    alert.setTitle("Validation Error");
-                    alert.setHeaderText("Validation Failed");
-                    alert.setContentText("Please fill in all fields correctly.");
-                    alert.showAndWait();
-                }
 
                 } else {
-                    // Show error message if validation fails
-
-
-                    // Show error message if validation fails
+                    // Show error message if table is empty
                     Alert alert = new Alert(Alert.AlertType.ERROR);
                     alert.setTitle("Table Error");
                     alert.setHeaderText("Table details Failed");
@@ -305,7 +312,6 @@ public class ReseravationFormController {
 
         } else {
             // Label text is null
-
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Customer Error");
             alert.setHeaderText("Customer not found!");
@@ -527,10 +533,6 @@ public class ReseravationFormController {
             throw new RuntimeException(e);
         }
 
-
-    }
-    @FXML
-    void lblNicOnAction(ActionEvent event) {
 
     }
 

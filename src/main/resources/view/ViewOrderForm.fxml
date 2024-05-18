@@ -59,9 +59,9 @@
       </JFXButton>
       <TableView fx:id="tblViewOrders" layoutX="29.0" layoutY="199.0" prefHeight="494.0" prefWidth="1023.0">
         <columns>
-          <TableColumn fx:id="colOrderId" prefWidth="38.827030658721924" text="O ID" />
-          <TableColumn fx:id="colPaymentId" prefWidth="28.772098541259766" text="P ID" />
-            <TableColumn fx:id="colNic" prefWidth="91.985107421875" text="NIC" />
+          <TableColumn fx:id="colOrderId" prefWidth="45.0" text="O ID" />
+          <TableColumn fx:id="colPaymentId" prefWidth="29.0" text="P ID" />
+            <TableColumn fx:id="colNic" prefWidth="86.0" text="NIC" />
             <TableColumn fx:id="colOrderDate" prefWidth="83.24714660644531" text="Order Date" />
             <TableColumn fx:id="colReturnDate" minWidth="0.0" prefWidth="84.75286865234375" text="Return Date" />
             <TableColumn fx:id="colStatus" minWidth="6.066558837890625" prefWidth="70.5660400390625" text="O Status" />
