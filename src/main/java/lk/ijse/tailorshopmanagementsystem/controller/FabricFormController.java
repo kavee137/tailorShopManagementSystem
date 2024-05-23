@@ -22,6 +22,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 public class FabricFormController {
+
     @FXML
     private TableColumn<?, ?> colQtyOnHand;
 
@@ -49,6 +50,9 @@ public class FabricFormController {
     @FXML
     private TableColumn<?, ?> colSupplierId;
 
+
+    @FXML
+    private Label lblFabricId;
     @FXML
     private Label lblSupplierId;
 
@@ -60,9 +64,6 @@ public class FabricFormController {
 
     @FXML
     private TextField txtColor;
-
-    @FXML
-    private TextField txtId;
 
     @FXML
     private TextField txtName;
@@ -86,7 +87,7 @@ public class FabricFormController {
         FabricTm selectedUser = tblFabric.getSelectionModel().getSelectedItem();
         tblFabric.setOnMouseClicked(event -> showSelectedUserDetails());
         if (selectedUser != null) {
-            txtId.setText(selectedUser.getFabricID());
+            lblFabricId.setText(selectedUser.getFabricID());
             txtName.setText(selectedUser.getFabricName());
             cmbSupplierId.setValue(selectedUser.getSupplierID());
             txtColor.setText(selectedUser.getFabricColor());
@@ -145,7 +146,7 @@ public class FabricFormController {
             String currentId = FabricRepo.getCurrentId();
 
             String nextOrderId = generateNextFabricId(currentId);
-            txtId.setText(nextOrderId);
+            lblFabricId.setText(nextOrderId);
 
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -186,12 +187,11 @@ public class FabricFormController {
         cmbFabricName.setValue(null);
         cmbFabricColor.setValue(null);
         cmbSupplierId.setValue(null);
-        txtId.setText("");
+        lblFabricId.setText("");
         txtName.setText("");
         txtColor.setText("");
         txtQtyOnHand.setText("");
 
-        txtId.setStyle("");
         txtName.setStyle("");
         txtColor.setStyle("");
         txtQtyOnHand.setStyle("");
@@ -199,7 +199,7 @@ public class FabricFormController {
 
     @FXML
     void btnDeleteOnAction(ActionEvent event) {
-        String id = txtId.getText();
+        String id = lblFabricId.getText();
 
         try {
             boolean isDeleted = FabricRepo.delete(id);
@@ -217,7 +217,7 @@ public class FabricFormController {
     void btnSaveOnAction(ActionEvent event) {
         if (isValied() && (cmbSupplierId.getValue() != null && !cmbSupplierId.getValue().toString().isEmpty())) {
 
-            String id = txtId.getText();
+            String id = lblFabricId.getText();
             String supId = cmbSupplierId.getValue();
             String name = txtName.getText();
             String color = txtColor.getText();
@@ -249,17 +249,12 @@ public class FabricFormController {
         boolean nameValid = Regex.setTextColor(lk.ijse.tailorshopmanagementsystem.Util.TextField.NAME, txtName);
         boolean color = Regex.setTextColor(lk.ijse.tailorshopmanagementsystem.Util.TextField.NAME, txtColor);
         boolean qtyOnHand = Regex.setTextColor(lk.ijse.tailorshopmanagementsystem.Util.TextField.QTY, txtQtyOnHand);
-        boolean idValid = Regex.setTextColor(lk.ijse.tailorshopmanagementsystem.Util.TextField.FABID, txtId);
 
-        return nameValid && color && qtyOnHand && idValid ;
+        return nameValid && color && qtyOnHand;
     }
 
     public void nameKeyReleaseAction(javafx.scene.input.KeyEvent keyEvent) {
         Regex.setTextColor(lk.ijse.tailorshopmanagementsystem.Util.TextField.NAME, txtName);
-    }
-
-    public void idKeyReleaseAction(javafx.scene.input.KeyEvent keyEvent) {
-        Regex.setTextColor(lk.ijse.tailorshopmanagementsystem.Util.TextField.FABID, txtId);
     }
 
     public void colorKeyReleaseAction(javafx.scene.input.KeyEvent keyEvent) {
@@ -279,7 +274,7 @@ public class FabricFormController {
 
         Fabric fabricSearch = FabricRepo.fabricSearch(fabName, fabColor);
         if (fabricSearch != null) {
-            txtId.setText(fabricSearch.getFabricID());
+            lblFabricId.setText(fabricSearch.getFabricID());
             cmbSupplierId.setValue(fabricSearch.getSupplierID());
             txtName.setText(fabricSearch.getFabricName());
             txtColor.setText(fabricSearch.getFabricColor());
@@ -292,7 +287,7 @@ public class FabricFormController {
     void btnUpdateOnAction(ActionEvent event) {
 
         if (isValied() && (cmbSupplierId.getValue() != null && !cmbSupplierId.getValue().toString().isEmpty())) {
-            String id = txtId.getText();
+            String id = lblFabricId.getText();
             String supId = cmbSupplierId.getValue();
             String name = txtName.getText();
             String color = txtColor.getText();

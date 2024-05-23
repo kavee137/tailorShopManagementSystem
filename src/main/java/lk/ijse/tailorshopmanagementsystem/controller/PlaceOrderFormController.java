@@ -118,6 +118,10 @@ public class PlaceOrderFormController  {
 
     @FXML
     private TextField txtOrderId;
+
+    @FXML
+    private Label lblOrderId;
+
     @FXML
     private TextField txtName;
 
@@ -159,7 +163,7 @@ public class PlaceOrderFormController  {
     @FXML
     void btnPlaceOrderOnAction(ActionEvent event) throws SQLException {
 
-        if (!txtOrderId.getText().isEmpty() &&
+        if (!lblOrderId.getText().isEmpty() &&
                 returnDate.getValue() != null &&
                 !txtNic.getText().isEmpty() &&
                 !lblEmployeeName.getText().isEmpty() &&
@@ -167,7 +171,7 @@ public class PlaceOrderFormController  {
                 !lblCustomerName.getText().isEmpty() &&
                 !tblOrderCart.getItems().isEmpty()) {
 
-            String orderId = txtOrderId.getText();
+            String orderId = lblOrderId.getText();
             String cusId = lblCustomerId.getText();
             int paymentId = Integer.parseInt(lblPaymentId.getText());
             String employeeID = (String) cmbTailorId.getValue();
@@ -461,7 +465,7 @@ public class PlaceOrderFormController  {
             currentId1 = currentId;
 
             String nextOrderId = generateNextOrderId(currentId);
-            txtOrderId.setText(nextOrderId);
+            lblOrderId.setText(nextOrderId);
 
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -503,11 +507,19 @@ public class PlaceOrderFormController  {
         getQtyOnHand();
     }
 
-    public void lblNicOnAction(ActionEvent actionEvent) {
-//        getSuggestions(String.valueOf(txtNic));
+    public void txtOrderIdOnAction(ActionEvent actionEvent) throws SQLException, JRException {
+        findLargerOrderIdForIdSearch(currentId1, txtOrderId.getText());
+    }
+
+    public void txtNicOnAction(ActionEvent actionEvent) throws SQLException {
+        nicSearch();
     }
 
     public void btnSearchOnAction(ActionEvent actionEvent) throws SQLException {
+        nicSearch();
+    }
+
+    private void nicSearch() throws SQLException {
         String cusNic = txtNic.getText();
 
         List<String> list = OrderRepo.customerSearch(cusNic);
@@ -583,6 +595,7 @@ public class PlaceOrderFormController  {
             obList.add(cartTm);
             tblOrderCart.setItems(obList);
         }
+        lblOrderId.setText(txtOrderId.getText());
 
         List<String> orderJoinTablesList = OrderRepo.getOrderDetails(orderId);
 
@@ -600,7 +613,7 @@ public class PlaceOrderFormController  {
     }
 
     public void btnUpdateOnAction(ActionEvent actionEvent) throws SQLException {
-        String orderId = txtOrderId.getText();
+        String orderId = lblOrderId.getText();
         String status = cmbStatus.getValue();
 
         boolean isUpdateStatus = OrderRepo.updateStatus(orderId, status);
@@ -656,6 +669,21 @@ public class PlaceOrderFormController  {
         JasperViewer.viewReport(jasperPrint, false);
     }
 
+    public void findLargerOrderIdForIdSearch(String currentId1, String orderId1) throws JRException, SQLException {
+        // Extract the last three digits from the order IDs
+        int lastThreeDigits1 = Integer.parseInt(currentId1.substring(1));
+        int lastThreeDigits2 = Integer.parseInt(orderId1.substring(1));
+
+        // Compare the last three digits numerically
+        if (lastThreeDigits1 < lastThreeDigits2) {
+            showErrorAlert("Order ID failed!", "Please enter order ID less than to next OrderID!.");
+
+        } else if (lastThreeDigits1 > lastThreeDigits2) {
+            searchId();
+        } else {
+            searchId();
+        }
+    }
 
 
 }

@@ -24,6 +24,7 @@ import java.util.List;
 public class UserFormController {
 
     public AnchorPane rootNode;
+
     @FXML
     private TextField txtPassword;
     @FXML
@@ -38,8 +39,9 @@ public class UserFormController {
     private TableColumn<?, ?> colUserName;
     @FXML
     private TableView<UserTm> tblUser;
+
     @FXML
-    private TextField txtId;
+    private Label lblUserId;
     @FXML
     private TextField txtName;
     @FXML
@@ -59,7 +61,7 @@ public class UserFormController {
         UserTm selectedUser = tblUser.getSelectionModel().getSelectedItem();
         tblUser.setOnMouseClicked(event -> showSelectedUserDetails());
         if (selectedUser != null) {
-            txtId.setText(selectedUser.getUserID());
+            lblUserId.setText(selectedUser.getUserID());
             txtName.setText(selectedUser.getUserName());
             txtEmail.setText(selectedUser.getUserEmail());
             txtPassword.setText(selectedUser.getPassword());
@@ -73,7 +75,7 @@ public class UserFormController {
             String currentId = UserRepo.getUserId();
 
             String nextUserId = generateNextUserId(currentId);
-            txtId.setText(nextUserId);
+            lblUserId.setText(nextUserId);
 
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -126,11 +128,10 @@ public class UserFormController {
     @FXML
     void btnClearOnAction(ActionEvent event) {
         clearFields();
-
     }
 
     private void clearFields() {
-        txtId.setText("");
+        lblUserId.setText("");
         txtEmail.setText("");
         txtName.setText("");
         txtStatus.setText("Active");
@@ -141,7 +142,7 @@ public class UserFormController {
     }
     @FXML
     void btnDeleteOnAction(ActionEvent event) {
-        String id = txtId.getText();
+        String id = lblUserId.getText();
 
         try {
             boolean isDeleted = UserRepo.delete(id);
@@ -152,10 +153,6 @@ public class UserFormController {
         } catch (SQLException e) {
             new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
         }
-    }
-
-    public void idKeyReleaseAction(javafx.scene.input.KeyEvent keyEvent) {
-        Regex.setTextColor(lk.ijse.tailorshopmanagementsystem.Util.TextField.UID, txtId);
     }
 
     public void emailKeyReleaseAction(javafx.scene.input.KeyEvent keyEvent) {
@@ -179,15 +176,15 @@ public class UserFormController {
         boolean email = Regex.setTextColor(lk.ijse.tailorshopmanagementsystem.Util.TextField.EMAIL, txtEmail);
         boolean password = Regex.setTextColor(lk.ijse.tailorshopmanagementsystem.Util.TextField.ANY, txtPassword);
         boolean status = Regex.setTextColor(lk.ijse.tailorshopmanagementsystem.Util.TextField.STATUS, txtStatus);
-        boolean id = Regex.setTextColor(lk.ijse.tailorshopmanagementsystem.Util.TextField.UID, txtId);
 
-        return name && email && password && status && id ;
+
+        return name && email && password && status ;
     }
     @FXML
     void btnSaveOnAction(ActionEvent event) {
 
         if (isValied()) {
-            String id = txtId.getText();
+            String id = lblUserId.getText();
             String userName = txtName.getText();
             String email = txtEmail.getText();
             String password = txtPassword.getText();
@@ -216,8 +213,7 @@ public class UserFormController {
     @FXML
     void btnUpdateOnAction(ActionEvent event) {
         if (isValied()) {
-
-            String id = txtId.getText();
+            String id = lblUserId.getText();
             String name = txtName.getText();
             String email = txtEmail.getText();
             String password = txtPassword.getText();

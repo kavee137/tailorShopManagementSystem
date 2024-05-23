@@ -53,7 +53,6 @@
       <TextField fx:id="txtNic" layoutX="501.0" layoutY="76.0" onKeyReleased="#nicKeyReleaseAction" prefHeight="26.0" prefWidth="182.0" />
       <TextField fx:id="txtName" layoutX="741.0" layoutY="76.0" onKeyReleased="#nameKeyReleaseAction" prefHeight="26.0" prefWidth="216.0" />
       <TextField fx:id="txtAddress" layoutX="741.0" layoutY="115.0" onKeyReleased="#addressKeyReleaseAction" prefHeight="26.0" prefWidth="215.0" />
-      <TextField fx:id="txtId" layoutX="213.0" layoutY="76.0" onKeyReleased="#idKeyReleaseAction" prefHeight="26.0" prefWidth="192.0" />
       <JFXComboBox fx:id="cmbPositionName" layoutX="215.0" layoutY="111.0" onAction="#cmbPositionOnAction" prefHeight="26.0" prefWidth="190.0" />
       <JFXButton fx:id="btnSave" buttonType="RAISED" contentDisplay="RIGHT" layoutX="665.0" layoutY="209.0" onAction="#btnSaveOnAction" prefHeight="10.0" prefWidth="50.0" style="-fx-background-color: #42a5f5;" text="Save" textFill="WHITE">
          <font>
@@ -133,5 +132,10 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </JFXButton>
+      <Label fx:id="lblEmployeeId" layoutX="214.0" layoutY="77.0" prefHeight="17.0" prefWidth="86.0">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>

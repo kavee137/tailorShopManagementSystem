@@ -13,7 +13,7 @@
 <AnchorPane fx:id="rootNode" prefHeight="720.0" prefWidth="1080.0" style="-fx-background-color: #edf2fb;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lk.ijse.tailorshopmanagementsystem.controller.UserFormController">
    <children>
       <Rectangle arcHeight="30.0" arcWidth="30.0" fill="WHITE" height="171.0" layoutX="111.0" layoutY="45.0" strokeType="INSIDE" width="861.0" />
-      <Label layoutX="447.0" layoutY="71.0" text="Email:" textFill="#757575">
+      <Label layoutX="407.0" layoutY="71.0" text="Email:" textFill="#757575">
          <font>
             <Font name="System Italic" size="11.0" />
          </font>
@@ -28,9 +28,8 @@
             <Font name="System Italic" size="11.0" />
          </font>
       </Label>
-      <TextField fx:id="txtEmail" layoutX="481.0" layoutY="66.0" onKeyReleased="#emailKeyReleaseAction" prefHeight="26.0" prefWidth="182.0" />
-      <TextField fx:id="txtName" layoutX="194.0" layoutY="118.0" onKeyReleased="#nameKeyReleaseAction" prefHeight="26.0" prefWidth="216.0" />
-      <TextField fx:id="txtId" layoutX="177.0" layoutY="66.0" onKeyReleased="#idKeyReleaseAction" prefHeight="26.0" prefWidth="233.0" />
+      <TextField fx:id="txtEmail" layoutX="479.0" layoutY="66.0" onKeyReleased="#emailKeyReleaseAction" prefHeight="26.0" prefWidth="231.0" />
+      <TextField fx:id="txtName" layoutX="194.0" layoutY="118.0" onKeyReleased="#nameKeyReleaseAction" prefHeight="26.0" prefWidth="157.0" />
       <JFXButton buttonType="RAISED" contentDisplay="RIGHT" layoutX="612.0" layoutY="171.0" onAction="#btnSaveOnAction" prefHeight="10.0" prefWidth="50.0" style="-fx-background-color: #42a5f5;" text="Save" textFill="WHITE">
          <font>
             <Font name="System Italic" size="11.0" />
@@ -63,12 +62,12 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </JFXButton>
-      <Label layoutX="689.0" layoutY="70.0" text="Status:" textFill="#757575">
+      <Label layoutX="729.0" layoutY="70.0" text="Status:" textFill="#757575">
          <font>
             <Font name="System Italic" size="11.0" />
          </font>
       </Label>
-      <TextField fx:id="txtStatus" layoutX="732.0" layoutY="66.0" onKeyReleased="#statusKeyReleaseAction" prefHeight="26.0" prefWidth="215.0" />
+      <TextField fx:id="txtStatus" layoutX="783.0" layoutY="66.0" onKeyReleased="#statusKeyReleaseAction" prefHeight="26.0" prefWidth="164.0" />
       <JFXButton buttonType="RAISED" contentDisplay="RIGHT" layoutX="894.0" layoutY="70.0" onAction="#btnActiveOnAction" prefHeight="16.0" prefWidth="48.0" style="-fx-background-color: green;" text="Active" textFill="WHITE">
          <font>
             <Font name="System Italic" size="9.0" />
@@ -86,11 +85,16 @@
             <TableColumn fx:id="colStatus" prefWidth="133.16363525390625" text="Status" />
          </columns>
       </TableView>
-      <Label layoutX="447.0" layoutY="123.0" text="Password:" textFill="#757575">
+      <Label layoutX="407.0" layoutY="123.0" text="Password:" textFill="#757575">
          <font>
             <Font name="System Italic" size="11.0" />
          </font>
       </Label>
-      <TextField fx:id="txtPassword" layoutX="505.0" layoutY="118.0" onKeyReleased="#passwordKeyReleaseAction" prefHeight="26.0" prefWidth="159.0" />
+      <TextField fx:id="txtPassword" layoutX="481.0" layoutY="118.0" onKeyReleased="#passwordKeyReleaseAction" prefHeight="26.0" prefWidth="231.0" />
+      <Label fx:id="lblUserId" layoutX="196.0" layoutY="70.0" prefHeight="17.0" prefWidth="86.0">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>

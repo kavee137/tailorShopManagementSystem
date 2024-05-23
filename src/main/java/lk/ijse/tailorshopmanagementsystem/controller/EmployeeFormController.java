@@ -30,10 +30,10 @@ public class EmployeeFormController {
     public TextField txtStatus;
 
     @FXML
-    private JFXComboBox<String> cmbPositionName;
+    private Label lblEmployeeId;
 
     @FXML
-    private TextField txtId;
+    private JFXComboBox<String> cmbPositionName;
 
     @FXML
     private TextField txtTel;
@@ -92,10 +92,6 @@ public class EmployeeFormController {
         showSelectedEmployeeDetails();
     }
 
-    public void idKeyReleaseAction(javafx.scene.input.KeyEvent keyEvent) {
-        Regex.setTextColor(lk.ijse.tailorshopmanagementsystem.Util.TextField.EID, txtId);
-    }
-
     public void telKeyReleaseAction(javafx.scene.input.KeyEvent keyEvent) {
         Regex.setTextColor(lk.ijse.tailorshopmanagementsystem.Util.TextField.TEL, txtTel);
     }
@@ -127,16 +123,15 @@ public class EmployeeFormController {
         boolean telValid = Regex.setTextColor(lk.ijse.tailorshopmanagementsystem.Util.TextField.TEL, txtTel);
         boolean salary = Regex.setTextColor(lk.ijse.tailorshopmanagementsystem.Util.TextField.PRICEDOT, txtSalary);
         boolean statusValid = Regex.setTextColor(lk.ijse.tailorshopmanagementsystem.Util.TextField.STATUS, txtStatus);
-        boolean idValid = Regex.setTextColor(lk.ijse.tailorshopmanagementsystem.Util.TextField.EID, txtId);
 
-        return nameValid && nicValid && addressValid && telValid && statusValid && idValid && salary;
+        return nameValid && nicValid && addressValid && telValid && statusValid && salary;
     }
 
     private void showSelectedEmployeeDetails() {
         EmployeeTm selectedUser = tblEmployee.getSelectionModel().getSelectedItem();
         tblEmployee.setOnMouseClicked(event -> showSelectedEmployeeDetails());
         if (selectedUser != null) {
-            txtId.setText(selectedUser.getEmployeeID());
+            lblEmployeeId.setText(selectedUser.getEmployeeID());
             txtNic.setText(selectedUser.getNIC());
             txtName.setText(selectedUser.getEmployeeName());
             cmbPositionName.setValue(selectedUser.getPosition());
@@ -192,7 +187,7 @@ public class EmployeeFormController {
             String currentId = EmployeeRepo.getEmpId();
 
             String nextEmployeeId = generateNextEmployeeId(currentId);
-            txtId.setText(nextEmployeeId);
+            lblEmployeeId.setText(nextEmployeeId);
 
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -244,7 +239,7 @@ public class EmployeeFormController {
     }
 
     private void clearFields() {
-        txtId.setText("");
+        lblEmployeeId.setText("");
         txtAddress.setText("");
         txtNic.setText("");
         txtTel.setText("");
@@ -259,7 +254,6 @@ public class EmployeeFormController {
         txtUserId.setText("U01");
         txtStatus.setText("Active");
 
-        txtId.setStyle("");
         txtNic.setStyle("");
         txtName.setStyle("");
         txtSalary.setStyle("");
@@ -268,13 +262,12 @@ public class EmployeeFormController {
         txtStatus.setStyle("");
 
     }
-
     @FXML
     void btnSaveOnAction(ActionEvent event) {
 
         if (isValied() && (cmbPositionName.getValue() != null && !cmbPositionName.getValue().toString().isEmpty())) {
 
-            String id = txtId.getText();
+            String id = lblEmployeeId.getText();
             String nic = txtNic.getText();
             String name = txtName.getText();
             String address = txtAddress.getText();
@@ -305,7 +298,6 @@ public class EmployeeFormController {
             alert.showAndWait();
         }
     }
-
     @FXML
     void btnDeleteOnAction(ActionEvent event) {
         String nic = txtNic.getText();
@@ -327,7 +319,7 @@ public class EmployeeFormController {
 
         Employee employee = EmployeeRepo.nicSearch(nic);
         if (employee != null) {
-            txtId.setText(employee.getEmployeeID());
+            lblEmployeeId.setText(employee.getEmployeeID());
             txtNic.setText(employee.getNIC());
             txtName.setText(employee.getEmployeeName());
             cmbPositionName.setValue(employee.getPosition());
@@ -349,7 +341,7 @@ public class EmployeeFormController {
 
         if (isValied() && (cmbPositionName.getValue() != null && !cmbPositionName.getValue().toString().isEmpty())) {
 
-            String id = txtId.getText();
+            String id = lblEmployeeId.getText();
             String nic = txtNic.getText();
             String name = txtName.getText();
             String position = cmbPositionName.getValue();

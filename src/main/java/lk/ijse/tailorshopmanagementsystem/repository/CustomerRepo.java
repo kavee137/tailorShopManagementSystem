@@ -13,14 +13,6 @@ import java.util.List;
 
 public class CustomerRepo {
 
-
-
-
-
-
-
-
-
     public static String getCustomerCount() throws SQLException {
         String sql = "SELECT COUNT(*) AS activeCustomerCount FROM customer WHERE status = 'Active'";
         PreparedStatement pstm = DbConnection.getInstance().getConnection()
@@ -61,6 +53,7 @@ public class CustomerRepo {
 
         return pstm.executeUpdate() > 0;
     }
+
     public static Customer1 nicSearch(String nic) throws SQLException {
         String sql = "SELECT customerID, customerName, customerAddress, customerTel, status FROM customer WHERE NIC = ?";
 
@@ -101,6 +94,7 @@ public class CustomerRepo {
 
         return pstm.executeUpdate() > 0;
     }
+
     public static String getCurrentId() throws SQLException {
         String sql = "SELECT customerID FROM customer ORDER BY customerID DESC LIMIT 1";
         PreparedStatement pstm = DbConnection.getInstance().getConnection()

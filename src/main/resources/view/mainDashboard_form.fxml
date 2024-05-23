@@ -91,7 +91,7 @@
             <Image url="@../icon/rs.jpeg" />
          </image>
       </ImageView>
-      <Label layoutX="76.0" layoutY="155.0" prefHeight="31.0" prefWidth="140.0" text="Trasactions" textFill="#00000083">
+      <Label layoutX="71.0" layoutY="155.0" prefHeight="33.0" prefWidth="147.0" text="Transactions" textFill="#00000083">
          <font>
             <Font name="Tahoma" size="26.0" />
          </font>

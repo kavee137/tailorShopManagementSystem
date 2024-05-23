@@ -38,6 +38,10 @@ import static java.lang.Integer.parseInt;
 
 public class ReseravationFormController {
     @FXML
+    private Label lblReservationId;
+//    @FXML
+//    private TextField txtReservationId;
+    @FXML
     private JFXComboBox<String> cmbStatus;
     @FXML
     private TextField txtReservationId;
@@ -127,42 +131,63 @@ public class ReseravationFormController {
         idSearch();
     }
 
+    private boolean idValid() {
+        boolean resValid = Regex.setTextColor(lk.ijse.tailorshopmanagementsystem.Util.TextField.RESID, txtReservationId);
+
+        return resValid;
+    }
+
     void idSearch() throws SQLException {
 
-        int nicFieldId = Integer.parseInt(txtReservationId.getText());
+        if (!txtReservationId.getText().isEmpty() && idValid()) {
 
-        if (currentReservationIdForBillMethod >= nicFieldId) {
+            int nicFieldId = Integer.parseInt(txtReservationId.getText());
 
-            int resId = parseInt(txtReservationId.getText());
-            tblReservation.getItems().clear();
+            if (currentReservationIdForBillMethod >= nicFieldId && nicFieldId > 0) {
 
-            ResultSet reservationDetailsList = ReservationRepo.getReservationDetailsTable(resId);
+                int resId = parseInt(txtReservationId.getText());
+                tblReservation.getItems().clear();
 
-            while (reservationDetailsList.next()) {
-                int pId = reservationDetailsList.getInt(1);
-                String pName = reservationDetailsList.getString(2);
-                String pColor = reservationDetailsList.getString(3);
-                double unitPrice = reservationDetailsList.getDouble(4);
-                int qty = reservationDetailsList.getInt(5);
-                double total = qty * unitPrice;
+                ResultSet reservationDetailsList = ReservationRepo.getReservationDetailsTable(resId);
 
-                ReservationTm r = new ReservationTm(pId, pName, pColor, unitPrice, qty, total, new JFXButton());
-                obList.add(r);
-                tblReservation.setItems(obList);
+                while (reservationDetailsList.next()) {
+                    int pId = reservationDetailsList.getInt(1);
+                    String pName = reservationDetailsList.getString(2);
+                    String pColor = reservationDetailsList.getString(3);
+                    double unitPrice = reservationDetailsList.getDouble(4);
+                    int qty = reservationDetailsList.getInt(5);
+                    double total = qty * unitPrice;
+
+                    ReservationTm r = new ReservationTm(pId, pName, pColor, unitPrice, qty, total, new JFXButton());
+                    obList.add(r);
+                    tblReservation.setItems(obList);
+                }
+
+                List<String> reservationJoinTablesList = ReservationRepo.getReservationJoinTable(resId);
+
+                lblCustomerId.setText(reservationJoinTablesList.get(0));
+                lblCustomerName.setText(reservationJoinTablesList.get(1));
+                lblPaymentId.setText(reservationJoinTablesList.get(2));
+                cmbPaymentType.setValue(reservationJoinTablesList.get(3));
+                lblNetTotal.setText(reservationJoinTablesList.get(4));
+                lblReservationDate.setText(reservationJoinTablesList.get(5));
+                dpReturnDate.setValue(LocalDate.parse(reservationJoinTablesList.get(6)));
+                cmbStatus.setValue(reservationJoinTablesList.get(7));
+                txtNic.setText(reservationJoinTablesList.get(8));
+                lblReservationId.setText(txtReservationId.getText());
+            } else {
+                clearFieldsBeforeSearch();
+
+                // Show error message if validation fails
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("ReservationID error");
+                alert.setHeaderText("Reservartion search Failed");
+                alert.setContentText("Please enter valid reservation ID!");
+                alert.showAndWait();
             }
-
-            List<String> reservationJoinTablesList = ReservationRepo.getReservationJoinTable(resId);
-
-            lblCustomerId.setText(reservationJoinTablesList.get(0));
-            lblCustomerName.setText(reservationJoinTablesList.get(1));
-            lblPaymentId.setText(reservationJoinTablesList.get(2));
-            cmbPaymentType.setValue(reservationJoinTablesList.get(3));
-            lblNetTotal.setText(reservationJoinTablesList.get(4));
-            lblReservationDate.setText(reservationJoinTablesList.get(5));
-            dpReturnDate.setValue(LocalDate.parse(reservationJoinTablesList.get(6)));
-            cmbStatus.setValue(reservationJoinTablesList.get(7));
-            txtNic.setText(reservationJoinTablesList.get(8));
         } else {
+            clearFieldsBeforeSearch();
+
             // Show error message if validation fails
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("ReservationID error");
@@ -170,10 +195,12 @@ public class ReseravationFormController {
             alert.setContentText("Please enter valid reservation ID!");
             alert.showAndWait();
         }
+
+
     }
 
     @FXML
-    void lblNicOnAction(ActionEvent event) throws SQLException {
+    void txtResIdOnAction(ActionEvent event) throws SQLException {
         idSearch();
     }
 
@@ -191,39 +218,53 @@ public class ReseravationFormController {
     @FXML
     void btnAddToCartOnAction(ActionEvent event) {
         if (isQtyValied()) {
-            int pId = parseInt(lblProductId.getText());
-            String pName = cmbProductName.getValue();
-            String pColor = cmbProductColor.getValue();
-            double unitPrice = Double.parseDouble((lblUnitPrice.getText()));
-            int qty = parseInt(txtQty.getText());
-            double total = qty * unitPrice;
+
+            if(!lblProductId.getText().isEmpty()){
 
 
-            // Create a remove button for the cart item
-            JFXButton btnRemove = new JFXButton("Remove");
-            btnRemove.setOnAction((e) -> {
-                ButtonType yes = new ButtonType("yes", ButtonBar.ButtonData.OK_DONE);
-                ButtonType no = new ButtonType("no", ButtonBar.ButtonData.CANCEL_CLOSE);
+                int pId = parseInt(lblProductId.getText());
+                String pName = cmbProductName.getValue();
+                String pColor = cmbProductColor.getValue();
+                double unitPrice = Double.parseDouble((lblUnitPrice.getText()));
+                int qty = parseInt(txtQty.getText());
+                double total = qty * unitPrice;
 
-                Optional<ButtonType> type = new Alert(Alert.AlertType.INFORMATION, "Are you sure to remove?", yes, no).showAndWait();
 
-                if(type.orElse(no) == yes) {
-                    int selectedIndex = tblReservation.getSelectionModel().getSelectedIndex();
-                    obList.remove(selectedIndex);
+                // Create a remove button for the cart item
+                JFXButton btnRemove = new JFXButton("Remove");
+                btnRemove.setOnAction((e) -> {
+                    ButtonType yes = new ButtonType("yes", ButtonBar.ButtonData.OK_DONE);
+                    ButtonType no = new ButtonType("no", ButtonBar.ButtonData.CANCEL_CLOSE);
 
-                    tblReservation.refresh();
-                    calculateNetTotal();
-                }
-            });
+                    Optional<ButtonType> type = new Alert(Alert.AlertType.INFORMATION, "Are you sure to remove?", yes, no).showAndWait();
 
-            // Create a new cart item and add it to the list
-            ReservationTm productItem = new ReservationTm(pId, pName, pColor, unitPrice, qty, total, btnRemove);
-            obList.add(productItem);
+                    if(type.orElse(no) == yes) {
+                        int selectedIndex = tblReservation.getSelectionModel().getSelectedIndex();
+                        obList.remove(selectedIndex);
 
-            // Refresh the cart table with the updated list
-            tblReservation.setItems(obList);
-            removeForNewItem();
-            calculateNetTotal();
+                        tblReservation.refresh();
+                        calculateNetTotal();
+                    }
+                });
+
+                // Create a new cart item and add it to the list
+                ReservationTm productItem = new ReservationTm(pId, pName, pColor, unitPrice, qty, total, btnRemove);
+                obList.add(productItem);
+
+                // Refresh the cart table with the updated list
+                tblReservation.setItems(obList);
+                removeForNewItem();
+                calculateNetTotal();
+
+            } else {
+                // Show error message if validation fails
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Validation Error");
+                alert.setHeaderText("Validation Failed");
+                alert.setContentText("Please select product details!");
+                alert.showAndWait();
+            }
+
         } else {
             // Show error message if validation fails
             Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -232,12 +273,15 @@ public class ReseravationFormController {
             alert.setContentText("Please fill in the qty field number only.");
             alert.showAndWait();
         }
+
+
+
     }
 
     @FXML
     void btnReservedOnAction(ActionEvent event) throws SQLException, JRException {
 
-        // if කිහිපයක් දාන්න හේතුව error message 3 වෙන වෙනම පෙන්වන්න.
+        // if කිහිපයක් දාන්න හේතුව error messages වෙන වෙනම පෙන්වන්න.
 
         if (lblCustomerName.getText() != null && !lblCustomerName.getText().isEmpty()) {
 
@@ -248,7 +292,7 @@ public class ReseravationFormController {
 
                     if (isValied()) {
 
-                        int resId = parseInt(txtReservationId.getText());
+                        int resId = parseInt(lblReservationId.getText());
                         String cusId = lblCustomerId.getText();
                         int paymentId = parseInt(lblPaymentId.getText());
                         Date resDate = Date.valueOf(lblReservationDate.getText());
@@ -320,7 +364,7 @@ public class ReseravationFormController {
         }
     }
 
-    public void removeForNewItem(){
+    public void removeForNewItem() {
         cmbProductName.setValue(null);
         cmbProductColor.setValue(null);
         cmbSize.setValue(null);
@@ -392,8 +436,24 @@ public class ReseravationFormController {
     }
 
     public void btnSearchOnAction(ActionEvent actionEvent) throws SQLException {
-        lblCustomerName.setText("");
-        lblCustomerId.setText("");
+        lblCustomerName.setText(null);
+        lblCustomerId.setText(null);
+
+        String cusNic = txtNic.getText();
+
+        List<String> list  = ReservationRepo.customerSearch(cusNic);
+        if (list != null) {
+            lblCustomerName.setText(list.get(0));
+            lblCustomerId.setText(list.get(1));
+
+        }else {
+            new Alert(Alert.AlertType.INFORMATION, "customer not found!").show();
+        }
+    }
+
+    public void txtNicOnAction(ActionEvent actionEvent) throws SQLException {
+        lblCustomerName.setText(null);
+        lblCustomerId.setText(null);
 
         String cusNic = txtNic.getText();
 
@@ -415,7 +475,7 @@ public class ReseravationFormController {
             currentReservationIdForBillMethod = currentId;
 
             int nextReservationId = generateNextReservationId(currentId);
-            txtReservationId.setText(String.valueOf(nextReservationId));
+            lblReservationId.setText(String.valueOf(nextReservationId));
 
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -469,6 +529,8 @@ public class ReseravationFormController {
         lblCustomerId.setText(null);
         lblCustomerName.setText("");
         lblNetTotal.setText(null);
+        lblReservationId.setText(null);
+        txtReservationId.setText(null);
 
         setDate();
         getCurrentReservationId();
@@ -480,6 +542,7 @@ public class ReseravationFormController {
 
         txtNic.setStyle(null);
         txtQty.setStyle(null);
+        lblReservationId.setStyle(null);
         txtReservationId.setStyle(null);
 
     }
@@ -524,9 +587,9 @@ public class ReseravationFormController {
                 lblUnitPrice.setText(qtyList.get(2));
             } else {
                 // Handle the case where qtyList is empty
-                lblQtyOnHand.setText("N/A");
-                lblProductId.setText("N/A");
-                lblUnitPrice.setText("N/A");
+                lblQtyOnHand.setText(null);
+                lblProductId.setText(null);
+                lblUnitPrice.setText(null);
             }
         } catch (SQLException e) {
             // Handle the SQL exception appropriately
@@ -564,7 +627,7 @@ public class ReseravationFormController {
     }
 
     public void btnUpdateOnAction(ActionEvent actionEvent) throws SQLException {
-        String resId = (txtReservationId.getText());
+        String resId = (lblReservationId.getText());
         String proId = (lblProductId.getText());
 
         boolean isUpdateStatus = ReservationRepo.updateStatus(resId);
@@ -584,20 +647,36 @@ public class ReseravationFormController {
         }
     }
 
+
+
+
+
     public void btnBillOnAction(ActionEvent actionEvent) throws JRException, SQLException {
-        int nicFieldId = Integer.parseInt(txtReservationId.getText());
 
-        if (currentReservationIdForBillMethod >= nicFieldId) {
 
-            JasperDesign jasperDesign = JRXmlLoader.load("src/main/resources/report/reservationBill.jrxml");
-            JasperReport jasperReport = JasperCompileManager.compileReport(jasperDesign);
+        if (isResIdValied()) {
+            int resId = Integer.parseInt(txtReservationId.getText());
+            if (currentReservationIdForBillMethod >= resId) {
 
-            Map<String, Object> data = new HashMap<>();
-            data.put("reservationID", txtReservationId.getText());
+                JasperDesign jasperDesign = JRXmlLoader.load("src/main/resources/report/reservationBill.jrxml");
+                JasperReport jasperReport = JasperCompileManager.compileReport(jasperDesign);
 
-            JasperPrint jasperPrint =
-                    JasperFillManager.fillReport(jasperReport, data, DbConnection.getInstance().getConnection());
-            JasperViewer.viewReport(jasperPrint, false);
+                Map<String, Object> data = new HashMap<>();
+                data.put("reservationID", txtReservationId.getText());
+
+                JasperPrint jasperPrint =
+                        JasperFillManager.fillReport(jasperReport, data, DbConnection.getInstance().getConnection());
+                JasperViewer.viewReport(jasperPrint, false);
+            }else {
+
+
+                // Show error message if validation fails
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("ReservationID error");
+                alert.setHeaderText("Reservartion search Failed");
+                alert.setContentText("Please enter valid reservation ID!");
+                alert.showAndWait();
+            }
         }else {
             // Show error message if validation fails
             Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -607,6 +686,41 @@ public class ReseravationFormController {
             alert.showAndWait();
         }
     }
+    private void clearFieldsBeforeSearch() {
+
+        txtNic.setText("");
+        txtQty.setText("");
+        lblProductId.setText("");
+        dpReturnDate.setValue(null);
+        lblQtyOnHand.setText(null);
+        cmbSize.setValue(null);
+        cmbProductName.setValue(null);
+        cmbProductColor.setValue(null);
+        lblUnitPrice.setText("");
+        tblReservation.getItems().clear();
+        obList.removeAll();
+        lblCustomerId.setText(null);
+        lblCustomerName.setText("");
+        lblNetTotal.setText(null);
+        lblReservationId.setText(null);
+
+        setDate();
+        getCurrentReservationId();
+        getProductName();
+        setPaymentType();
+        getCurrentPaymentId();
+        setCmbStatus();
+        setCellValueFactory();
+
+        txtNic.setStyle(null);
+        txtQty.setStyle(null);
+        lblReservationId.setStyle(null);
+        txtReservationId.setStyle(null);
+
+    }
+
+
+
 
     public void reservedBill() throws JRException, SQLException {
 //        int nicFieldId = Integer.parseInt(txtReservationId.getText());
@@ -632,6 +746,13 @@ public class ReseravationFormController {
 
     }
 
+
+
+
+
+
+
+
     public void idKeyRelaseAction(javafx.scene.input.KeyEvent keyEvent) {
         Regex.setTextColor(lk.ijse.tailorshopmanagementsystem.Util.TextField.RESID, txtReservationId);
     }
@@ -646,11 +767,15 @@ public class ReseravationFormController {
 
     public boolean isValied(){
         boolean nicValid = Regex.setTextColor(lk.ijse.tailorshopmanagementsystem.Util.TextField.NIC, txtNic);
-        boolean idValid = Regex.setTextColor(lk.ijse.tailorshopmanagementsystem.Util.TextField.RESID, txtReservationId);
 
-        return idValid && nicValid;
+        return nicValid;
     }
 
+    public boolean isResIdValied(){
+        boolean nicValid = Regex.setTextColor(lk.ijse.tailorshopmanagementsystem.Util.TextField.RESID, txtReservationId);
+
+        return nicValid;
+    }
     public boolean isQtyValied(){
         boolean qtyValid = Regex.setTextColor(lk.ijse.tailorshopmanagementsystem.Util.TextField.QTY, txtQty);
 

@@ -1,5 +1,6 @@
 package lk.ijse.tailorshopmanagementsystem.controller;
 
+import com.jfoenix.controls.JFXComboBox;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -23,9 +24,10 @@ import java.util.List;
 
 public class CustomerFormController {
     public AnchorPane rootNode;
-
     @FXML
-    private TextField txtStatus;
+    private JFXComboBox<String> cmbStatus;
+    @FXML
+    private Label lblCustomerId;
 
     @FXML
     private TextField txtTel;
@@ -38,9 +40,6 @@ public class CustomerFormController {
 
     @FXML
     private TextField txtAddress;
-
-    @FXML
-    private TextField txtCustomerId;
 
     @FXML
     private TableColumn<?, ?> colAddress;
@@ -71,18 +70,19 @@ public class CustomerFormController {
         loadAllCustomers();
         getCurrentCustomerId();
         showSelectedUserDetails();
+        setTxtStatus();
     }
 
     private void showSelectedUserDetails() {
         CustomerTm selectedUser = tblCustomer.getSelectionModel().getSelectedItem();
         tblCustomer.setOnMouseClicked(event -> showSelectedUserDetails());
         if (selectedUser != null) {
-            txtCustomerId.setText(selectedUser.getCustomerID());
+            lblCustomerId.setText(selectedUser.getCustomerID());
             txtName.setText(selectedUser.getCustomerName());
             txtNic.setText(selectedUser.getNIC());
             txtAddress.setText(selectedUser.getCustomerAddress());
             txtTel.setText(selectedUser.getCustomerTel());
-            txtStatus.setText(selectedUser.getStatus());
+            cmbStatus.setValue(selectedUser.getStatus());
         }
     }
 
@@ -91,8 +91,8 @@ public class CustomerFormController {
             String currentId = CustomerRepo.getCurrentId();
 
             String nextCustomerId = generateNextCustomerId(currentId);
-            txtCustomerId.setText(nextCustomerId);
-            txtStatus.setText("Active");
+            lblCustomerId.setText(nextCustomerId);
+            cmbStatus.setValue("Active");
 
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -147,12 +147,12 @@ public class CustomerFormController {
 
     @FXML
     void btnUpdateOnAction(ActionEvent event) {
-        String id = txtCustomerId.getText();
+        String id = lblCustomerId.getText();
         String name = txtName.getText();
         String nic = txtNic.getText();
         String address = txtAddress.getText();
         String tel = txtTel.getText();
-        String status = txtStatus.getText();
+        String status = cmbStatus.getValue();
         String userId = "U01";
 
         if (isValied()) {
@@ -180,7 +180,7 @@ public class CustomerFormController {
 
     @FXML
     void btnSaveOnAction(ActionEvent event) {
-        String id = txtCustomerId.getText();
+        String id = lblCustomerId.getText();
         String nic = txtNic.getText();
         String name = txtName.getText();
         String address = txtAddress.getText();
@@ -227,23 +227,19 @@ public class CustomerFormController {
         Regex.setTextColor(lk.ijse.tailorshopmanagementsystem.Util.TextField.TEL, txtTel);
     }
 
-    public void statusKeyRelaseAction(javafx.scene.input.KeyEvent keyEvent) {
-        Regex.setTextColor(lk.ijse.tailorshopmanagementsystem.Util.TextField.STATUS, txtStatus);
-    }
 
-    public void idKeyRelaseAction(javafx.scene.input.KeyEvent keyEvent) {
-        Regex.setTextColor(lk.ijse.tailorshopmanagementsystem.Util.TextField.CUSID, txtCustomerId);
-    }
+//    public void idKeyRelaseAction(javafx.scene.input.KeyEvent keyEvent) {
+//        Regex.setTextColor(lk.ijse.tailorshopmanagementsystem.Util.TextField.CUSID, lblCustomerId);
+//    }
 
     public boolean isValied(){
         boolean nameValid = Regex.setTextColor(lk.ijse.tailorshopmanagementsystem.Util.TextField.NAME, txtName);
         boolean nicValid = Regex.setTextColor(lk.ijse.tailorshopmanagementsystem.Util.TextField.NIC, txtNic);
         boolean addressValid = Regex.setTextColor(lk.ijse.tailorshopmanagementsystem.Util.TextField.ADDRESS, txtAddress);
         boolean telValid = Regex.setTextColor(lk.ijse.tailorshopmanagementsystem.Util.TextField.TEL, txtTel);
-        boolean statusValid = Regex.setTextColor(lk.ijse.tailorshopmanagementsystem.Util.TextField.STATUS, txtStatus);
-        boolean idValid = Regex.setTextColor(lk.ijse.tailorshopmanagementsystem.Util.TextField.CUSID, txtCustomerId);
+//        boolean idValid = Regex.setTextColor(lk.ijse.tailorshopmanagementsystem.Util.TextField.CUSID, txtCustomerId);
 
-        return nameValid && nicValid && addressValid && telValid && statusValid && idValid;
+        return nameValid && nicValid && addressValid && telValid;
     }
 
     public void btnSearchOnAction(ActionEvent actionEvent) throws SQLException {
@@ -253,11 +249,11 @@ public class CustomerFormController {
 
             Customer1 customer1 = CustomerRepo.nicSearch(nic);
             if (customer1 != null) {
-                txtCustomerId.setText(customer1.getCustomerId());
+                lblCustomerId.setText(customer1.getCustomerId());
                 txtName.setText(customer1.getCustomerName());
                 txtAddress.setText(customer1.getCustomerAddress());
                 txtTel.setText(customer1.getCustomerTel());
-                txtStatus.setText(customer1.getStatus());
+                cmbStatus.setValue(customer1.getStatus());
             } else {
                 new Alert(Alert.AlertType.INFORMATION, "customer not found!").show();
             }
@@ -299,8 +295,7 @@ public class CustomerFormController {
     }
 
     private void clearFields() {
-        txtCustomerId.setText("");
-        txtCustomerId.setStyle("");// Reset style to default
+        lblCustomerId.setText("");
 
         txtNic.setText("");
         txtNic.setStyle(""); // Reset style to default
@@ -314,11 +309,21 @@ public class CustomerFormController {
         txtTel.setText("");
         txtTel.setStyle(""); // Reset style to default
 
-        txtStatus.setStyle(""); // Reset style to default
     }
 
     @FXML
     public void btnActiveOnAction(ActionEvent actionEvent) {
-        txtStatus.setText("Active");
+        cmbStatus.setValue("Active");
     }
+
+    private void setTxtStatus() {
+        ObservableList<String> status = FXCollections.observableArrayList();
+        cmbStatus.setValue("Active");
+
+        status.add("Active");
+        status.add("Inactive");
+
+        cmbStatus.setItems(status);
+    }
+
 }

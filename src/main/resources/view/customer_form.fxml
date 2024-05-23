@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXComboBox?>
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
@@ -13,7 +14,6 @@
 <AnchorPane fx:id="nodePane" prefHeight="720.0" prefWidth="1082.0" style="-fx-background-color: #edf2fb;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lk.ijse.tailorshopmanagementsystem.controller.CustomerFormController">
    <children>
       <Rectangle arcHeight="30.0" arcWidth="30.0" fill="WHITE" height="219.0" layoutX="111.0" layoutY="35.0" strokeType="INSIDE" width="861.0" />
-      <TextField fx:id="txtCustomerId" layoutX="142.0" layoutY="67.0" onKeyReleased="#idKeyRelaseAction" prefHeight="33.0" prefWidth="230.0" />
       <TextField fx:id="txtAddress" layoutX="142.0" layoutY="150.0" onKeyReleased="#addressKeyRelaseAction" prefHeight="33.0" prefWidth="230.0" />
       <JFXButton buttonType="RAISED" contentDisplay="RIGHT" layoutX="634.0" layoutY="209.0" onAction="#btnSaveOnAction" prefHeight="10.0" prefWidth="50.0" style="-fx-background-color: #42a5f5;" text="Save" textFill="WHITE">
          <font>
@@ -88,7 +88,6 @@
             <Font name="System Italic" size="11.0" />
          </font>
       </Label>
-      <TextField fx:id="txtStatus" layoutX="713.0" layoutY="150.0" onKeyReleased="#statusKeyRelaseAction" prefHeight="33.0" prefWidth="230.0" />
       <JFXButton buttonType="RAISED" contentDisplay="RIGHT" layoutX="885.0" layoutY="156.0" onAction="#btnActiveOnAction" prefHeight="21.0" prefWidth="52.0" style="-fx-background-color: green;" text="Active" textFill="WHITE">
          <font>
             <Font name="System Bold" size="9.0" />
@@ -108,5 +107,11 @@
             <TableColumn fx:id="colStatus" prefWidth="100.7301025390625" text="Status" />
         </columns>
       </TableView>
+      <Label fx:id="lblCustomerId" layoutX="147.0" layoutY="71.0" prefHeight="17.0" prefWidth="86.0">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Label>
+      <JFXComboBox fx:id="cmbStatus" layoutX="717.0" layoutY="156.0" prefHeight="26.0" prefWidth="162.0" />
    </children>
 </AnchorPane>

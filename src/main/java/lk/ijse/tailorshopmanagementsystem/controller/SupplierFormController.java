@@ -40,10 +40,10 @@ public class SupplierFormController {
     public TableView<SupplierTm> tblSupplier;
 
     @FXML
-    private TextField txtAddress;
+    private Label lblSupplierId;
 
     @FXML
-    private TextField txtId;
+    private TextField txtAddress;
 
     @FXML
     private TextField txtName;
@@ -72,7 +72,7 @@ public class SupplierFormController {
         SupplierTm selectedUser = tblSupplier.getSelectionModel().getSelectedItem();
         tblSupplier.setOnMouseClicked(event -> showSelectedSupplierDetails());
         if (selectedUser != null) {
-            txtId.setText(selectedUser.getSupplierID());
+            lblSupplierId.setText(selectedUser.getSupplierID());
             txtName.setText(selectedUser.getSupplierName());
             txtNic.setText(selectedUser.getNIC());
             txtTel.setText(selectedUser.getSupplierContact());
@@ -120,7 +120,7 @@ public class SupplierFormController {
             String currentId = SupplierRepo.getSupId();
 
             String nextEmployeeId = generateNextSupplierId(currentId);
-            txtId.setText(nextEmployeeId);
+            lblSupplierId.setText(nextEmployeeId);
 
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -163,13 +163,12 @@ public class SupplierFormController {
     }
 
     private void clearFields() {
-        txtId.setText("");
+        lblSupplierId.setText("");
         txtAddress.setText("");
         txtNic.setText("");
         txtTel.setText("");
         txtName.setText("");
 
-        txtId.setStyle("");
         txtAddress.setStyle("");
         txtNic.setStyle("");
         txtTel.setStyle("");
@@ -198,7 +197,7 @@ public class SupplierFormController {
 
         if (isValied()) {
 
-            String id = txtId.getText();
+            String id = lblSupplierId.getText();
             String nic = txtNic.getText();
             String name = txtName.getText();
             String address = txtAddress.getText();
@@ -234,7 +233,7 @@ public class SupplierFormController {
 
         Supplier supplier = SupplierRepo.nicSearch(nic);
         if (supplier != null) {
-            txtId.setText(supplier.getSupplierID());
+            lblSupplierId.setText(supplier.getSupplierID());
             txtNic.setText(supplier.getNIC());
             txtName.setText(supplier.getSupplierName());
             txtAddress.setText(supplier.getSupplierAddress());
@@ -250,7 +249,7 @@ public class SupplierFormController {
 
         if (isValied()) {
 
-            String id = txtId.getText();
+            String id = lblSupplierId.getText();
             String nic = txtNic.getText();
             String name = txtName.getText();
             String address = txtAddress.getText();
@@ -285,13 +284,8 @@ public class SupplierFormController {
         boolean addressValid = Regex.setTextColor(lk.ijse.tailorshopmanagementsystem.Util.TextField.ADDRESS, txtAddress);
         boolean telValid = Regex.setTextColor(lk.ijse.tailorshopmanagementsystem.Util.TextField.TEL, txtTel);
         boolean statusValid = Regex.setTextColor(lk.ijse.tailorshopmanagementsystem.Util.TextField.STATUS, txtStatus);
-        boolean idValid = Regex.setTextColor(lk.ijse.tailorshopmanagementsystem.Util.TextField.SUPID, txtId);
 
-        return nameValid && nicValid && addressValid && telValid && statusValid && idValid;
-    }
-
-    public void idKeyReleaseAction(javafx.scene.input.KeyEvent keyEvent) {
-        Regex.setTextColor(lk.ijse.tailorshopmanagementsystem.Util.TextField.SUPID, txtId);
+        return nameValid && nicValid && addressValid && telValid && statusValid;
     }
 
     public void telKeyReleaseAction(javafx.scene.input.KeyEvent keyEvent) {
