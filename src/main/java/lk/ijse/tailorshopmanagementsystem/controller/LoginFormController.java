@@ -28,12 +28,12 @@ public class LoginFormController {
 
 
     public void initialize() {
-        initializeValidation();
+//        initializeValidation();
     }
-
-    private void initializeValidation() {
-        addValidationListener(txtUserId, "[a-zA-Z]+", true); // Letters only
-    }
+//
+//    private void initializeValidation() {
+//        addValidationListener(txtUserId, "[a-zA-Z]+", true); // Letters only
+//    }
 
     private void addValidationListener(TextField textField, String regex, boolean caseSensitive) {
         textField.textProperty().addListener((observable, oldValue, newValue) -> {

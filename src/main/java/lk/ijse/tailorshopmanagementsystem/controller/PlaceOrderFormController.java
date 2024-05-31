@@ -415,6 +415,7 @@ public class PlaceOrderFormController  {
         lblCustomerId.setText(null);
         lblCustomerName.setText("");
         lblNetTotal.setText(null);
+        txtOrderId.setText(null);
         setPaymentType();
         initialize();
     }
@@ -640,11 +641,24 @@ public class PlaceOrderFormController  {
             showErrorAlert("Order ID failed!", "Please enter order ID less than to next OrderID!.");
 
         } else if (lastThreeDigits1 > lastThreeDigits2) {
-            printBill();
+            printBill1();
         } else {
-            printBill();
+            printBill1();
         }
     }
+
+    private void printBill1() throws JRException, SQLException {
+        JasperDesign jasperDesign = JRXmlLoader.load("src/main/resources/report/orderBill.jrxml");
+        JasperReport jasperReport = JasperCompileManager.compileReport(jasperDesign);
+
+        Map<String, Object> data = new HashMap<>();
+        data.put("orderID", txtOrderId.getText());
+
+        JasperPrint jasperPrint =
+                JasperFillManager.fillReport(jasperReport, data, DbConnection.getInstance().getConnection());
+        JasperViewer.viewReport(jasperPrint, false);
+    }
+
 
     public void btnViewOrdersOnAction(ActionEvent actionEvent) throws SQLException, IOException {
 
@@ -662,7 +676,7 @@ public class PlaceOrderFormController  {
         JasperReport jasperReport = JasperCompileManager.compileReport(jasperDesign);
 
         Map<String, Object> data = new HashMap<>();
-        data.put("orderID", txtOrderId.getText());
+        data.put("orderID", lblOrderId.getText());
 
         JasperPrint jasperPrint =
                 JasperFillManager.fillReport(jasperReport, data, DbConnection.getInstance().getConnection());

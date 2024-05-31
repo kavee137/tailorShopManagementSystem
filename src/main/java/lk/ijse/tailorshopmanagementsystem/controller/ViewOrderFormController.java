@@ -48,6 +48,7 @@
 
 package lk.ijse.tailorshopmanagementsystem.controller;
 
+import com.jfoenix.controls.JFXComboBox;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -60,15 +61,19 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import lk.ijse.tailorshopmanagementsystem.model.tm.OrderViewTm;
 import lk.ijse.tailorshopmanagementsystem.model.tm.ReservationViewTm;
+import lk.ijse.tailorshopmanagementsystem.repository.EmployeeRepo;
 import lk.ijse.tailorshopmanagementsystem.repository.ViewOrderRepo;
 import lk.ijse.tailorshopmanagementsystem.repository.ViewReservationRepo;
 
 import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 
 public class ViewOrderFormController {
 
+    @FXML
+    private JFXComboBox<String> cmbTailorId;
     @FXML
     private TableColumn<?, ?> colAddress;
 
@@ -153,7 +158,29 @@ public class ViewOrderFormController {
     public void initialize() throws SQLException {
         setCellValueFactory();
         loadAllProcessingOrders();
+        getEmployeeId();
     }
+
+
+    private List<String> getEmployeeId() {
+        ObservableList<String> obList = FXCollections.observableArrayList();
+
+        try {
+            List<String> idList = EmployeeRepo.getTailorId();
+
+            for (String id : idList) {
+                obList.add(id);
+            }
+            cmbTailorId.setItems(obList);
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return obList;
+    }
+
+
+
 
     private void setCellValueFactory(){
         colOrderId.setCellValueFactory(new PropertyValueFactory<>("orderID"));
@@ -220,6 +247,7 @@ public class ViewOrderFormController {
     void btnClearOnAction(ActionEvent event) throws SQLException {
         dpDateTo.setValue(null);
         dpDateFrom.setValue(null);
+        cmbTailorId.setValue(null);
 
         initialize();
     }
@@ -345,5 +373,46 @@ public class ViewOrderFormController {
             obList.add(r);
         }
     }
+
+    public void cmbTailorIdOnAction(ActionEvent actionEvent) throws SQLException {
+        getEmployeeOrders();
+    }
+
+    public void getEmployeeOrders() throws SQLException {
+        tblViewOrders.getItems().clear();
+
+        ResultSet orderDetails = ViewOrderRepo.getEmployeeTasks(cmbTailorId.getValue());
+
+        while (orderDetails.next()) {
+            OrderViewTm r = new OrderViewTm();
+            r.setOrderID(orderDetails.getString("orderID"));
+            r.setPaymentID(orderDetails.getString("paymentID"));
+            r.setNIC(orderDetails.getString("NIC"));
+            r.setOrderDate(orderDetails.getDate("orderDate"));
+            r.setReturnDate(orderDetails.getDate("returnDate"));
+            r.setOrderStatus(orderDetails.getString("orderStatus"));
+            r.setCustomerName(orderDetails.getString("customerName"));
+            r.setCustomerAddress(orderDetails.getString("customerAddress"));
+            r.setCustomerTel(orderDetails.getString("customerTel"));
+            r.setEmployeeID(orderDetails.getString("employeeID"));
+            r.setEmployeeName(orderDetails.getString("employeeName"));
+            r.setFabricID(orderDetails.getString("fabricID"));
+            r.setFabricName(orderDetails.getString("fabricName"));
+            r.setFabricColor(orderDetails.getString("fabricColor"));
+            r.setDescription(orderDetails.getString("description"));
+            r.setMeasurements(orderDetails.getString("measurements"));
+            r.setFabricSize(orderDetails.getDouble("fabricSize"));
+            r.setUnitPrice(orderDetails.getDouble("unitPrice"));
+            r.setQty(orderDetails.getInt("qty"));
+            r.setTotal(orderDetails.getDouble("total"));
+            r.setPaymentType(orderDetails.getString("paymentType"));
+            r.setPaymentPrice(orderDetails.getDouble("paymentPrice"));
+
+            obList.add(r);
+        }
+
+        tblViewOrders.setItems(obList);
+    }
+
 
 }

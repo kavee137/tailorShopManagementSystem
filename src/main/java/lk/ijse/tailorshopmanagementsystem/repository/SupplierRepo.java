@@ -15,7 +15,7 @@ public class SupplierRepo {
 
 
     public static String getTotalSuppliers() throws SQLException {
-        String sql = "SELECT COUNT(*) AS allSupplier FROM supplier";
+        String sql = "SELECT COUNT(*) AS allSupplier FROM supplier WHERE status = 'Active'";
         PreparedStatement pstm = DbConnection.getInstance().getConnection()
                 .prepareStatement(sql);
 

@@ -731,7 +731,7 @@ public class ReseravationFormController {
             JasperReport jasperReport = JasperCompileManager.compileReport(jasperDesign);
 
             Map<String, Object> data = new HashMap<>();
-            data.put("reservationID", txtReservationId.getText());
+            data.put("reservationID", lblReservationId.getText());
 
             JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, data, DbConnection.getInstance().getConnection());
             JasperViewer.viewReport(jasperPrint, false);

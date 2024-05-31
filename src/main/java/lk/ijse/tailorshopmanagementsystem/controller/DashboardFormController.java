@@ -25,7 +25,7 @@ public class DashboardFormController {
     // Initialize method to load the main dashboard after a delay
     public void initialize() {
         // Load mainDashboard_form.fxml after a 2-second delay
-        PauseTransition delay = new PauseTransition(Duration.seconds(0.5));
+        PauseTransition delay = new PauseTransition(Duration.seconds(1));
         delay.setOnFinished(event -> loadMainDashboard());
         delay.play();
 
