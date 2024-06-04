@@ -175,6 +175,7 @@
                   <Font size="18.0" />
                </font>
             </Label>
+            <ImageView fitHeight="52.0" fitWidth="58.0" layoutX="251.0" layoutY="69.0" pickOnBounds="true" preserveRatio="true" />
          </children>
       </AnchorPane>
    </children>

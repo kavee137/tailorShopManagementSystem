@@ -35,19 +35,6 @@ public class PaymentRepo {
         return paymentList;
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
     public static String getTotalPayment() throws SQLException {
         String sql = "SELECT SUM(price) AS totalPayment FROM payment";
         PreparedStatement pstm = DbConnection.getInstance().getConnection()
@@ -74,4 +61,5 @@ public class PaymentRepo {
         return pstm.executeUpdate() > 0;
 
     }
+
 }

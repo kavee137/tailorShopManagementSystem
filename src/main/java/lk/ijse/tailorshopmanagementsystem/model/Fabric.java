@@ -17,4 +17,12 @@ public class Fabric {
     private String fabricName;
     private String fabricColor;
     private int fabricQtyOnHand;
+
+    public Fabric(String fabricID, String fabricName, String fabricColor, int fabricQtyOnHand) {
+        this.fabricID = fabricID;
+        this.fabricName = fabricName;
+        this.fabricColor = fabricColor;
+        this.fabricQtyOnHand = fabricQtyOnHand;
+    }
+
 }

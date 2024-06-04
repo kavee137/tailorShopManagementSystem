@@ -13,6 +13,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import lk.ijse.tailorshopmanagementsystem.db.DbConnection;
+import lombok.extern.java.Log;
 
 import java.io.IOException;
 import java.sql.Connection;
@@ -26,32 +27,11 @@ public class LoginFormController {
 
     public AnchorPane rootNode;
 
+    private String loggedInUserName;
+
+
 
     public void initialize() {
-//        initializeValidation();
-    }
-//
-//    private void initializeValidation() {
-//        addValidationListener(txtUserId, "[a-zA-Z]+", true); // Letters only
-//    }
-
-    private void addValidationListener(TextField textField, String regex, boolean caseSensitive) {
-        textField.textProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue.matches(regex)) {
-                // If input matches the regex pattern
-                textField.setStyle("-fx-border-color: #3498db;");
-            } else {
-                // If input doesn't match the regex pattern
-                textField.setStyle("-fx-border-color: red;");
-            }
-        });
-
-        if (!caseSensitive) {
-            textField.setTextFormatter(new TextFormatter<>((change) -> {
-                change.setText(change.getText().replaceAll(regex, ""));
-                return change;
-            }));
-        }
     }
 
     public void btnLoginOnAction(ActionEvent actionEvent) throws IOException {
@@ -78,6 +58,7 @@ public class LoginFormController {
 
             if (pw.equals(dbPw)) {
 //                navigateToTheDashboard();
+                loggedInUserName = resultSet.getString("userName");
                 navigateToTheDashboard((Stage) rootNode.getScene().getWindow());
 
             } else {

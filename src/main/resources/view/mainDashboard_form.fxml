@@ -1,33 +1,39 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.chart.BarChart?>
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.chart.PieChart?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.effect.ColorAdjust?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.shape.Line?>
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
 <AnchorPane fx:id="rootNode" prefHeight="720.0" prefWidth="1080.0" style="-fx-background-color: #edf2fb;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lk.ijse.tailorshopmanagementsystem.controller.MainDashboardFormController">
    <children>
-      <Rectangle arcHeight="30.0" arcWidth="30.0" fill="WHITE" height="116.0" layoutX="279.0" layoutY="13.0" strokeType="INSIDE" width="254.0" />
-      <Rectangle arcHeight="30.0" arcWidth="30.0" fill="WHITE" height="116.0" layoutX="15.0" layoutY="13.0" strokeType="INSIDE" width="254.0" />
-      <ImageView fitHeight="86.0" fitWidth="81.0" layoutX="79.0" layoutY="40.0" opacity="0.4" pickOnBounds="true" preserveRatio="true">
+      <Rectangle arcHeight="30.0" arcWidth="30.0" fill="WHITE" height="262.0" layoutX="21.0" layoutY="295.0" stroke="TRANSPARENT" strokeType="INSIDE" width="576.0" />
+      <Rectangle arcHeight="30.0" arcWidth="30.0" fill="WHITE" height="116.0" layoutX="279.0" layoutY="24.0" strokeType="INSIDE" width="254.0" />
+      <Rectangle arcHeight="30.0" arcWidth="30.0" fill="WHITE" height="116.0" layoutX="15.0" layoutY="24.0" strokeType="INSIDE" width="254.0" />
+      <ImageView fitHeight="86.0" fitWidth="81.0" layoutX="79.0" layoutY="51.0" opacity="0.4" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../icon/customers.png" />
          </image>
       </ImageView>
-      <Label layoutX="76.0" layoutY="25.0" prefHeight="31.0" prefWidth="140.0" text="Customers" textFill="#00000083">
+      <Label layoutX="76.0" layoutY="36.0" prefHeight="31.0" prefWidth="140.0" text="Customers" textFill="#00000083">
          <font>
             <Font name="Tahoma" size="26.0" />
          </font>
       </Label>
-      <Label fx:id="lblCustomerCount" layoutX="151.0" layoutY="58.0" prefHeight="48.0" prefWidth="98.0" textFill="#00000083">
+      <Label fx:id="lblCustomerCount" layoutX="151.0" layoutY="69.0" prefHeight="48.0" prefWidth="98.0" textFill="#00000083">
          <font>
             <Font name="System Bold Italic" size="39.0" />
          </font>
       </Label>
-      <ImageView fitHeight="41.0" fitWidth="40.0" layoutX="358.0" layoutY="59.0" opacity="0.4" pickOnBounds="true" preserveRatio="true">
+      <ImageView fitHeight="41.0" fitWidth="40.0" layoutX="358.0" layoutY="70.0" opacity="0.4" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../icon/employee.png" />
          </image>
@@ -35,29 +41,29 @@
             <ColorAdjust contrast="0.14" />
          </effect>
       </ImageView>
-      <Label layoutX="347.0" layoutY="25.0" prefHeight="31.0" prefWidth="140.0" text="Employees" textFill="#00000083">
+      <Label layoutX="347.0" layoutY="36.0" prefHeight="31.0" prefWidth="140.0" text="Employees" textFill="#00000083">
          <font>
             <Font name="Tahoma" size="26.0" />
          </font>
       </Label>
-      <Label fx:id="lblEmployeeCount" layoutX="411.0" layoutY="58.0" prefHeight="31.0" prefWidth="140.0" textFill="#00000083">
+      <Label fx:id="lblEmployeeCount" layoutX="411.0" layoutY="69.0" prefHeight="31.0" prefWidth="140.0" textFill="#00000083">
          <font>
             <Font name="System Bold Italic" size="39.0" />
          </font>
       </Label>
-      <Rectangle arcHeight="30.0" arcWidth="30.0" fill="WHITE" height="440.0" layoutX="54.0" layoutY="272.0" strokeType="INSIDE" width="1003.0" />
-      <Rectangle arcHeight="30.0" arcWidth="30.0" fill="WHITE" height="116.0" layoutX="543.0" layoutY="13.0" strokeType="INSIDE" width="254.0" />
-      <Label layoutX="628.0" layoutY="25.0" prefHeight="33.0" prefWidth="81.0" text="Orders" textFill="#00000083">
+      <Rectangle arcHeight="30.0" arcWidth="30.0" fill="WHITE" height="408.0" layoutX="615.0" layoutY="291.0" stroke="TRANSPARENT" strokeType="INSIDE" width="447.0" />
+      <Rectangle arcHeight="30.0" arcWidth="30.0" fill="WHITE" height="116.0" layoutX="543.0" layoutY="24.0" strokeType="INSIDE" width="254.0" />
+      <Label layoutX="628.0" layoutY="36.0" prefHeight="33.0" prefWidth="81.0" text="Orders" textFill="#00000083">
          <font>
             <Font name="Tahoma" size="26.0" />
          </font>
       </Label>
-      <Label fx:id="lblOrderCount" layoutX="683.0" layoutY="58.0" prefHeight="48.0" prefWidth="93.0" textFill="#00000083">
+      <Label fx:id="lblOrderCount" layoutX="683.0" layoutY="69.0" prefHeight="48.0" prefWidth="93.0" textFill="#00000083">
          <font>
             <Font name="System Bold Italic" size="39.0" />
          </font>
       </Label>
-      <ImageView fitHeight="49.0" fitWidth="40.0" layoutX="630.0" layoutY="59.0" opacity="0.4" pickOnBounds="true" preserveRatio="true">
+      <ImageView fitHeight="49.0" fitWidth="40.0" layoutX="630.0" layoutY="70.0" opacity="0.4" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../icon/orderIcon.png" />
          </image>
@@ -65,18 +71,18 @@
             <ColorAdjust brightness="-1.0" contrast="1.0" hue="1.0" saturation="1.0" />
          </effect>
       </ImageView>
-      <Rectangle arcHeight="30.0" arcWidth="30.0" fill="WHITE" height="116.0" layoutX="808.0" layoutY="12.0" strokeType="INSIDE" width="254.0" />
-      <Label layoutX="880.0" layoutY="25.0" prefHeight="33.0" prefWidth="140.0" text="Reservation" textFill="#00000083">
+      <Rectangle arcHeight="30.0" arcWidth="30.0" fill="WHITE" height="116.0" layoutX="808.0" layoutY="23.0" strokeType="INSIDE" width="254.0" />
+      <Label layoutX="880.0" layoutY="36.0" prefHeight="33.0" prefWidth="140.0" text="Reservation" textFill="#00000083">
          <font>
             <Font name="Tahoma" size="26.0" />
          </font>
       </Label>
-      <Label fx:id="lblReservationCount" layoutX="951.0" layoutY="58.0" prefHeight="48.0" prefWidth="105.0" textFill="#00000083">
+      <Label fx:id="lblReservationCount" layoutX="951.0" layoutY="69.0" prefHeight="48.0" prefWidth="105.0" textFill="#00000083">
          <font>
             <Font name="System Bold Italic" size="39.0" />
          </font>
       </Label>
-      <ImageView fitHeight="49.0" fitWidth="40.0" layoutX="898.0" layoutY="59.0" opacity="0.4" pickOnBounds="true" preserveRatio="true">
+      <ImageView fitHeight="49.0" fitWidth="40.0" layoutX="898.0" layoutY="70.0" opacity="0.4" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../icon/reservation.png" />
          </image>
@@ -84,24 +90,24 @@
             <ColorAdjust brightness="-1.0" contrast="1.0" hue="1.0" saturation="1.0" />
          </effect>
       </ImageView>
-      <Rectangle arcHeight="30.0" arcWidth="30.0" fill="WHITE" height="116.0" layoutX="279.0" layoutY="143.0" strokeType="INSIDE" width="254.0" />
-      <Rectangle arcHeight="30.0" arcWidth="30.0" fill="WHITE" height="116.0" layoutX="15.0" layoutY="143.0" strokeType="INSIDE" width="254.0" />
-      <ImageView fitHeight="43.0" fitWidth="45.0" layoutX="49.0" layoutY="190.0" opacity="0.4" pickOnBounds="true" preserveRatio="true">
+      <Rectangle arcHeight="30.0" arcWidth="30.0" fill="WHITE" height="116.0" layoutX="279.0" layoutY="154.0" strokeType="INSIDE" width="254.0" />
+      <Rectangle arcHeight="30.0" arcWidth="30.0" fill="WHITE" height="116.0" layoutX="15.0" layoutY="154.0" strokeType="INSIDE" width="254.0" />
+      <ImageView fitHeight="43.0" fitWidth="45.0" layoutX="49.0" layoutY="201.0" opacity="0.4" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../icon/rs.jpeg" />
          </image>
       </ImageView>
-      <Label layoutX="71.0" layoutY="155.0" prefHeight="33.0" prefWidth="147.0" text="Transactions" textFill="#00000083">
+      <Label layoutX="71.0" layoutY="166.0" prefHeight="33.0" prefWidth="147.0" text="Transactions" textFill="#00000083">
          <font>
             <Font name="Tahoma" size="26.0" />
          </font>
       </Label>
-      <Label fx:id="lblTransactionCount" layoutX="99.0" layoutY="193.0" prefHeight="31.0" prefWidth="140.0" textFill="#00000083">
+      <Label fx:id="lblTransactionCount" layoutX="99.0" layoutY="204.0" prefHeight="31.0" prefWidth="140.0" textFill="#00000083">
          <font>
             <Font name="System Bold Italic" size="30.0" />
          </font>
       </Label>
-      <ImageView fitHeight="44.0" fitWidth="48.0" layoutX="348.0" layoutY="191.0" opacity="0.4" pickOnBounds="true" preserveRatio="true">
+      <ImageView fitHeight="44.0" fitWidth="48.0" layoutX="348.0" layoutY="202.0" opacity="0.4" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../icon/blazer.jpeg" />
          </image>
@@ -109,28 +115,28 @@
             <ColorAdjust contrast="0.14" />
          </effect>
       </ImageView>
-      <Label layoutX="357.0" layoutY="157.0" prefHeight="31.0" prefWidth="140.0" text="Products" textFill="#00000083">
+      <Label layoutX="357.0" layoutY="168.0" prefHeight="31.0" prefWidth="140.0" text="Products" textFill="#00000083">
          <font>
             <Font name="Tahoma" size="26.0" />
          </font>
       </Label>
-      <Label fx:id="lblProductCount" layoutX="405.0" layoutY="190.0" prefHeight="31.0" prefWidth="140.0" textFill="#00000083">
+      <Label fx:id="lblProductCount" layoutX="405.0" layoutY="201.0" prefHeight="31.0" prefWidth="140.0" textFill="#00000083">
          <font>
             <Font name="System Bold Italic" size="39.0" />
          </font>
       </Label>
-      <Rectangle arcHeight="30.0" arcWidth="30.0" fill="WHITE" height="116.0" layoutX="543.0" layoutY="143.0" strokeType="INSIDE" width="254.0" />
-      <Label layoutX="624.0" layoutY="155.0" prefHeight="33.0" prefWidth="112.0" text="Suppliers" textFill="#00000083">
+      <Rectangle arcHeight="30.0" arcWidth="30.0" fill="WHITE" height="116.0" layoutX="543.0" layoutY="154.0" strokeType="INSIDE" width="254.0" />
+      <Label layoutX="624.0" layoutY="166.0" prefHeight="33.0" prefWidth="112.0" text="Suppliers" textFill="#00000083">
          <font>
             <Font name="Tahoma" size="26.0" />
          </font>
       </Label>
-      <Label fx:id="lblSupplierCount" layoutX="685.0" layoutY="188.0" prefHeight="31.0" prefWidth="140.0" textFill="#00000083">
+      <Label fx:id="lblSupplierCount" layoutX="685.0" layoutY="199.0" prefHeight="31.0" prefWidth="140.0" textFill="#00000083">
          <font>
             <Font name="System Bold Italic" size="39.0" />
          </font>
       </Label>
-      <ImageView fitHeight="46.0" fitWidth="45.0" layoutX="632.0" layoutY="189.0" opacity="0.4" pickOnBounds="true" preserveRatio="true">
+      <ImageView fitHeight="46.0" fitWidth="45.0" layoutX="632.0" layoutY="200.0" opacity="0.4" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../icon/supplier.png" />
          </image>
@@ -138,31 +144,145 @@
             <ColorAdjust brightness="-1.0" contrast="1.0" hue="1.0" saturation="1.0" />
          </effect>
       </ImageView>
-      <Rectangle arcHeight="30.0" arcWidth="30.0" fill="WHITE" height="116.0" layoutX="808.0" layoutY="142.0" strokeType="INSIDE" width="254.0" />
-      <Label layoutX="904.0" layoutY="155.0" prefHeight="33.0" prefWidth="140.0" text="Users" textFill="#00000083">
+      <Rectangle arcHeight="30.0" arcWidth="30.0" fill="WHITE" height="116.0" layoutX="808.0" layoutY="153.0" strokeType="INSIDE" width="254.0" />
+      <Label layoutX="904.0" layoutY="166.0" prefHeight="33.0" prefWidth="140.0" text="Users" textFill="#00000083">
          <font>
             <Font name="Tahoma" size="26.0" />
          </font>
       </Label>
-      <Label fx:id="lblUserCount" layoutX="941.0" layoutY="188.0" prefHeight="48.0" prefWidth="79.0" textFill="#00000083">
+      <Label fx:id="lblUserCount" layoutX="941.0" layoutY="199.0" prefHeight="48.0" prefWidth="79.0" textFill="#00000083">
          <font>
             <Font name="System Bold Italic" size="39.0" />
          </font>
       </Label>
-      <ImageView fitHeight="45.0" fitWidth="45.0" layoutX="888.0" layoutY="189.0" opacity="0.4" pickOnBounds="true" preserveRatio="true">
+      <ImageView fitHeight="45.0" fitWidth="45.0" layoutX="888.0" layoutY="200.0" opacity="0.4" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../icon/user.png" />
          </image>
       </ImageView>
-      <ImageView fitHeight="33.0" fitWidth="50.0" layoutX="26.0" layoutY="294.0" pickOnBounds="true" preserveRatio="true" visible="false">
+      <ImageView fitHeight="33.0" fitWidth="50.0" layoutX="26.0" layoutY="305.0" pickOnBounds="true" preserveRatio="true" visible="false">
          <image>
             <Image url="@../icon/chart.png" />
          </image>
       </ImageView>
-      <ImageView fitHeight="440.0" fitWidth="947.0" layoutX="81.0" layoutY="285.0" pickOnBounds="true" preserveRatio="true">
+      <PieChart fx:id="pieChart" layoutX="623.0" layoutY="280.0" prefHeight="414.0" prefWidth="429.0" />
+      <Label layoutX="766.0" layoutY="293.0" prefHeight="33.0" prefWidth="158.0" text="Low Fabric Pie Chart" textFill="#000000b5">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Label>
+      <Label fx:id="date" layoutX="894.0" layoutY="-120.0" prefHeight="28.0" prefWidth="81.0" textFill="#00000082">
+         <font>
+            <Font name="System Bold" size="13.0" />
+         </font>
+      </Label>
+      <Label fx:id="time" layoutX="987.0" layoutY="-120.0" prefHeight="28.0" prefWidth="57.0" textFill="#00000082">
+         <font>
+            <Font name="System Bold" size="13.0" />
+         </font>
+      </Label>
+      <BarChart fx:id="barChart" layoutX="15.0" layoutY="320.0" prefHeight="230.0" prefWidth="574.0">
+        <xAxis>
+          <CategoryAxis side="BOTTOM" />
+        </xAxis>
+        <yAxis>
+          <NumberAxis side="LEFT" />
+        </yAxis>
+      </BarChart>
+      <Label fx:id="lblUserName" layoutX="182.0" layoutY="-37.0" prefHeight="33.0" prefWidth="367.0" textFill="#000000d1">
+         <font>
+            <Font name="Tahoma" size="16.0" />
+         </font>
+      </Label>
+      <ImageView fitHeight="43.0" fitWidth="57.0" layoutX="208.0" layoutY="-179.0" opacity="0.64" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../icon/chartgif.gif" />
+            <Image url="@../icon/user1.png" />
          </image>
       </ImageView>
+      <Line endX="812.69189453125" endY="-3.814697265625E-6" layoutX="249.0" layoutY="-68.0" startX="-232.2663116455078" startY="-3.814697265625E-6" stroke="#0000001c" />
+      <Label layoutX="263.0" layoutY="294.0" prefHeight="33.0" prefWidth="109.0" text="Monthly Sales" textFill="#000000b5">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Label>
+      <Rectangle arcHeight="30.0" arcWidth="30.0" fill="WHITE" height="126.0" layoutX="21.0" layoutY="573.0" stroke="TRANSPARENT" strokeType="INSIDE" width="576.0" />
+      <Rectangle arcHeight="15.0" arcWidth="15.0" fill="#0000000c" height="17.0" layoutX="40.0" layoutY="639.0" stroke="TRANSPARENT" strokeType="INSIDE" width="536.0" />
+      <Rectangle arcHeight="15.0" arcWidth="15.0" fill="#0000000c" height="17.0" layoutX="40.0" layoutY="659.0" stroke="TRANSPARENT" strokeType="INSIDE" width="536.0" />
+      <Label layoutX="32.0" layoutY="576.0" prefHeight="33.0" prefWidth="180.0" text="Most Reserved Product" textFill="#00000058" />
+      <Label layoutX="73.0" layoutY="617.0" prefHeight="19.0" prefWidth="16.0" text="ID" textFill="#00000058">
+         <font>
+            <Font name="System Bold" size="9.0" />
+         </font>
+      </Label>
+      <Label layoutX="153.0" layoutY="617.0" prefHeight="19.0" prefWidth="26.0" text="Name" textFill="#00000058">
+         <font>
+            <Font name="System Bold" size="9.0" />
+         </font>
+      </Label>
+      <Label layoutX="273.0" layoutY="617.0" prefHeight="19.0" prefWidth="29.0" text="Color" textFill="#00000058">
+         <font>
+            <Font name="System Bold" size="9.0" />
+         </font>
+      </Label>
+      <Label layoutX="393.0" layoutY="617.0" prefHeight="19.0" prefWidth="18.0" text="Size" textFill="#00000058">
+         <font>
+            <Font name="System Bold" size="9.0" />
+         </font>
+      </Label>
+      <Label layoutX="503.0" layoutY="617.0" prefHeight="19.0" prefWidth="50.0" text="qty On Hand" textFill="#00000058">
+         <font>
+            <Font name="System Bold" size="9.0" />
+         </font>
+      </Label>
+      <Label fx:id="lblBlazerId" layoutX="73.0" layoutY="637.0" prefHeight="19.0" prefWidth="24.0" textFill="#000000ad">
+         <font>
+            <Font size="9.0" />
+         </font>
+      </Label>
+      <Label fx:id="lblTrouserId" layoutX="73.0" layoutY="657.0" prefHeight="19.0" prefWidth="24.0" textFill="#000000ad">
+         <font>
+            <Font size="9.0" />
+         </font>
+      </Label>
+      <Label layoutX="153.0" layoutY="637.0" prefHeight="19.0" prefWidth="27.0" text="Blazer" textFill="#000000ad">
+         <font>
+            <Font size="9.0" />
+         </font>
+      </Label>
+      <Label layoutX="153.0" layoutY="657.0" prefHeight="19.0" prefWidth="37.0" text="Trouser" textFill="#000000ad">
+         <font>
+            <Font size="9.0" />
+         </font>
+      </Label>
+      <Label fx:id="lblBlazerColor" layoutX="273.0" layoutY="637.0" prefHeight="19.0" prefWidth="29.0" textFill="#000000ad">
+         <font>
+            <Font size="9.0" />
+         </font>
+      </Label>
+      <Label fx:id="lblTrouserColor" layoutX="273.0" layoutY="657.0" prefHeight="19.0" prefWidth="29.0" textFill="#000000ad">
+         <font>
+            <Font size="9.0" />
+         </font>
+      </Label>
+      <Label fx:id="lblBlazerSize" layoutX="396.0" layoutY="637.0" prefHeight="19.0" prefWidth="18.0" textFill="#000000ad">
+         <font>
+            <Font size="9.0" />
+         </font>
+      </Label>
+      <Label fx:id="lblTrouserSize" layoutX="396.0" layoutY="657.0" prefHeight="19.0" prefWidth="18.0" textFill="#000000ad">
+         <font>
+            <Font size="9.0" />
+         </font>
+      </Label>
+      <Label fx:id="lblBlazerQtyOnHand" layoutX="523.0" layoutY="637.0" prefHeight="19.0" prefWidth="50.0" textFill="#000000ad">
+         <font>
+            <Font size="9.0" />
+         </font>
+      </Label>
+      <Label fx:id="lblTrouserQtyOnHand" layoutX="523.0" layoutY="657.0" prefHeight="19.0" prefWidth="50.0" textFill="#000000ad">
+         <font>
+            <Font size="9.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>

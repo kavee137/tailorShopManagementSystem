@@ -6,6 +6,7 @@ module lk.ijse.tailorshopmanagementsystem {
     requires java.datatransfer;
     requires com.jfoenix;
     requires jasperreports;
+    requires spring.web;
 
 
     opens lk.ijse.tailorshopmanagementsystem to javafx.fxml;

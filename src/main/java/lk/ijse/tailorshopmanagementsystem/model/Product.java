@@ -16,4 +16,11 @@ public class Product {
     private String productSize;
     private String unitPrice;
     private String qtyOnHand;
+
+    public Product(String productID, String productColor, String productSize, int qtyOnHand) {
+        this.productID = productID;
+        this.productColor = productColor;
+        this.productSize = productSize;
+        this.qtyOnHand = String.valueOf(qtyOnHand);
+    }
 }
