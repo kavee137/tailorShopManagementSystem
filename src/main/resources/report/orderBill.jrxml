@@ -177,10 +177,6 @@ WHERE
 	</background>
 	<title>
 		<band height="164" splitType="Stretch">
-			<image hAlign="Center" vAlign="Bottom">
-				<reportElement x="180" y="15" width="202" height="64" uuid="4f895799-221d-4140-bb3f-ebd05325b508"/>
-				<imageExpression><![CDATA["/Users/rukshan/Desktop/Frame 36.png"]]></imageExpression>
-			</image>
 			<staticText>
 				<reportElement x="55" y="121" width="530" height="30" uuid="a78c2afd-c3e2-4324-a805-ec0daa764cff"/>
 				<text><![CDATA[__________________________________________________________________________________________]]></text>
@@ -191,6 +187,20 @@ WHERE
 					<font fontName="Academy Engraved LET" isBold="false" isItalic="true"/>
 				</textElement>
 				<text><![CDATA[The fashion of the future are a mystery.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="175" y="-9" width="203" height="79" uuid="f8131c82-6c64-463d-a6d4-4d6dd525cf60"/>
+				<textElement>
+					<font size="60" isBold="true"/>
+				</textElement>
+				<text><![CDATA[RUK_Z ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="202" y="62" width="154" height="30" uuid="c1de1c8a-b0ef-4b23-9c44-71331a02b426"/>
+				<textElement>
+					<font size="16" isBold="true"/>
+				</textElement>
+				<text><![CDATA[c  l  o  t  h  i  n  g]]></text>
 			</staticText>
 		</band>
 	</title>

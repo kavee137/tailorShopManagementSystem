@@ -154,16 +154,26 @@ WHERE
 				<reportElement x="55" y="121" width="530" height="30" uuid="d8371458-1909-42ed-b2d9-368cfa97005c"/>
 				<text><![CDATA[__________________________________________________________________________________________]]></text>
 			</staticText>
-			<image hAlign="Center" vAlign="Bottom">
-				<reportElement x="180" y="15" width="202" height="64" uuid="a9f01374-4140-407f-91aa-3ea0ab229f91"/>
-				<imageExpression><![CDATA["/Users/rukshan/Desktop/Frame 36.png"]]></imageExpression>
-			</image>
 			<staticText>
 				<reportElement x="189" y="87" width="181" height="18" uuid="f960a01c-de77-448c-a796-06d57833b008"/>
 				<textElement textAlignment="Center">
 					<font fontName="Academy Engraved LET" isBold="false" isItalic="true"/>
 				</textElement>
 				<text><![CDATA[The fashion of the future are a mystery.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="175" y="-9" width="203" height="79" uuid="bd6ff1a1-ae08-4251-88a0-7ced860bb5b8"/>
+				<textElement>
+					<font size="60" isBold="true"/>
+				</textElement>
+				<text><![CDATA[RUK_Z ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="202" y="62" width="154" height="30" uuid="ef3e89b0-2ede-4239-9dbe-dbdddb43b84a"/>
+				<textElement>
+					<font size="16" isBold="true"/>
+				</textElement>
+				<text><![CDATA[c  l  o  t  h  i  n  g]]></text>
 			</staticText>
 		</band>
 	</title>

@@ -17,8 +17,10 @@ import java.io.IOException;
 public class DashboardFormController {
 
     public JFXButton dButton;
+
     @FXML
     private AnchorPane rootNode;
+
     @FXML
     private VBox vboxButtons;
 
@@ -263,11 +265,6 @@ public class DashboardFormController {
     }
 
 
-
-
-
-
-
     @FXML
     private VBox vboxSubButtons;
 
@@ -277,11 +274,5 @@ public class DashboardFormController {
     public void btnAnotherActionOnAction(ActionEvent actionEvent) {
 
     }
-
-//    @FXML
-//    private void btnOrdersOnAction(ActionEvent event) {
-//        // Toggle visibility of sub-buttons VBox
-//
-//    }
 
 }
